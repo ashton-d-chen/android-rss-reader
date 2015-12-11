@@ -9,6 +9,7 @@ import android.util.Xml;
 
 import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Reader.Model.Feed;
+import com.ashtonchen.rssreader.Utility.StringUtility;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -121,7 +122,7 @@ public class FeedXMLParser {
             } else if (name.equals(LINK)) {
                 feed.setUrl(readText(parser, LINK));
             } else if (name.equals(DESCRIPTION)) {
-                feed.setDescription(readText(parser, DESCRIPTION));
+                feed.setDescription(StringUtility.removeTrailingTags(readText(parser, DESCRIPTION)));
             } else {
                 skip(parser);
             }

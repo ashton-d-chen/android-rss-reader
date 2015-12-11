@@ -15,6 +15,7 @@ import android.view.View;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Adapter.FeedViewAdapter;
 import com.ashtonchen.rssreader.Reader.Callback.FeedListCallback;
+import com.ashtonchen.rssreader.Reader.Cell.DecoratedItemRecyclerView;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Reader.ReaderComponent;
 import com.ashtonchen.rssreader.Reader.Callback.FeedNetworkCallbackInterface;
@@ -64,8 +65,11 @@ public class FeedListActivity extends AppCompatActivity implements FeedNetworkCa
         mChannel = new Channel();
 
         recyclerView = (RecyclerView) findViewById(R.id.feed_list);
+
         assert recyclerView != null;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //setupRecyclerView((RecyclerView) recyclerView);
 
         if (findViewById(R.id.feed_detail_container) != null) {
@@ -78,7 +82,7 @@ public class FeedListActivity extends AppCompatActivity implements FeedNetworkCa
     }
 
     private void setupRecyclerView() {
-        mFeedViewAdapter = new FeedViewAdapter(mChannel, this);
+        mFeedViewAdapter = new FeedViewAdapter(this, mChannel, this);
         recyclerView.setAdapter(mFeedViewAdapter);
     }
 
