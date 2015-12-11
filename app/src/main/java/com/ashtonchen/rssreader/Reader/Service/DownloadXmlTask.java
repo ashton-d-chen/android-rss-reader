@@ -16,8 +16,7 @@ import java.net.URL;
 /**
  * Created by ashtonchen on 15-12-09.
  */
-public class DownloadXmlTask extends AsyncTask<String, Void, String> {
-    Channel channel;
+public class DownloadXmlTask extends AsyncTask<String, Void, Channel> {
     FeedNetworkCallbackInterface callback;
 
     public DownloadXmlTask(FeedNetworkCallbackInterface callback) {
@@ -25,25 +24,25 @@ public class DownloadXmlTask extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected Channel doInBackground(String... urls) {
         Log.d("background task", "started");
         try {
             return loadXmlFromNetwork(urls[0]);
         } catch (IOException e) {
-            return ""; // getResources().getString(R.string.connection_error);
+            return null; // getResources().getString(R.string.connection_error);
         } catch (XmlPullParserException e) {
-            return ""; // getResources().getString(R.string.xml_error);
+            return null; // getResources().getString(R.string.xml_error);
         }
     }
 
     @Override
-    protected void onPostExecute(String result) {
-        this.callback.onDownloadFinished(this.channel);
+    protected void onPostExecute(Channel result) {
+        this.callback.onDownloadFinished(result);
     }
 
     // Uploads XML from stackoverflow.com, parses it, and combines it with
     // HTML markup. Returns HTML string.
-    private String loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
+    private Channel loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
         InputStream stream = null;
         FeedXMLParser parser = new FeedXMLParser();
 
@@ -53,7 +52,7 @@ public class DownloadXmlTask extends AsyncTask<String, Void, String> {
         Log.d("url", urlString);
         try {
             stream = downloadUrl(urlString);
-            this.channel = parser.parse(stream);
+            return parser.parse(stream);
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
         } finally {
@@ -61,7 +60,7 @@ public class DownloadXmlTask extends AsyncTask<String, Void, String> {
                 stream.close();
             }
         }
-        return ""; //htmlString.toString();
+        //return null; //htmlString.toString();
     }
 
     // Given a string representation of a URL, sets up a connection and gets

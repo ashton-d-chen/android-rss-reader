@@ -69,7 +69,7 @@ public class FeedListActivity extends AppCompatActivity implements FeedNetworkCa
         assert recyclerView != null;
 
         recyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //setupRecyclerView((RecyclerView) recyclerView);
 
         if (findViewById(R.id.feed_detail_container) != null) {

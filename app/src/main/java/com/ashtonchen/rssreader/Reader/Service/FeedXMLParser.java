@@ -118,16 +118,17 @@ public class FeedXMLParser {
             }
             String name = parser.getName();
             if (name.equals(TITLE)) {
-                feed.setTitle(readText(parser, TITLE));
+                feed.setTitle(readText(parser, TITLE).replace("&#039;","'"));
             } else if (name.equals(LINK)) {
                 feed.setUrl(readText(parser, LINK));
             } else if (name.equals(DESCRIPTION)) {
-                feed.setDescription(StringUtility.removeTrailingTags(readText(parser, DESCRIPTION)));
+                feed.setDescription(StringUtility.removeTrailingTags(readText(parser, DESCRIPTION).replace("&#039;","'")));
+            } else if (name.equals(MEDIA_THUMBNAIL)) {
+                feed.setThumbnailURL(readThumbnailURL(parser));
             } else {
                 skip(parser);
             }
         }
-
         return feed;
     }
 
@@ -168,6 +169,7 @@ public class FeedXMLParser {
             parser.nextTag();
         }
         parser.require(XmlPullParser.END_TAG, ns, MEDIA_THUMBNAIL);
+        Log.d(this.getClass().getName(), "Thumbnail URL = " + link);
         return link;
     }
 
