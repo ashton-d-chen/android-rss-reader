@@ -1,9 +1,6 @@
 package com.ashtonchen.rssreader.Reader.Adapter;
 
-import android.app.Notification;
 import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,14 +11,10 @@ import android.widget.TextView;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Callback.FeedListCallback;
-import com.ashtonchen.rssreader.Reader.Callback.ImageDownloadCallback;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Reader.Model.Feed;
-import com.ashtonchen.rssreader.Reader.Service.LoadImage;
 import com.ashtonchen.rssreader.Reader.StyleSheet;
 import com.squareup.picasso.Picasso;
-
-import java.net.URL;
 
 /**
  * Created by ashtonchen on 15-12-09.
@@ -67,14 +60,18 @@ public class FeedViewAdapter
 
         Context context = holder.mThumbnail.getContext();
         Log.d(this.getClass().getName(), "Thumbnail URL = " + holder.mData.getThumbnailURL());
-        Picasso.with(context).load(holder.mData.getThumbnailURL()).into(holder.mThumbnail);
+        Log.d(this.getClass().getName(), "Web Thumbnail URL = " + holder.mData.getWebThumbnailURL());
 
+        if (!holder.mData.getThumbnailURL().isEmpty()) {
+            Picasso.with(context).load(holder.mData.getThumbnailURL()).into(holder.mThumbnail);
+        } else if (!holder.mData.getWebThumbnailURL().isEmpty()) {
+            Picasso.with(context).load(holder.mData.getWebThumbnailURL()).into(holder.mThumbnail);
+        }
         //holder.mThumbnail.setImageBitmap();
         holder.mTitle.setText(mData.getFeeds().get(position).getTitle());
 
         Log.d("FeedViewAdapter", "description = " + mData.getFeeds().get(position).getDescription());
         holder.mDescription.setText(mData.getFeeds().get(position).getDescription());
-        //holder.mDescription.setText("test");
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

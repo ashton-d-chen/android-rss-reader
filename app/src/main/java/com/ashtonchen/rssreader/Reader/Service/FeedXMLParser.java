@@ -19,23 +19,19 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * This class parses XML feeds from stackoverflow.com.
- * Given an InputStream representation of a feed, it returns a List of entries,
- * where each list element represents a single entry (post) in the XML feed.
- */
 
 public class FeedXMLParser {
     private static final String ns = null;
 
-    private static String RSS = "rss";
-    private static String CHANNEL = "channel";
-    private static String ITEM = "item";
-    private static String URL = "url";
-    private static String LINK = "link";
-    private static String TITLE = "title";
-    private static String DESCRIPTION = "description";
-    private static String MEDIA_THUMBNAIL = "media:thumbnail";
+    private static final String RSS = "rss";
+    private static final String CHANNEL = "channel";
+    private static final String ITEM = "item";
+    private static final String URL = "url";
+    private static final String LINK = "link";
+    private static final String TITLE = "title";
+    private static final String DESCRIPTION = "description";
+    private static final String MEDIA_THUMBNAIL = "media:thumbnail";
+    private static final String IMAGE = "image";
 
     // We don't use namespaces
 
@@ -78,23 +74,34 @@ public class FeedXMLParser {
         parser.require(XmlPullParser.START_TAG, ns, CHANNEL);
 
         Channel channel = new Channel();
-        List<Feed> feeds = new ArrayList();
+        List<Feed> feeds = new ArrayList<>();
 
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
-            String name = parser.getName();
-            if (name.equals(TITLE)) {
-                channel.setTitle(readText(parser, TITLE));
-            } else if (name.equals(LINK)) {
-                channel.setUrl(readText(parser, LINK));
-            } else if (name.equals(DESCRIPTION)) {
-                channel.setDescription(readText(parser, DESCRIPTION));
-            } else if (name.equals(ITEM)) {
-                feeds.add(readFeed(parser));
-            } else {
-                skip(parser);
+
+            switch (parser.getName()) {
+                case TITLE:
+                    channel.setTitle(readText(parser, TITLE));
+                    break;
+                case LINK:
+                    channel.setUrl(readText(parser, LINK));
+                    break;
+                case DESCRIPTION:
+                    channel.setDescription(readText(parser, DESCRIPTION));
+                    break;
+                case IMAGE:
+                    channel.setThumbnailURL(readImageURL(parser));
+                    break;
+                case ITEM:
+                    Feed feed = readFeed(parser);
+                    feed.setWebThumbnailURL(channel.getThumbnailURL());
+                    feeds.add(feed);
+                    break;
+                default:
+                    skip(parser);
+
             }
         }
         for (Feed feed : feeds) {
@@ -116,17 +123,22 @@ public class FeedXMLParser {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
-            String name = parser.getName();
-            if (name.equals(TITLE)) {
-                feed.setTitle(readText(parser, TITLE).replace("&#039;","'"));
-            } else if (name.equals(LINK)) {
-                feed.setUrl(readText(parser, LINK));
-            } else if (name.equals(DESCRIPTION)) {
-                feed.setDescription(StringUtility.removeTrailingTags(readText(parser, DESCRIPTION).replace("&#039;","'")));
-            } else if (name.equals(MEDIA_THUMBNAIL)) {
-                feed.setThumbnailURL(readThumbnailURL(parser));
-            } else {
-                skip(parser);
+
+            switch (parser.getName()) {
+                case TITLE:
+                    feed.setTitle(readText(parser, TITLE).replace("&#039;", "'"));
+                    break;
+                case LINK:
+                    feed.setUrl(readText(parser, LINK));
+                    break;
+                case DESCRIPTION:
+                    feed.setDescription(StringUtility.removeTrailingTags(readText(parser, DESCRIPTION).replace("&#039;", "'")));
+                    break;
+                case MEDIA_THUMBNAIL:
+                    feed.setThumbnailURL(readThumbnailURL(parser));
+                    break;
+                default:
+                    skip(parser);
             }
         }
         return feed;
@@ -155,8 +167,23 @@ public class FeedXMLParser {
         return result;
     }
 
-    // Processes link tags in the feed.
-
+    // Processes channel image
+    private String readImageURL(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, IMAGE);
+        String imageURL = "";
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            if (name.equals(URL)) {
+                imageURL = readText(parser, URL);
+            } else {
+                skip(parser);
+            }
+        }
+        return imageURL;
+    }
 
     // Processes thumbnail url tags in the feed.
     private String readThumbnailURL(XmlPullParser parser) throws IOException, XmlPullParserException {
