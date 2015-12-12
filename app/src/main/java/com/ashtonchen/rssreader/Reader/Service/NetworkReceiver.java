@@ -10,9 +10,6 @@ import android.widget.Toast;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Helper.FeedNetworkHelper;
 
-/**
- * Created by ashtonchen on 15-12-09.
- */
 
 public class NetworkReceiver extends BroadcastReceiver {
 
@@ -33,25 +30,25 @@ public class NetworkReceiver extends BroadcastReceiver {
         // whether
         // to refresh the display or keep the current display.
         // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
-        if (FeedNetworkHelper.WIFI.equals(helper.sPref) && networkInfo != null
+        if (FeedNetworkHelper.WIFI.equals(FeedNetworkHelper.sPref) && networkInfo != null
                 && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
             // If device has its Wi-Fi connection, sets refreshDisplay
             // to true. This causes the display to be refreshed when the user
             // returns to the app.
-            helper.refreshDisplay = true;
+            FeedNetworkHelper.refreshDisplay = true;
             Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
 
             // If the setting is ANY network and there is a network connection
             // (which by process of elimination would be mobile), sets refreshDisplay to true.
-        } else if (FeedNetworkHelper.ANY.equals(helper.sPref) && networkInfo != null) {
-            helper.refreshDisplay = true;
+        } else if (FeedNetworkHelper.ANY.equals(FeedNetworkHelper.sPref) && networkInfo != null) {
+            FeedNetworkHelper.refreshDisplay = true;
 
             // Otherwise, the app can't download content--either because there is no network
             // connection (mobile or Wi-Fi), or because the pref setting is WIFI, and there
             // is no Wi-Fi connection.
             // Sets refreshDisplay to false.
         } else {
-            helper.refreshDisplay = false;
+            FeedNetworkHelper.refreshDisplay = false;
             Toast.makeText(context, R.string.lost_connection, Toast.LENGTH_SHORT).show();
         }
     }
