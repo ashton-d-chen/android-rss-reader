@@ -5,6 +5,6 @@ import android.view.View;
 /**
  * Created by ashtonchen on 15-12-09.
  */
-public interface FeedListCallback {
+public interface OnListFragmentInteractionListener {
     void onFeedItemClick(View v, String id);
 }

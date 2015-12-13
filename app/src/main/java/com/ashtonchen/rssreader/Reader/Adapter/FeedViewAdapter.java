@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.Callback.FeedListCallback;
+import com.ashtonchen.rssreader.Reader.Callback.OnListFragmentInteractionListener;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Reader.Model.Feed;
 import com.ashtonchen.rssreader.Reader.StyleSheet;
@@ -23,13 +23,13 @@ public class FeedViewAdapter
         extends RecyclerView.Adapter<FeedViewAdapter.ViewHolder> {
 
     private Channel mData;
-    private FeedListCallback mCallback;
+    private OnListFragmentInteractionListener mCallback;
     private int cellPadding;
     private int cellThumbnailSize;
     private int cellThumbnailTextSpacing;
     private int cellTextViewSpacing;
 
-    public FeedViewAdapter(Context context, Channel data, FeedListCallback callback) {
+    public FeedViewAdapter(Context context, Channel data, OnListFragmentInteractionListener callback) {
         mData = data;
         mCallback = callback;
 
@@ -48,7 +48,7 @@ public class FeedViewAdapter
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.feed_list_content, parent, false);
+                .inflate(R.layout.feed_list_cell, parent, false);
         return new ViewHolder(view);
     }
 
@@ -67,7 +67,7 @@ public class FeedViewAdapter
         } else if (!holder.mData.getWebThumbnailURL().isEmpty()) {
             Picasso.with(context).load(holder.mData.getWebThumbnailURL()).into(holder.mThumbnail);
         }
-        //holder.mThumbnail.setImageBitmap();
+
         holder.mTitle.setText(mData.getFeeds().get(position).getTitle());
 
         Log.d("FeedViewAdapter", "description = " + mData.getFeeds().get(position).getDescription());

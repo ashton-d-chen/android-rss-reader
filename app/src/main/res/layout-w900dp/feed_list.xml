@@ -23,7 +23,7 @@
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:context=".Reader.View.FeedListActivity"
-        tools:listitem="@layout/feed_list_content" />
+        tools:listitem="@layout/feed_list_cell" />
 
     <FrameLayout
         android:id="@+id/feed_detail_container"

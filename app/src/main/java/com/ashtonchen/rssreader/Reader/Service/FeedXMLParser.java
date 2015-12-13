@@ -155,18 +155,6 @@ public class FeedXMLParser {
         return result;
     }
 
-    // Processes title tags in the feed.
-    private String readTitle(XmlPullParser parser) throws IOException, XmlPullParserException {
-        parser.require(XmlPullParser.START_TAG, ns, TITLE);
-        String result = "";
-        if (parser.next() == XmlPullParser.TEXT) {
-            result = parser.getText();
-            parser.nextTag();
-        }
-        parser.require(XmlPullParser.END_TAG, ns, TITLE);
-        return result;
-    }
-
     // Processes channel image
     private String readImageURL(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, IMAGE);
@@ -198,24 +186,6 @@ public class FeedXMLParser {
         parser.require(XmlPullParser.END_TAG, ns, MEDIA_THUMBNAIL);
         Log.d(this.getClass().getName(), "Thumbnail URL = " + link);
         return link;
-    }
-
-    // Processes summary tags in the feed.
-    private String readDescription(XmlPullParser parser) throws IOException, XmlPullParserException {
-        parser.require(XmlPullParser.START_TAG, ns, DESCRIPTION);
-        String summary = readText1(parser);
-        parser.require(XmlPullParser.END_TAG, ns, DESCRIPTION);
-        return summary;
-    }
-
-    // For the tags title and summary, extracts their text values.
-    private String readText1(XmlPullParser parser) throws IOException, XmlPullParserException {
-        String result = "";
-        if (parser.next() == XmlPullParser.TEXT) {
-            result = parser.getText();
-            parser.nextTag();
-        }
-        return result;
     }
 
     // Skips tags the parser isn't interested in. Uses depth to handle nested tags. i.e.,
