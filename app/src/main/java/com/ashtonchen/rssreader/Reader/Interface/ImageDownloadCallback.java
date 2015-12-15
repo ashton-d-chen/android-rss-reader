@@ -1,8 +1,6 @@
-package com.ashtonchen.rssreader.Reader.Callback;
+package com.ashtonchen.rssreader.Reader.Interface;
 
 import android.graphics.Bitmap;
-
-import com.ashtonchen.rssreader.Reader.Model.Channel;
 
 /**
  * Created by ashtonchen on 15-12-10.

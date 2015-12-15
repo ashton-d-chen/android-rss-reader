@@ -21,15 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Reader.View.FeedDetailActivity"
-            android:label="@string/title_feed_detail"
-            android:parentActivityName=".Reader.View.FeedListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Reader.View.FeedListActivity" />
-        </activity>
 
     </application>
 

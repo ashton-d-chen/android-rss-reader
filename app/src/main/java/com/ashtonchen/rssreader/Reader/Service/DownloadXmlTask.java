@@ -3,7 +3,7 @@ package com.ashtonchen.rssreader.Reader.Service;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ashtonchen.rssreader.Reader.Callback.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
 
 import org.xmlpull.v1.XmlPullParserException;

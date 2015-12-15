@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.View;
+package com.ashtonchen.rssreader.Subscription.Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,39 +6,36 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
- * <p/>
- * TODO: Replace all uses of this class before publishing your app.
+ * Created by Ashton Chen on 15-12-14.
  */
-public class FeedContent {
+public class SubscriptionContent {
 
     /**
-     * An array of feed items.
+     * An array of sample (dummy) items.
      */
-    public static final List<FeedItem> ITEMS = new ArrayList<FeedItem>();
+    public static final List<DummyItem> ITEMS = new ArrayList<DummyItem>();
 
     /**
-     * A map of feed items, by ID.
+     * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, FeedItem> ITEM_MAP = new HashMap<String, FeedItem>();
+    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
     private static final int COUNT = 25;
 
     static {
         // Add some sample items.
         for (int i = 1; i <= COUNT; i++) {
-            addItem(createFeedItem(i));
+            addItem(createDummyItem(i));
         }
     }
 
-    private static void addItem(FeedItem item) {
+    private static void addItem(DummyItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private static FeedItem createFeedItem(int position) {
-        return new FeedItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    private static DummyItem createDummyItem(int position) {
+        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -53,12 +50,12 @@ public class FeedContent {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class FeedItem {
+    public static class DummyItem {
         public final String id;
         public final String content;
         public final String details;
 
-        public FeedItem(String id, String content, String details) {
+        public DummyItem(String id, String content, String details) {
             this.id = id;
             this.content = content;
             this.details = details;

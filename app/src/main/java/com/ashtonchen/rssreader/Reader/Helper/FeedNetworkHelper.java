@@ -8,8 +8,8 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Reader.Service.DownloadXmlTask;
-import com.ashtonchen.rssreader.Reader.Callback.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Reader.Service.NetworkReceiver;
 
 /**
@@ -17,23 +17,19 @@ import com.ashtonchen.rssreader.Reader.Service.NetworkReceiver;
  */
 public class FeedNetworkHelper {
 
-    private static final String SUCCESS = "success";
-
     public static final String WIFI = "Wi-Fi";
     public static final String ANY = "Any";
+    private static final String SUCCESS = "success";
     private static final String URL =
             "http://www.cnet.com/rss/news";
-
+    // Whether the display should be refreshed.
+    public static boolean refreshDisplay = true;
+    // The user's current network preference setting.
+    public static String sPref = null;
     // Whether there is a Wi-Fi connection.
     private static boolean wifiConnected = false;
     // Whether there is a mobile connection.
     private static boolean mobileConnected = false;
-    // Whether the display should be refreshed.
-    public static boolean refreshDisplay = true;
-
-    // The user's current network preference setting.
-    public static String sPref = null;
-
     private Context context;
 
     // The BroadcastReceiver that tracks network connectivity changes.

@@ -1,11 +1,10 @@
 package com.ashtonchen.rssreader.Reader.Service;
 
-import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
-import com.ashtonchen.rssreader.Reader.Callback.ImageDownloadCallback;
+import com.ashtonchen.rssreader.Reader.Interface.ImageDownloadCallback;
 
 import java.io.InputStream;
 import java.net.URL;

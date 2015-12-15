@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.Callback;
+package com.ashtonchen.rssreader.Reader.Interface;
 
 import com.ashtonchen.rssreader.Reader.Model.Channel;
 

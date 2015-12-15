@@ -10,12 +10,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.View.FeedListFragment;
+import com.ashtonchen.rssreader.Subscription.View.SubscriptionListFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("RSS Reader");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,19 +87,22 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Fragment fragment;
+        Fragment fragment = new Fragment();
 
         int id = item.getItemId();
 
         if (id == R.id.nav_all) {
-            // Handle the camera action
+            fragment = FeedListFragment.newInstance();
         } else if (id == R.id.nav_favorite) {
 
+        } else if (id == R.id.nav_subscription) {
+            Log.d(this.getClass().getName(), "Navigate to subscription");
+            fragment = SubscriptionListFragment.newInstance();
         } else if (id == R.id.nav_settings) {
 
         }
 
-        //getSupportFragmentManager().beginTransaction().replace("@layout/content_main",fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

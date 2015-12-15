@@ -7,7 +7,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".Reader.View.FeedListActivity">
+    tools:context=".Reader.View.SubscriptionListActivity">
 
     <!--
     This layout is a two-pane layout for the Feeds
@@ -17,18 +17,18 @@
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/feed_list"
-        android:name="com.ashtonchen.rssreader.FeedListFragment"
+        android:id="@+id/subscription_list"
+        android:name="com.ashtonchen.rssreader.SubscriptionListFragment"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".Reader.View.FeedListActivity"
-        tools:listitem="@layout/feed_list_cell" />
+        tools:context=".Reader.View.SubscriptionListActivity"
+        tools:listitem="@layout/subscription_list_cell" />
 
     <FrameLayout
-        android:id="@+id/feedetail_container"
+        android:id="@+id/subscription_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"/>
+        android:layout_weight="3" />
 
 </LinearLayout>

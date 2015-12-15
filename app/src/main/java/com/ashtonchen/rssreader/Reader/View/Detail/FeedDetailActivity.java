@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.View;
+package com.ashtonchen.rssreader.Reader.View.Detail;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import com.ashtonchen.rssreader.R;
  * An activity representing a single Feed detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link FeedListActivity}.
+ * in a {@link com.ashtonchen.rssreader.Reader.View.FeedListFragment}.
  */
 public class FeedDetailActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.View;
+package com.ashtonchen.rssreader.Reader.View.Detail;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.Reader.Model.FeedContent;
 
 /**
  * A fragment representing a single Feed detail screen.
- * This fragment is either contained in a {@link FeedListActivity}
+ * This fragment is either contained in a {@link com.ashtonchen.rssreader.Reader.View.FeedListFragment}
  * in two-pane mode (on tablets) or a {@link FeedDetailActivity}
  * on handsets.
  */

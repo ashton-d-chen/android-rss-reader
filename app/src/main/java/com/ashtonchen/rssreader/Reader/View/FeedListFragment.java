@@ -1,20 +1,20 @@
 package com.ashtonchen.rssreader.Reader.View;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ashtonchen.rssreader.MasterDetailListFragment;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Adapter.FeedViewAdapter;
-import com.ashtonchen.rssreader.Reader.Callback.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.Reader.Callback.OnListFragmentInteractionListener;
 import com.ashtonchen.rssreader.Reader.Cell.DecoratedItemRecyclerView;
+import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.Reader.Interface.OnListFragmentInteractionListener;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Reader.ReaderComponent;
 
@@ -29,15 +29,13 @@ import com.ashtonchen.rssreader.Reader.ReaderComponent;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class FeedListFragment extends Fragment implements FeedNetworkCallbackInterface, OnListFragmentInteractionListener {
+public class FeedListFragment extends MasterDetailListFragment implements FeedNetworkCallbackInterface {
 
-    private boolean mTwoPane;
+
     private ReaderComponent mReaderComponent;
     private FeedViewAdapter mFeedViewAdapter;
     private RecyclerView mRecyclerView;
     private Channel mChannel;
-    private Context mContext;
-    private OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -58,7 +56,6 @@ public class FeedListFragment extends Fragment implements FeedNetworkCallbackInt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
 
         this.mReaderComponent = new ReaderComponent(mContext);
         this.mReaderComponent.getFeedList(this);
@@ -68,6 +65,7 @@ public class FeedListFragment extends Fragment implements FeedNetworkCallbackInt
         //setupRecyclerView((RecyclerView) mRecyclerView);
 
         if (getActivity().findViewById(R.id.feed_detail_container) != null) {
+            Log.d(this.getClass().getName(), "two panes");
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -87,27 +85,8 @@ public class FeedListFragment extends Fragment implements FeedNetworkCallbackInt
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         return view;
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mListener = this;
-        /*if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }*/
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     /**
@@ -127,31 +106,16 @@ public class FeedListFragment extends Fragment implements FeedNetworkCallbackInt
 */
     public void onDownloadFinished(Channel channel) {
         mChannel = channel;
-        setupRecyclerView();
+        setupAdapter();
         //mFeedViewAdapter.setData(mChannel);
     }
 
-    private void setupRecyclerView() {
+    protected void setupAdapter() {
         mFeedViewAdapter = new FeedViewAdapter(getContext(), mChannel, this);
         mRecyclerView.setAdapter(mFeedViewAdapter);
     }
 
-    public void onFeedItemClick(View v, String id) {
-        if (mTwoPane) {
-            Bundle arguments = new Bundle();
-            arguments.putString(FeedDetailFragment.ARG_ITEM_ID, id);
-            FeedDetailFragment fragment = new FeedDetailFragment();
-            fragment.setArguments(arguments);
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.feed_detail_container, fragment)
-                    .commit();
-        } else {
-            Context context = v.getContext();
-            Intent intent = new Intent(context, FeedDetailActivity.class);
-            intent.putExtra(FeedDetailFragment.ARG_ITEM_ID, id);
-
-            context.startActivity(intent);
-        }
+    public void onItemClick(View v, String id) {
     }
 }
 
