@@ -3,7 +3,6 @@ package com.ashtonchen.rssreader;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.ashtonchen.rssreader.Reader.Interface.OnListFragmentInteractionListener;
@@ -13,26 +12,11 @@ import com.ashtonchen.rssreader.Reader.View.Detail.FeedDetailFragment;
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public class MasterDetailListFragment extends Fragment implements OnListFragmentInteractionListener {
-    protected Context mContext;
+public class MasterDetailListFragment extends BaseFragment implements OnListFragmentInteractionListener {
+
     protected boolean mTwoPane;
-
-
     protected OnListFragmentInteractionListener mListener;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mContext = getContext();
-    }
-
-    /*
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-
-        }
-    */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

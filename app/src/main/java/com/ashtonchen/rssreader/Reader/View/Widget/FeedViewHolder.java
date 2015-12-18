@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.View;
+package com.ashtonchen.rssreader.Reader.View.Widget;
 
 import android.view.View;
 import android.widget.ImageView;

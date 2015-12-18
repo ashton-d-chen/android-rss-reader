@@ -1,5 +1,6 @@
-package com.ashtonchen.rssreader.Main;
+package com.ashtonchen.rssreader.Main.View;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,20 +16,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.ashtonchen.rssreader.Main.Helper.ActionBarColorHelper;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.View.FeedListFragment;
 import com.ashtonchen.rssreader.Subscription.View.SubscriptionListFragment;
+import com.ashtonchen.rssreader.Subscription.View.SubscriptionNewFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Menu mActionMenu;
+    private Toolbar mToolbar;
+    private int mCurrentFragmentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("RSS Reader");
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -41,15 +48,17 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment = FeedListFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).commit();
+        createContentFragment(mCurrentFragmentId);
+
+        mToolbar.setBackgroundColor(Color.RED);
+
     }
 
     @Override
@@ -64,9 +73,41 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        mActionMenu = menu;
+
+
+        //Drawable icon = getResources().getDrawable(R.drawable.ic_action_bar_add);
+        //icon.setColorFilter(new
+        //      PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
+        //icon.set
+        //mActionMenu.add(Menu.NONE, 0, Menu.NONE, "Refresh").setIcon(icon).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        //getMenuInflater().inflate(R.menu.main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+
+        if (mCurrentFragmentId == R.id.nav_subscription) {
+            MenuItem item = mActionMenu.add(Menu.NONE, R.id.subscription_new, Menu.NONE, "Refresh");
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    createContentFragment(item.getItemId());
+                    return false;
+                }
+            });
+            item.setIcon(R.drawable.ic_action_bar_add);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }
+
+        ActionBarColorHelper.colorizeToolbar(mToolbar, Color.BLUE, this);
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -84,28 +125,33 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Fragment fragment = new Fragment();
-
-        int id = item.getItemId();
-
-        if (id == R.id.nav_all) {
-            fragment = FeedListFragment.newInstance();
-        } else if (id == R.id.nav_favorite) {
-
-        } else if (id == R.id.nav_subscription) {
-            Log.d(this.getClass().getName(), "Navigate to subscription");
-            fragment = SubscriptionListFragment.newInstance();
-        } else if (id == R.id.nav_settings) {
-
-        }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).commit();
+        createContentFragment(item.getItemId());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void createContentFragment(int id) {
+        if (mCurrentFragmentId != id) {
+            mCurrentFragmentId = id;
+            invalidateOptionsMenu();
+        }
+        Fragment fragment;
+        if (id == R.id.nav_all) {
+            fragment = FeedListFragment.newInstance();
+        } else if (id == R.id.nav_favorite) {
+            fragment = FeedListFragment.newInstance();
+        } else if (id == R.id.nav_subscription) {
+            Log.d(this.getClass().getName(), "Navigate to subscription");
+            fragment = SubscriptionListFragment.newInstance();
+        } else if (id == R.id.subscription_new) {
+            fragment = SubscriptionNewFragment.newInstance();
+        } else {
+            fragment = FeedListFragment.newInstance();
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).addToBackStack(null).commit();
     }
 }

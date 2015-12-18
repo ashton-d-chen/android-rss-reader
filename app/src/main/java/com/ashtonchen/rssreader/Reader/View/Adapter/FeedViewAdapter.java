@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.Adapter;
+package com.ashtonchen.rssreader.Reader.View.Adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,11 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ashtonchen.rssreader.BaseRecyclerViewAdapter;
-import com.ashtonchen.rssreader.BaseRecyclerViewHolder;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Interface.OnListFragmentInteractionListener;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
-import com.ashtonchen.rssreader.Reader.View.FeedViewHolder;
+import com.ashtonchen.rssreader.Reader.View.Widget.FeedViewHolder;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -27,8 +26,6 @@ public class FeedViewAdapter
     public FeedViewAdapter(Context context, Channel data, OnListFragmentInteractionListener callback) {
         mData = data;
         mCallback = callback;
-
-
     }
 
     public void setData(Channel data) {
@@ -44,9 +41,9 @@ public class FeedViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(BaseRecyclerViewHolder viewHolder, int position) {
+    public void onBindViewHolder(FeedViewHolder viewHolder, int position) {
         Log.d("FeedViewAdapter", "position = " + position);
-        FeedViewHolder holder = (FeedViewHolder) viewHolder;
+        FeedViewHolder holder = viewHolder;
         holder.mData = mData.getFeeds().get(position);
 
         Context context = holder.mThumbnail.getContext();

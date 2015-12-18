@@ -11,12 +11,12 @@ import android.view.ViewGroup;
 
 import com.ashtonchen.rssreader.MasterDetailListFragment;
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.Adapter.FeedViewAdapter;
-import com.ashtonchen.rssreader.Reader.Cell.DecoratedItemRecyclerView;
 import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Reader.Interface.OnListFragmentInteractionListener;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Reader.ReaderComponent;
+import com.ashtonchen.rssreader.Reader.View.Adapter.FeedViewAdapter;
+import com.ashtonchen.rssreader.Reader.View.Widget.DecoratedItemRecyclerView;
 
 /**
  * Created by Ashton Chen on 15-12-12.
@@ -85,7 +85,6 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
-        //mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         return view;
     }
 
@@ -101,7 +100,7 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
      */
  /*   public interface OnListFragmentInteractionListener {
 
-        //void onListFragmentInteraction(DummyItem item);
+        //void onListFragmentInteraction(SubscriptionItem item);
     }
 */
     public void onDownloadFinished(Channel channel) {

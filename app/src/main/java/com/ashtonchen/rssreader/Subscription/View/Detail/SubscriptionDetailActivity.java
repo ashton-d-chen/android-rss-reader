@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.ashtonchen.rssreader.Main.MainActivity;
+import com.ashtonchen.rssreader.Main.View.MainActivity;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.View.Detail.FeedDetailFragment;
 

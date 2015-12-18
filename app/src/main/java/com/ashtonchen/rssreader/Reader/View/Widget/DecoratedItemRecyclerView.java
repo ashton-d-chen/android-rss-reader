@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.Cell;
+package com.ashtonchen.rssreader.Reader.View.Widget;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

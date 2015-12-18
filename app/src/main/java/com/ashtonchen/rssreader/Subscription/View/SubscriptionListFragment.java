@@ -1,37 +1,31 @@
 package com.ashtonchen.rssreader.Subscription.View;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ashtonchen.rssreader.MasterDetailListFragment;
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.Cell.DecoratedItemRecyclerView;
-import com.ashtonchen.rssreader.Reader.View.Detail.FeedDetailActivity;
-import com.ashtonchen.rssreader.Reader.View.Detail.FeedDetailFragment;
-import com.ashtonchen.rssreader.Subscription.Adapter.SubscriptionRecyclerViewAdapter;
+import com.ashtonchen.rssreader.Reader.View.Widget.DecoratedItemRecyclerView;
 import com.ashtonchen.rssreader.Subscription.Interface.SubscriptionNetworkCallbackInterface;
-import com.ashtonchen.rssreader.Subscription.Interface.onSubscriptionListInteractionListener;
 import com.ashtonchen.rssreader.Subscription.Model.Subscription;
 import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
+import com.ashtonchen.rssreader.Subscription.View.Adapter.SubscriptionRecyclerViewAdapter;
 
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public class SubscriptionListFragment extends Fragment implements SubscriptionNetworkCallbackInterface, onSubscriptionListInteractionListener {
+public class SubscriptionListFragment extends MasterDetailListFragment implements SubscriptionNetworkCallbackInterface {
 
-    private boolean mTwoPane;
     private SubscriptionComponent mSubscriptionComponent;
     private SubscriptionRecyclerViewAdapter mFeedViewAdapter;
     private RecyclerView mRecyclerView;
     private Subscription mSubscription;
-    private Context mContext;
-    private onSubscriptionListInteractionListener mListener;
+    private SubscriptionNetworkCallbackInterface mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -72,35 +66,16 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionNe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.feed_list, container, false);
+        View view = inflater.inflate(R.layout.subscription_list, container, false);
 
         // Set the adapter
         Context context = view.getContext();
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.feed_list);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.subscription_list);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        setupRecyclerView();
         return view;
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mListener = this;
-        /*if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }*/
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     /**
@@ -115,7 +90,7 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionNe
      */
  /*   public interface OnListFragmentInteractionListener {
 
-        //void onListFragmentInteraction(DummyItem item);
+        //void onListFragmentInteraction(SubscriptionItem item);
     }
 */
     public void onDownloadFinished(Subscription subscriptin) {
@@ -125,12 +100,12 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionNe
     }
 
     private void setupRecyclerView() {
-        mFeedViewAdapter = new SubscriptionRecyclerViewAdapter(mContext, mSubscription, this);
+        mFeedViewAdapter = new SubscriptionRecyclerViewAdapter(mContext, this);
         mRecyclerView.setAdapter(mFeedViewAdapter);
     }
 
     public void onFeedItemClick(View v, String id) {
-        if (mTwoPane) {
+/*        if (mTwoPane) {
             Bundle arguments = new Bundle();
             arguments.putString(FeedDetailFragment.ARG_ITEM_ID, id);
             FeedDetailFragment fragment = new FeedDetailFragment();
@@ -145,6 +120,7 @@ public class SubscriptionListFragment extends Fragment implements SubscriptionNe
 
             context.startActivity(intent);
         }
+*/
     }
 
     public void onListItemClicked(View view) {
