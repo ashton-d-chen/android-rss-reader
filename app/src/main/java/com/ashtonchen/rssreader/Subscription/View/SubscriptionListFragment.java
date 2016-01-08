@@ -100,7 +100,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
     }
 
     private void setupRecyclerView() {
-        mFeedViewAdapter = new SubscriptionRecyclerViewAdapter(mContext, this);
+        mFeedViewAdapter = new SubscriptionRecyclerViewAdapter(mContext, this, mSubscriptionComponent);
         mRecyclerView.setAdapter(mFeedViewAdapter);
     }
 

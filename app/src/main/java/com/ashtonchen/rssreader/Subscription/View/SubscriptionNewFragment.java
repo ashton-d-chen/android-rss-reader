@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.ashtonchen.rssreader.BaseFragment;
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.Subscription.Model.Subscription;
+import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +33,8 @@ public class SubscriptionNewFragment extends BaseFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    EditText mEditText;
+    private SubscriptionComponent mSubscriptionComponent;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -61,6 +64,8 @@ public class SubscriptionNewFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.mSubscriptionComponent = new SubscriptionComponent(mContext);
+
 /*        if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -76,9 +81,9 @@ public class SubscriptionNewFragment extends BaseFragment {
         textView.setText(R.string.new_subscription);
         textView.setGravity(Gravity.CENTER);
 
-        EditText editText = new EditText(mContext);
-        editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        mEditText = new EditText(mContext);
+        mEditText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mEditText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 
         Button cancelButton = new Button(mContext);
         cancelButton.setText(R.string.button_cancel);
@@ -86,13 +91,14 @@ public class SubscriptionNewFragment extends BaseFragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().onBackPressed();
             }
         });
 
         Button button = new Button(mContext);
         button.setText(R.string.button_subscribe);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        button.setOnClickListener(onAddNewButtonClicked());
 
         LinearLayout buttonLinearLayout = new LinearLayout(mContext);
         buttonLinearLayout.setGravity(Gravity.CENTER);
@@ -104,7 +110,7 @@ public class SubscriptionNewFragment extends BaseFragment {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setGravity(Gravity.CENTER);
         linearLayout.addView(textView);
-        linearLayout.addView(editText);
+        linearLayout.addView(mEditText);
         linearLayout.addView(buttonLinearLayout);
 
         FrameLayout frameLayout = new FrameLayout(mContext);
@@ -138,6 +144,21 @@ public class SubscriptionNewFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private View.OnClickListener onAddNewButtonClicked() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = mEditText.getText().toString().trim();
+                if (!url.isEmpty()) {
+                    Subscription subscription = new Subscription();
+                    subscription.setUrl(url);
+                    mSubscriptionComponent.addNewSubscription(subscription);
+                    getActivity().onBackPressed();
+                }
+            }
+        };
     }
 
     /**

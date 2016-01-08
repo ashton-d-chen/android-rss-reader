@@ -18,16 +18,6 @@ public class Subscriptions {
     private static final List<Subscription> ITEMS = new ArrayList<>();
     private static final Map<String, Subscription> ITEM_MAP = new HashMap<>();
 
-    static {
-        for (int i = 0; i < 25; i++) {
-            Subscription item = new Subscription();
-            item.setTitle(i + " item");
-            item.setDescription(i + " description");
-            item.setThumbnailURL(i + " thumbnail URL");
-            ITEMS.add(item);
-        }
-    }
-
     public static Subscription get(int index) {
         return ITEMS.get(index);
     }

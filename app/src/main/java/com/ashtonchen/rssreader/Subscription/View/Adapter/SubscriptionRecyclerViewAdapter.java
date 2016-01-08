@@ -2,6 +2,7 @@ package com.ashtonchen.rssreader.Subscription.View.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Subscription.Interface.SubscriptionNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Subscription.Interface.onSubscriptionListInteractionListener;
 import com.ashtonchen.rssreader.Subscription.Model.Subscription;
+import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.Subscription.View.Widget.SubscriptionViewHolder;
-import com.ashtonchen.rssreader.Subscription.dummy.Subscriptions;
+
+import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Subscription} and makes a call to the
@@ -22,9 +25,13 @@ import com.ashtonchen.rssreader.Subscription.dummy.Subscriptions;
 public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<SubscriptionViewHolder> {
 
     private final SubscriptionNetworkCallbackInterface mListener;
+    private final List<Subscription> mList;
+    private final SubscriptionComponent mSubscriptionComponent;
 
-    public SubscriptionRecyclerViewAdapter(Context context, SubscriptionNetworkCallbackInterface listener) {
+    public SubscriptionRecyclerViewAdapter(Context context, SubscriptionNetworkCallbackInterface listener, SubscriptionComponent component) {
         mListener = listener;
+        mSubscriptionComponent = component;
+        mList = mSubscriptionComponent.getSubscriptions();
     }
 
     @Override
@@ -36,9 +43,10 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
 
     @Override
     public void onBindViewHolder(final SubscriptionViewHolder holder, int position) {
-        holder.mItem = Subscriptions.get(position);
-        holder.mTitleView.setText(Subscriptions.get(position).getTitle());
-        holder.mDescriptionView.setText(Subscriptions.get(position).getDescription());
+        Log.d(this.getClass().getName(), "adapter subscription: " + position);
+
+        holder.mTitleView.setText(mList.get(position).getUrl());
+        holder.mDescriptionView.setText(mList.get(position).getDescription());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,10 +58,22 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
                 }
             }
         });
+
+        holder.mView.setOnLongClickListener(getOnLongClickListener(mList.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return Subscriptions.getSize();
+        return mList.size();
+    }
+
+    private View.OnLongClickListener getOnLongClickListener(final Subscription subscription) {
+        return new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mSubscriptionComponent.removeSubscriptoin(subscription);
+                return false;
+            }
+        };
     }
 }

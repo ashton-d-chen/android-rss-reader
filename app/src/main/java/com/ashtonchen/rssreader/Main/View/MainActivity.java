@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity
 
     private Menu mActionMenu;
     private Toolbar mToolbar;
-    private int mCurrentFragmentId;
+    private int mCurrentFragmentId = -1;
+    private int mPreviousFragmentId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        if (mPreviousFragmentId > 0) {
+            mCurrentFragmentId = mPreviousFragmentId;
+            mPreviousFragmentId = -1;
+            invalidateOptionsMenu();
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -92,7 +99,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
 
+        Log.d(this.getClass().getName(), "current id is " + mCurrentFragmentId);
         if (mCurrentFragmentId == R.id.nav_subscription) {
+            Log.d(this.getClass().getName(), "current id is nav_subscription");
             MenuItem item = mActionMenu.add(Menu.NONE, R.id.subscription_new, Menu.NONE, "Refresh");
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
@@ -135,17 +144,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void createContentFragment(int id) {
-        if (mCurrentFragmentId != id) {
-            mCurrentFragmentId = id;
-            invalidateOptionsMenu();
-        }
+        setCurrentFragmentId(id);
+
         Fragment fragment;
         if (id == R.id.nav_all) {
             fragment = FeedListFragment.newInstance();
         } else if (id == R.id.nav_favorite) {
             fragment = FeedListFragment.newInstance();
         } else if (id == R.id.nav_subscription) {
-            Log.d(this.getClass().getName(), "Navigate to subscription");
             fragment = SubscriptionListFragment.newInstance();
         } else if (id == R.id.subscription_new) {
             fragment = SubscriptionNewFragment.newInstance();
@@ -153,5 +159,14 @@ public class MainActivity extends AppCompatActivity
             fragment = FeedListFragment.newInstance();
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).addToBackStack(null).commit();
+    }
+
+    public void setCurrentFragmentId(int id) {
+        if (mCurrentFragmentId != id) {
+            Log.d(this.getClass().getName(), "invalidate options menu");
+            mPreviousFragmentId = mCurrentFragmentId;
+            mCurrentFragmentId = id;
+            invalidateOptionsMenu();
+        }
     }
 }

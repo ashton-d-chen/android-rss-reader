@@ -65,10 +65,10 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             for (cursor.moveToFirst(); cursor.isAfterLast() == false; cursor.moveToNext()) {
                 Subscription item = new Subscription();
-                item.setUrl(cursor.getString(0));
-                item.setTitle(cursor.getString(1));
-                item.setDescription(cursor.getString(2));
-                item.setThumbnailURL(cursor.getString(3));
+                item.setUrl(cursor.getString(1));
+                item.setTitle(cursor.getString(2));
+                item.setDescription(cursor.getString(3));
+                item.setThumbnailURL(cursor.getString(4));
                 items.add(item);
             }
             cursor.close();
@@ -78,14 +78,14 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public long addItem(Subscription item) {
+    public long addItem(Subscription subscription) {
         SQLiteDatabase database = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_TITLE, item.getTitle());
-        values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_DESCRIPTION, item.getDescription());
-        values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL, item.getUrl());
-        values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_THUMBNAIL_URL, item.getThumbnailURL());
+        values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_TITLE, subscription.getTitle());
+        values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_DESCRIPTION, subscription.getDescription());
+        values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL, subscription.getUrl());
+        values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_THUMBNAIL_URL, subscription.getThumbnailURL());
 
 
         long newRowId = database.insert(RSSReaderContract.SubscriptionEntry.TABLE_NAME, null, values);
@@ -93,13 +93,10 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    public void removeItem(Subscription item) {
+    public void removeItem(Subscription subscription) {
         SQLiteDatabase database = getWritableDatabase();
-
-        String selection = RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL;
-
-        String[] selectionArgs = {String.valueOf(item.getUrl())};
-
+        String selection = RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL + " = ?";
+        String[] selectionArgs = {String.valueOf(subscription.getUrl())};
         database.delete(RSSReaderContract.SubscriptionEntry.TABLE_NAME, selection, selectionArgs);
         database.close();
     }
