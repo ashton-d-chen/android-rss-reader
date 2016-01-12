@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity
 
         createContentFragment(mCurrentFragmentId);
 
-        mToolbar.setBackgroundColor(Color.RED);
+        //mToolbar.setBackgroundColor(Color.BLUE);
 
     }
 
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
 
-        ActionBarColorHelper.colorizeToolbar(mToolbar, Color.BLUE, this);
+        ActionBarColorHelper.colorizeToolbar(mToolbar, Color.WHITE, this);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -147,17 +148,25 @@ public class MainActivity extends AppCompatActivity
         setCurrentFragmentId(id);
 
         Fragment fragment;
+        ActionBar actionBar = getSupportActionBar();
+        String subtitle;
         if (id == R.id.nav_all) {
+            subtitle = getString(R.string.action_bar_subtitle_feeds);
             fragment = FeedListFragment.newInstance();
         } else if (id == R.id.nav_favorite) {
+            subtitle = getString(R.string.action_bar_subtitle_favorites);
             fragment = FeedListFragment.newInstance();
         } else if (id == R.id.nav_subscription) {
+            subtitle = getString(R.string.action_bar_subtitle_subscriptions);
             fragment = SubscriptionListFragment.newInstance();
         } else if (id == R.id.subscription_new) {
+            subtitle = getString(R.string.action_bar_subtitle_new_subscription);
             fragment = SubscriptionNewFragment.newInstance();
         } else {
+            subtitle = getString(R.string.action_bar_subtitle_feeds);
             fragment = FeedListFragment.newInstance();
         }
+        actionBar.setSubtitle(subtitle);
         getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).addToBackStack(null).commit();
     }
 
