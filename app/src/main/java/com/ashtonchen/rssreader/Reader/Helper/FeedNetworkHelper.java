@@ -77,5 +77,7 @@ public class FeedNetworkHelper {
         */
     }
 
-
+    public void getSubscriptionInfo(String url, FeedNetworkCallbackInterface callback) {
+        new DownloadXmlTask(callback).execute(url);
+    }
 }

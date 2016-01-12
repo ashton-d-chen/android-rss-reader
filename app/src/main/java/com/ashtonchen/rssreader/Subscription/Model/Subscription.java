@@ -5,10 +5,10 @@ package com.ashtonchen.rssreader.Subscription.Model;
  */
 public class Subscription {
 
-    private String title;
-    private String description;
-    private String url;
-    private String thumbnailURL;
+    private String title = "";
+    private String description = "";
+    private String url = "";
+    private String thumbnailURL = "";
 
     public String getTitle() {
         return title;

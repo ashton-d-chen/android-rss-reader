@@ -3,6 +3,8 @@ package com.ashtonchen.rssreader.Subscription;
 import android.content.Context;
 
 import com.ashtonchen.rssreader.BaseComponent;
+import com.ashtonchen.rssreader.Reader.Helper.FeedNetworkHelper;
+import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Subscription.DAO.SubscriptionDbHelper;
 import com.ashtonchen.rssreader.Subscription.Model.Subscription;
 
@@ -14,10 +16,12 @@ import java.util.List;
 public class SubscriptionComponent extends BaseComponent {
     private SubscriptionDbHelper mHelper;
     private boolean mNewSubscriptionAdded;
+    private FeedNetworkHelper feedNetworkHelper;
 
     public SubscriptionComponent(Context context) {
         super(context);
-        mHelper = new SubscriptionDbHelper(context);
+        mHelper = new SubscriptionDbHelper(mContext);
+        this.feedNetworkHelper = new FeedNetworkHelper(mContext);
     }
 
     public void addNewSubscription(Subscription subscription) {
@@ -27,6 +31,10 @@ public class SubscriptionComponent extends BaseComponent {
 
     public void removeSubscriptoin(Subscription subscription) {
         mHelper.removeItem(subscription);
+    }
+
+    public void getSubscriptionInfo(String url, FeedNetworkCallbackInterface callback) {
+        this.feedNetworkHelper.getSubscriptionInfo(url, callback);
     }
 
     public List<Subscription> getSubscriptions() {

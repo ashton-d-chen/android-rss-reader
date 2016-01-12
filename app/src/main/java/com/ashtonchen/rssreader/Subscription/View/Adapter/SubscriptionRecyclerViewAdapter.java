@@ -14,6 +14,7 @@ import com.ashtonchen.rssreader.Subscription.Interface.onSubscriptionListInterac
 import com.ashtonchen.rssreader.Subscription.Model.Subscription;
 import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.Subscription.View.Widget.SubscriptionViewHolder;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -45,8 +46,13 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
     public void onBindViewHolder(final SubscriptionViewHolder holder, int position) {
         Log.d(this.getClass().getName(), "adapter subscription: " + position);
 
-        holder.mTitleView.setText(mList.get(position).getUrl());
-        holder.mDescriptionView.setText(mList.get(position).getDescription());
+        Context context = holder.mThumbnail.getContext();
+        if (!mList.get(position).getThumbnailURL().isEmpty()) {
+            Picasso.with(context).load(mList.get(position).getThumbnailURL()).into(holder.mThumbnail);
+        }
+
+        holder.mTitle.setText(mList.get(position).getTitle());
+        holder.mDescription.setText(mList.get(position).getDescription());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

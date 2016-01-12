@@ -19,7 +19,6 @@ public class FeedViewHolder extends BaseRecyclerViewHolder {
     public final TextView mDescription;
     public Feed mData;
 
-
     private int cellPadding;
     private int cellThumbnailSize;
     private int cellThumbnailTextSpacing;

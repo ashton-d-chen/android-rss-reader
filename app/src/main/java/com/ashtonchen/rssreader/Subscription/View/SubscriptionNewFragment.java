@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.ashtonchen.rssreader.BaseFragment;
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Subscription.Model.Subscription;
 import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
 
@@ -28,7 +30,7 @@ import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
  * Use the {@link SubscriptionNewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SubscriptionNewFragment extends BaseFragment {
+public class SubscriptionNewFragment extends BaseFragment implements FeedNetworkCallbackInterface {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -98,7 +100,7 @@ public class SubscriptionNewFragment extends BaseFragment {
         Button button = new Button(mContext);
         button.setText(R.string.button_subscribe);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        button.setOnClickListener(onAddNewButtonClicked());
+        button.setOnClickListener(onAddNewButtonClicked(this));
 
         LinearLayout buttonLinearLayout = new LinearLayout(mContext);
         buttonLinearLayout.setGravity(Gravity.CENTER);
@@ -146,19 +148,27 @@ public class SubscriptionNewFragment extends BaseFragment {
         mListener = null;
     }
 
-    private View.OnClickListener onAddNewButtonClicked() {
+    private View.OnClickListener onAddNewButtonClicked(final FeedNetworkCallbackInterface callback) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String url = mEditText.getText().toString().trim();
                 if (!url.isEmpty()) {
-                    Subscription subscription = new Subscription();
-                    subscription.setUrl(url);
-                    mSubscriptionComponent.addNewSubscription(subscription);
-                    getActivity().onBackPressed();
+                    mSubscriptionComponent.getSubscriptionInfo(url, callback);
                 }
             }
         };
+    }
+
+    public void onDownloadFinished(Channel channel) {
+        Subscription subscription = new Subscription();
+        subscription.setUrl(channel.getUrl());
+        subscription.setTitle(channel.getTitle());
+        subscription.setDescription(channel.getDescription());
+        subscription.setThumbnailURL(channel.getThumbnailURL());
+
+        mSubscriptionComponent.addNewSubscription(subscription);
+        getActivity().onBackPressed();
     }
 
     /**
