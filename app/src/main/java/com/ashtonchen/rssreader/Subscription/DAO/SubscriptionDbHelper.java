@@ -5,9 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.ashtonchen.rssreader.RSSReaderContract;
-import com.ashtonchen.rssreader.Subscription.Model.Subscription;
+import com.ashtonchen.rssreader.Reader.Model.Channel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,39 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public List<Subscription> getAllItems() {
-        List<Subscription> items = new ArrayList<Subscription>();
+    public boolean findItemExist(String url) {
+        SQLiteDatabase database = getReadableDatabase();
+        String[] projection = {
+                RSSReaderContract.SubscriptionEntry._ID,
+                RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL,
+                RSSReaderContract.SubscriptionEntry.COLUMN_NAME_TITLE,
+                RSSReaderContract.SubscriptionEntry.COLUMN_NAME_DESCRIPTION,
+                RSSReaderContract.SubscriptionEntry.COLUMN_NAME_THUMBNAIL_URL
+        };
+
+        String selection = RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL + " = ?";
+        String[] selection_args = {String.valueOf(url)};
+        boolean itemExist = false;
+        Cursor cursor = database.query(
+                RSSReaderContract.SubscriptionEntry.TABLE_NAME,
+                projection,
+                selection,
+                selection_args,
+                null,
+                null,
+                null);
+        if (cursor != null) {
+            Log.d(this.getClass().getName(), "DB Helper, cursor size: " + cursor.getCount());
+
+            itemExist = cursor.getCount() > 0;
+            cursor.close();
+        }
+        database.close();
+        return itemExist;
+    }
+
+    public List<Channel> getAllItems() {
+        List<Channel> items = new ArrayList<Channel>();
 
         SQLiteDatabase database = getReadableDatabase();
 
@@ -63,9 +95,11 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
         );
 
         if (cursor != null) {
+            Log.d(this.getClass().getName(), "DB Helper, cursor size: " + cursor.getCount());
             for (cursor.moveToFirst(); cursor.isAfterLast() == false; cursor.moveToNext()) {
-                Subscription item = new Subscription();
+                Channel item = new Channel();
                 item.setUrl(cursor.getString(1));
+                Log.d(this.getClass().getName(), "Select URl = " + cursor.getString(1));
                 item.setTitle(cursor.getString(2));
                 item.setDescription(cursor.getString(3));
                 item.setThumbnailURL(cursor.getString(4));
@@ -78,7 +112,7 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public long addItem(Subscription subscription) {
+    public long addItem(Channel subscription) {
         SQLiteDatabase database = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -87,13 +121,12 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
         values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL, subscription.getUrl());
         values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_THUMBNAIL_URL, subscription.getThumbnailURL());
 
-
         long newRowId = database.insert(RSSReaderContract.SubscriptionEntry.TABLE_NAME, null, values);
         database.close();
         return newRowId;
     }
 
-    public void removeItem(Subscription subscription) {
+    public void removeItem(Channel subscription) {
         SQLiteDatabase database = getWritableDatabase();
         String selection = RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL + " = ?";
         String[] selectionArgs = {String.valueOf(subscription.getUrl())};

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,7 +21,6 @@ import com.ashtonchen.rssreader.BaseFragment;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
-import com.ashtonchen.rssreader.Subscription.Model.Subscription;
 import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
 
 /**
@@ -32,16 +32,9 @@ import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
  * create an instance of this fragment.
  */
 public class SubscriptionNewFragment extends BaseFragment implements FeedNetworkCallbackInterface {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     EditText mEditText;
     private SubscriptionComponent mSubscriptionComponent;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private String mRSSlink;
     private OnFragmentInteractionListener mListener;
 
     public SubscriptionNewFragment() {
@@ -153,11 +146,14 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link = mEditText.getText().toString().trim();
+                mRSSlink = mEditText.getText().toString().trim();
                 //link = "http://rss.cnn.com/rss/cnn_topstories.rss";
-                if (!link.isEmpty()) {
-                    if (Patterns.WEB_URL.matcher(link).matches()) {
-                        mSubscriptionComponent.getSubscriptionInfo(link, callback);
+                if (!mRSSlink.isEmpty()) {
+                    if (Patterns.WEB_URL.matcher(mRSSlink).matches()) {
+                        if (!mSubscriptionComponent.subscriptionExists(mRSSlink)) {
+                            Log.d(getClass().getName(), "Subscription does not exist in database");
+                            mSubscriptionComponent.getSubscriptionInfo(mRSSlink, callback);
+                        }
                     }
 
                     /*
@@ -182,14 +178,11 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
     }
 
     public void onDownloadFinished(Channel channel) {
-        Subscription subscription = new Subscription();
-        subscription.setUrl(channel.getUrl());
-        subscription.setTitle(channel.getTitle());
-        subscription.setDescription(channel.getDescription());
-        subscription.setThumbnailURL(channel.getThumbnailURL());
-
-        mSubscriptionComponent.addNewSubscription(subscription);
-        getActivity().onBackPressed();
+        if (channel != null) {
+            channel.setUrl(mRSSlink);
+            mSubscriptionComponent.addNewSubscription(channel);
+            getActivity().onBackPressed();
+        }
     }
 
     /**

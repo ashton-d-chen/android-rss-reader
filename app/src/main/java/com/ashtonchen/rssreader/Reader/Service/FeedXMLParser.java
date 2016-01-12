@@ -86,7 +86,7 @@ public class FeedXMLParser {
                     channel.setTitle(readText(parser, TITLE));
                     break;
                 case LINK:
-                    channel.setUrl(readText(parser, LINK));
+                    channel.setWebUrl(readText(parser, LINK));
                     break;
                 case DESCRIPTION:
                     channel.setDescription(readText(parser, DESCRIPTION));

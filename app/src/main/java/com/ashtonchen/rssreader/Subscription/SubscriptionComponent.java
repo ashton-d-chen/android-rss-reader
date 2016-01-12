@@ -7,8 +7,8 @@ import com.ashtonchen.rssreader.BaseComponent;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Subscription.DAO.SubscriptionDbHelper;
-import com.ashtonchen.rssreader.Subscription.Model.Subscription;
 
 import java.util.List;
 
@@ -26,12 +26,16 @@ public class SubscriptionComponent extends BaseComponent {
         this.feedNetworkHelper = new FeedNetworkHelper(mContext);
     }
 
-    public void addNewSubscription(Subscription subscription) {
+    public boolean subscriptionExists(String url) {
+        return mHelper.findItemExist(url);
+    }
+
+    public void addNewSubscription(Channel subscription) {
         mHelper.addItem(subscription);
         //Subscriptions.add(subscription);
     }
 
-    public void removeSubscriptoin(Subscription subscription) {
+    public void removeSubscriptoin(Channel subscription) {
         mHelper.removeItem(subscription);
         Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
     }
@@ -40,7 +44,7 @@ public class SubscriptionComponent extends BaseComponent {
         this.feedNetworkHelper.getSubscriptionInfo(url, callback);
     }
 
-    public List<Subscription> getSubscriptions() {
+    public List<Channel> getSubscriptions() {
         return mHelper.getAllItems();
     }
 

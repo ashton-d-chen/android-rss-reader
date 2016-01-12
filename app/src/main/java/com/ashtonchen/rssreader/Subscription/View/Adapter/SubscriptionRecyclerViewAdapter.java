@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.ashtonchen.rssreader.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Subscription.Interface.SubscriptionNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Subscription.Interface.onSubscriptionListInteractionListener;
 import com.ashtonchen.rssreader.Subscription.Model.Subscription;
@@ -26,7 +27,7 @@ import java.util.List;
 public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<SubscriptionViewHolder> {
 
     private final SubscriptionNetworkCallbackInterface mListener;
-    private final List<Subscription> mList;
+    private final List<Channel> mList;
     private final SubscriptionComponent mSubscriptionComponent;
 
     public SubscriptionRecyclerViewAdapter(Context context, SubscriptionNetworkCallbackInterface listener, SubscriptionComponent component) {
@@ -73,12 +74,13 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
         return mList.size();
     }
 
-    private View.OnLongClickListener getOnLongClickListener(final Subscription subscription, final int position) {
+    private View.OnLongClickListener getOnLongClickListener(final Channel subscription, final int position) {
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 mSubscriptionComponent.removeSubscriptoin(subscription);
                 mList.remove(position);
+                notifyItemRangeChanged(position, mList.size());
                 notifyItemRemoved(position);
                 return false;
             }

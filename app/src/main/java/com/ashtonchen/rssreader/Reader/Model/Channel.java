@@ -8,7 +8,9 @@ import java.util.List;
  */
 public class Channel {
     private String title;
+
     private String url;
+    private String webURL;
     private String description;
     private String thumbnailURL;
     private List<Feed> feeds;
@@ -25,6 +27,14 @@ public class Channel {
         this.feeds = feeds;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -33,12 +43,12 @@ public class Channel {
         this.title = title;
     }
 
-    public String getUrl() {
-        return url;
+    public String getWebUrl() {
+        return webURL;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setWebUrl(String url) {
+        this.webURL = url;
     }
 
     public String getDescription() {
