@@ -1,8 +1,10 @@
 package com.ashtonchen.rssreader.Subscription;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.ashtonchen.rssreader.BaseComponent;
+import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Subscription.DAO.SubscriptionDbHelper;
@@ -31,6 +33,7 @@ public class SubscriptionComponent extends BaseComponent {
 
     public void removeSubscriptoin(Subscription subscription) {
         mHelper.removeItem(subscription);
+        Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
     }
 
     public void getSubscriptionInfo(String url, FeedNetworkCallbackInterface callback) {

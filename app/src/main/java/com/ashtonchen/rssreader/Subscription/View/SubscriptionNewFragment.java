@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -152,9 +153,29 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = mEditText.getText().toString().trim();
-                if (!url.isEmpty()) {
-                    mSubscriptionComponent.getSubscriptionInfo(url, callback);
+                String link = mEditText.getText().toString().trim();
+                //link = "http://rss.cnn.com/rss/cnn_topstories.rss";
+                if (!link.isEmpty()) {
+                    if (Patterns.WEB_URL.matcher(link).matches()) {
+                        mSubscriptionComponent.getSubscriptionInfo(link, callback);
+                    }
+
+                    /*
+                    try {
+                        URL url = new URL(link);
+                        Log.d(this.getClass().getName(), "URL ok");
+                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                        Log.d(this.getClass().getName(), "HttpURLConnection ok");
+                        int code = connection.getResponseCode();
+                        if(code == 200) {
+                            mSubscriptionComponent.getSubscriptionInfo(link, callback);
+                        } else {
+                            Log.d(this.getClass().getName(), "Invalid RSS link");
+                        }
+                    } catch (Exception e) {
+                        Log.d(this.getClass().getName(), "Exception when reading RSS link");
+                    }
+                    */
                 }
             }
         };

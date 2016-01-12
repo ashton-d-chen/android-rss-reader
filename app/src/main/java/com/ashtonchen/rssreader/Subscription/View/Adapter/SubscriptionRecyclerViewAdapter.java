@@ -65,7 +65,7 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
             }
         });
 
-        holder.mView.setOnLongClickListener(getOnLongClickListener(mList.get(position)));
+        holder.mView.setOnLongClickListener(getOnLongClickListener(mList.get(position), position));
     }
 
     @Override
@@ -73,11 +73,13 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
         return mList.size();
     }
 
-    private View.OnLongClickListener getOnLongClickListener(final Subscription subscription) {
+    private View.OnLongClickListener getOnLongClickListener(final Subscription subscription, final int position) {
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 mSubscriptionComponent.removeSubscriptoin(subscription);
+                mList.remove(position);
+                notifyItemRemoved(position);
                 return false;
             }
         };
