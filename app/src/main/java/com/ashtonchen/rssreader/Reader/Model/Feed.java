@@ -1,9 +1,15 @@
 package com.ashtonchen.rssreader.Reader.Model;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by ashtonchen on 15-12-09.
  */
-public class Feed {
+public class Feed implements Comparable<Feed> {
     private String webTitle;
     private String webThumbnailURL;
     private String webDescription;
@@ -75,5 +81,29 @@ public class Feed {
 
     public void setPubDate(String pubDate) {
         this.pubDate = pubDate;
+    }
+
+    @Override
+    public int compareTo(Feed another) {
+        Log.d(this.getClass().getName(), "first date time: " + this.getPubDate());
+        Log.d(this.getClass().getName(), "second date time: " + another.getPubDate());
+
+        return convertDate(another.getPubDate()).compareTo(convertDate(this.getPubDate()));
+    }
+
+    private String convertDate(String date) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+        long timeInMilliseconds = 0;
+        try {
+            Date mDate = sdf.parse(date);
+            timeInMilliseconds = mDate.getTime();
+            //System.out.println("Date in milli :: " + timeInMilliseconds);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        return String.valueOf(timeInMilliseconds);
     }
 }

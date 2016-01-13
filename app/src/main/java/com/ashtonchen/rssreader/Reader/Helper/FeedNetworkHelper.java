@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.Reader.Model.Channel;
+import com.ashtonchen.rssreader.Reader.Model.Channels;
 import com.ashtonchen.rssreader.Reader.Service.DownloadXmlTask;
 import com.ashtonchen.rssreader.Reader.Service.NetworkReceiver;
 
@@ -20,8 +22,7 @@ public class FeedNetworkHelper {
     public static final String WIFI = "Wi-Fi";
     public static final String ANY = "Any";
     private static final String SUCCESS = "success";
-    private static final String URL =
-            "http://www.cnet.com/rss/news";
+
     // Whether the display should be refreshed.
     public static boolean refreshDisplay = true;
     // The user's current network preference setting.
@@ -67,7 +68,9 @@ public class FeedNetworkHelper {
     }
 
     public void getFeedList(FeedNetworkCallbackInterface callback) {
-        new DownloadXmlTask(callback).execute(URL);
+        for (Channel channel : Channels.getAll(this.context)) {
+            new DownloadXmlTask(callback).execute(channel.getUrl());
+        }
         /*
         if (((sPref.equals(ANY)) && (wifiConnected || mobileConnected))
                 || ((sPref.equals(WIFI)) && (wifiConnected))) {

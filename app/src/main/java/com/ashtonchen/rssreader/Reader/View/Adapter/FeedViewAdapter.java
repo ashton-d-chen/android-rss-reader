@@ -10,6 +10,7 @@ import com.ashtonchen.rssreader.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Interface.OnListFragmentInteractionListener;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
+import com.ashtonchen.rssreader.Reader.Model.Feeds;
 import com.ashtonchen.rssreader.Reader.View.Widget.FeedViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -19,17 +20,14 @@ import com.squareup.picasso.Picasso;
 public class FeedViewAdapter
         extends BaseRecyclerViewAdapter<FeedViewHolder> {
 
-    private Channel mData;
+    //private Channel mData;
     private OnListFragmentInteractionListener mCallback;
 
-
-    public FeedViewAdapter(Context context, Channel data, OnListFragmentInteractionListener callback) {
-        mData = data;
+    public FeedViewAdapter(Context context, OnListFragmentInteractionListener callback) {
         mCallback = callback;
     }
 
     public void setData(Channel data) {
-        mData = data;
         notifyDataSetChanged();
     }
 
@@ -44,7 +42,7 @@ public class FeedViewAdapter
     public void onBindViewHolder(FeedViewHolder viewHolder, int position) {
         Log.d("FeedViewAdapter", "position = " + position);
         FeedViewHolder holder = viewHolder;
-        holder.mData = mData.getFeeds().get(position);
+        holder.mData = Feeds.get(position);
 
         Context context = holder.mThumbnail.getContext();
         Log.d(this.getClass().getName(), "Thumbnail URL = " + holder.mData.getThumbnailURL());
@@ -56,10 +54,10 @@ public class FeedViewAdapter
             Picasso.with(context).load(holder.mData.getWebThumbnailURL()).into(holder.mThumbnail);
         }
 
-        holder.mTitle.setText(mData.getFeeds().get(position).getTitle());
+        holder.mTitle.setText(Feeds.get(position).getTitle());
 
-        Log.d("FeedViewAdapter", "description = " + mData.getFeeds().get(position).getDescription());
-        holder.mDescription.setText(mData.getFeeds().get(position).getDescription());
+        Log.d("FeedViewAdapter", "description = " + Feeds.get(position).getDescription());
+        holder.mDescription.setText(Feeds.get(position).getDescription());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,9 +69,7 @@ public class FeedViewAdapter
 
     @Override
     public int getItemCount() {
-        Log.d("FeedViewAdapter", "data size = " + mData.getFeeds().size());
-        return mData.getFeeds().size();
+        Log.d("FeedViewAdapter", "data size = " + Feeds.size());
+        return Feeds.size();
     }
-
-
 }

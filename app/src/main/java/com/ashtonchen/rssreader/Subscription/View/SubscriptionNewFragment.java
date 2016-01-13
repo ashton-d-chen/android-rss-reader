@@ -152,7 +152,7 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
                     if (Patterns.WEB_URL.matcher(mRSSlink).matches()) {
                         if (!mSubscriptionComponent.subscriptionExists(mRSSlink)) {
                             Log.d(getClass().getName(), "Subscription does not exist in database");
-                            mSubscriptionComponent.getSubscriptionInfo(mRSSlink, callback);
+                            mSubscriptionComponent.loadSubscriptionInfo(mRSSlink, callback);
                         }
                     }
 
@@ -164,7 +164,7 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
                         Log.d(this.getClass().getName(), "HttpURLConnection ok");
                         int code = connection.getResponseCode();
                         if(code == 200) {
-                            mSubscriptionComponent.getSubscriptionInfo(link, callback);
+                            mSubscriptionComponent.loadSubscriptionInfo(link, callback);
                         } else {
                             Log.d(this.getClass().getName(), "Invalid RSS link");
                         }

@@ -14,6 +14,8 @@ import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Reader.Interface.OnListFragmentInteractionListener;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
+import com.ashtonchen.rssreader.Reader.Model.Channels;
+import com.ashtonchen.rssreader.Reader.Model.Feeds;
 import com.ashtonchen.rssreader.Reader.ReaderComponent;
 import com.ashtonchen.rssreader.Reader.View.Adapter.FeedViewAdapter;
 import com.ashtonchen.rssreader.Reader.View.Widget.DecoratedItemRecyclerView;
@@ -35,7 +37,7 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
     private ReaderComponent mReaderComponent;
     private FeedViewAdapter mFeedViewAdapter;
     private RecyclerView mRecyclerView;
-    private Channel mChannel;
+    private int downloadChannelCount = 0;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,8 +61,6 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
 
         this.mReaderComponent = new ReaderComponent(mContext);
         this.mReaderComponent.getFeedList(this);
-
-        mChannel = new Channel();
 
         //setupRecyclerView((RecyclerView) mRecyclerView);
 
@@ -104,13 +104,20 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
     }
 */
     public void onDownloadFinished(Channel channel) {
-        mChannel = channel;
-        setupAdapter();
+        if (channel != null) {
+            Feeds.addAll(channel.getFeeds());
+        }
+        downloadChannelCount++;
+        Log.d(this.getClass().getName(), "Downloaded Channel Count: " + downloadChannelCount);
+        if (downloadChannelCount >= Channels.size()) {
+            downloadChannelCount = 0;
+            setupAdapter();
+        }
         //mFeedViewAdapter.setData(mChannel);
     }
 
     protected void setupAdapter() {
-        mFeedViewAdapter = new FeedViewAdapter(getContext(), mChannel, this);
+        mFeedViewAdapter = new FeedViewAdapter(getContext(), this);
         mRecyclerView.setAdapter(mFeedViewAdapter);
     }
 

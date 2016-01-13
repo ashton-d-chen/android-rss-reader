@@ -31,6 +31,7 @@ public class FeedXMLParser {
     private static final String TITLE = "title";
     private static final String DESCRIPTION = "description";
     private static final String MEDIA_THUMBNAIL = "media:thumbnail";
+    private static final String PUBLICATION_DATE = "pubDate";
     private static final String IMAGE = "image";
 
     // We don't use namespaces
@@ -136,6 +137,9 @@ public class FeedXMLParser {
                     break;
                 case MEDIA_THUMBNAIL:
                     feed.setThumbnailURL(readThumbnailURL(parser));
+                    break;
+                case PUBLICATION_DATE:
+                    feed.setPubDate(readText(parser, PUBLICATION_DATE));
                     break;
                 default:
                     skip(parser);

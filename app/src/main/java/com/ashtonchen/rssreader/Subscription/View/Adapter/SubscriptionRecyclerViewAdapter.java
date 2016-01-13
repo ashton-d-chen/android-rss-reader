@@ -78,7 +78,7 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mSubscriptionComponent.removeSubscriptoin(subscription);
+                mSubscriptionComponent.removeSubscription(subscription);
                 mList.remove(position);
                 notifyItemRangeChanged(position, mList.size());
                 notifyItemRemoved(position);
