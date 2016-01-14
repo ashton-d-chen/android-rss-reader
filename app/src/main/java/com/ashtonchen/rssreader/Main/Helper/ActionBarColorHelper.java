@@ -121,7 +121,7 @@ public final class ActionBarColorHelper {
     * @param toolbarIconsColor the target color of toolbar icons
     * @param activity reference to activity needed to register observers
     */
-    public static void colorizeToolbar(Toolbar toolbarView, int toolbarIconsColor, Activity activity) {
+    public static void colorizeToolbar(Toolbar toolbarView, int toolbarIconsColor) {
         final PorterDuffColorFilter colorFilter
                 = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.SRC_IN);
 

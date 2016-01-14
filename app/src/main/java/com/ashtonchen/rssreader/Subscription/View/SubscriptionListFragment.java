@@ -2,11 +2,15 @@ package com.ashtonchen.rssreader.Subscription.View;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.ashtonchen.rssreader.MasterDetailListFragment;
 import com.ashtonchen.rssreader.R;
@@ -61,12 +65,15 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        setSubtitle(R.string.action_bar_subtitle_subscriptions);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.subscription_list, container, false);
+        FrameLayout view = (FrameLayout) inflater.inflate(R.layout.subscription_list, container, false);
 
         // Set the adapter
         Context context = view.getContext();
@@ -76,6 +83,22 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
         mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
         setupRecyclerView();
         return view;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.add(Menu.NONE, R.id.subscription_new, Menu.NONE, "Add");
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Fragment fragment = SubscriptionNewFragment.newInstance();
+                mMainActivity.fragmentTransaction(fragment);
+                return false;
+            }
+        });
+        item.setIcon(R.drawable.ic_action_bar_add);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        super.onPrepareOptionsMenu(menu);
     }
 
     /**
@@ -126,5 +149,32 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
     public void onListItemClicked(View view) {
 
     }
+/*
+    private void createContentFragment(int id) {
+        setCurrentFragmentId(id);
+
+        Fragment fragment;
+        ActionBar actionBar = getSupportActionBar();
+        String subtitle;
+        if (id == R.id.nav_all) {
+            subtitle = getString(R.string.action_bar_subtitle_feeds);
+            fragment = FeedListFragment.newInstance();
+        } else if (id == R.id.nav_favorite) {
+            subtitle = getString(R.string.action_bar_subtitle_favorites);
+            fragment = FeedListFragment.newInstance();
+        } else if (id == R.id.nav_subscription) {
+            subtitle = getString(R.string.action_bar_subtitle_subscriptions);
+            fragment = SubscriptionListFragment.newInstance();
+        } else if (id == R.id.subscription_new) {
+            subtitle = getString(R.string.action_bar_subtitle_new_subscription);
+            fragment = SubscriptionNewFragment.newInstance();
+        } else {
+            subtitle = getString(R.string.action_bar_subtitle_feeds);
+            fragment = FeedListFragment.newInstance();
+        }
+        actionBar.setSubtitle(subtitle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).addToBackStack(null).commit();
+    }
+    */
 }
 

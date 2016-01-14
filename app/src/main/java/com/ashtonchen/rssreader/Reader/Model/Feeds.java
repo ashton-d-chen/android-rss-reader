@@ -17,6 +17,9 @@ public class Feeds {
      */
     private static List<Feed> feeds = new ArrayList<Feed>();
 
+    public static void reset() {
+        feeds = new ArrayList<Feed>();
+    }
     public static void add(Feed item) {
         feeds.add(item);
     }

@@ -62,6 +62,7 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
         super.onCreate(savedInstanceState);
         this.mSubscriptionComponent = new SubscriptionComponent(mContext);
 
+        setSubtitle(R.string.action_bar_subtitle_new_subscription);
 /*        if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);

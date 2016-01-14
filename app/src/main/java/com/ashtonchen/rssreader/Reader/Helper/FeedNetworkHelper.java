@@ -11,6 +11,7 @@ import android.util.Log;
 import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.Reader.Model.Channel;
 import com.ashtonchen.rssreader.Reader.Model.Channels;
+import com.ashtonchen.rssreader.Reader.Model.Feeds;
 import com.ashtonchen.rssreader.Reader.Service.DownloadXmlTask;
 import com.ashtonchen.rssreader.Reader.Service.NetworkReceiver;
 
@@ -68,6 +69,7 @@ public class FeedNetworkHelper {
     }
 
     public void getFeedList(FeedNetworkCallbackInterface callback) {
+        Feeds.reset();
         for (Channel channel : Channels.getAll(this.context)) {
             new DownloadXmlTask(callback).execute(channel.getUrl());
         }

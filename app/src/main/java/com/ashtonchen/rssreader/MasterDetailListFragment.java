@@ -12,7 +12,7 @@ import com.ashtonchen.rssreader.Reader.View.Detail.FeedDetailFragment;
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public class MasterDetailListFragment extends BaseFragment implements OnListFragmentInteractionListener {
+public abstract class MasterDetailListFragment extends BaseFragment implements OnListFragmentInteractionListener {
 
     protected boolean mTwoPane;
     protected OnListFragmentInteractionListener mListener;
