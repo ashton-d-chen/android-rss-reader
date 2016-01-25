@@ -1,14 +1,14 @@
-package com.ashtonchen.rssreader.Subscription;
+package com.ashtonchen.rssreader.subscription;
 
 import android.content.Context;
 import android.widget.Toast;
 
 import com.ashtonchen.rssreader.BaseComponent;
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.Helper.FeedNetworkHelper;
-import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.Reader.Model.Channel;
-import com.ashtonchen.rssreader.Reader.Model.Channels;
+import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
+import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.reader.model.Channels;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.Interface;
+package com.ashtonchen.rssreader.reader.listener;
 
 import android.graphics.Bitmap;
 

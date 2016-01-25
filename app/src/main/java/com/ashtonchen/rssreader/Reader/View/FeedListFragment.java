@@ -1,11 +1,13 @@
-package com.ashtonchen.rssreader.Reader.View;
+package com.ashtonchen.rssreader.reader.view;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,17 +18,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.ashtonchen.rssreader.MasterDetailListFragment;
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.Reader.Interface.OnListFragmentInteractionListener;
-import com.ashtonchen.rssreader.Reader.Model.Channel;
-import com.ashtonchen.rssreader.Reader.Model.Channels;
-import com.ashtonchen.rssreader.Reader.Model.Feeds;
-import com.ashtonchen.rssreader.Reader.ReaderComponent;
-import com.ashtonchen.rssreader.Reader.View.Adapter.FeedViewAdapter;
-import com.ashtonchen.rssreader.Reader.View.Widget.DecoratedItemRecyclerView;
+import com.ashtonchen.rssreader.main.view.MainActivity;
+import com.ashtonchen.rssreader.reader.ReaderComponent;
+import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.reader.listener.OnListFragmentInteractionListener;
+import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.reader.model.Channels;
+import com.ashtonchen.rssreader.reader.model.Feeds;
+import com.ashtonchen.rssreader.reader.view.adapter.FeedViewAdapter;
+import com.ashtonchen.rssreader.reader.view.detail.FeedDetailFragment;
+import com.ashtonchen.rssreader.reader.view.widget.DecoratedItemRecyclerView;
 
 /**
  * Created by Ashton Chen on 15-12-12.
@@ -66,19 +71,11 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.mReaderComponent = new ReaderComponent(mContext);
-        this.mReaderComponent.getFeedList(this);
+        mReaderComponent = new ReaderComponent(mContext, this);
 
         //setupRecyclerView((RecyclerView) mRecyclerView);
 
-        if (getActivity().findViewById(R.id.feed_detail_container) != null) {
-            Log.d(this.getClass().getName(), "two panes");
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
+
         setSubtitle(R.string.action_bar_subtitle_feeds);
         setHasOptionsMenu(true);
     }
@@ -86,18 +83,33 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FrameLayout view = (FrameLayout) inflater.inflate(R.layout.feed_list, container, false);
+        LinearLayout view = (LinearLayout) inflater.inflate(R.layout.feed_list, container, false);
+
+        Log.d(this.getClass().getName(), "try to find two panes");
+        if (view.findViewById(R.id.feed_detail_container) != null) {
+            Log.d(this.getClass().getName(), "two panes");
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        }
+
 
         // Set the adapter
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.feed_list);
 
+        if (mRecyclerView == null) {
+            Log.d(this.getClass().getName(), "recycler view is null");
+        }
 
         //FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         FloatingActionButton fab = new FloatingActionButton(getActivity());
         fab.setImageResource(R.drawable.ic_menu_favorite);
         fab.setColorFilter(Color.WHITE);
         fab.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+
         Float scale = view.getContext().getResources().getDisplayMetrics().density;
         int size = (int) (72 * scale + 0.5f);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(size, size);
@@ -114,10 +126,15 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
 
         view.addView(fab);
 
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Log.d(this.getClass().getName(), "Start getting feed list");
+        mReaderComponent.getFeedList(this);
     }
 
     @Override
@@ -170,12 +187,21 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
         //mFeedViewAdapter.setData(mChannel);
     }
 
-    protected void setupAdapter() {
+    public void setupAdapter() {
         mFeedViewAdapter = new FeedViewAdapter(getContext(), this);
         mRecyclerView.setAdapter(mFeedViewAdapter);
     }
 
-    public void onItemClick(View v, String id) {
+    public void onItemClick(final int position) {
+        if (mTwoPane) {
+            Fragment fragment = FeedDetailFragment.newInstance(position);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.feed_detail_container, fragment)
+                    .commit();
+        } else {
+            Fragment fragment = FeedDetailFragment.newInstance(position);
+            ((MainActivity)mContext).fragmentTransaction(fragment);
+        }
     }
 }
 

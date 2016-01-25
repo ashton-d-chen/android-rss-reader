@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Subscription.Interface;
+package com.ashtonchen.rssreader.subscription.listener;
 
 import android.view.View;
 

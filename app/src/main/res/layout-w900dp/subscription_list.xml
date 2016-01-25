@@ -7,7 +7,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context=".Reader.View.SubscriptionListActivity">
+    tools:context=".reader.view.SubscriptionListActivity">
 
     <!--
     This layout is a two-pane layout for the Feeds
@@ -22,8 +22,7 @@
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".Reader.View.SubscriptionListActivity"
-        tools:listitem="@layout/subscription_list_cell" />
+        tools:context=".reader.view.SubscriptionListActivity" />
 
     <FrameLayout
         android:id="@+id/subscription_detail_container"

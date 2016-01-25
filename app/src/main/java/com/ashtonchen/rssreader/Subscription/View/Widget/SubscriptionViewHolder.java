@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Subscription.View.Widget;
+package com.ashtonchen.rssreader.subscription.view.widget;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -33,18 +33,18 @@ public class SubscriptionViewHolder extends BaseRecyclerViewHolder {
 
         mView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
 
-        mThumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+        mThumbnail = (ImageView) view.findViewById(R.id.feed_thumbnail);
         mThumbnail.setPadding(0, 0, cellThumbnailTextSpacing, 0);
         mThumbnail.getLayoutParams().width = cellThumbnailSize;
         mThumbnail.getLayoutParams().height = cellThumbnailSize;
 
-        mTitle = (TextView) view.findViewById(R.id.title);
+        mTitle = (TextView) view.findViewById(R.id.feed_title);
         mTitle.setMaxLines(StyleSheet.CELL_TITLE_MAX_LINE);
         mTitle.setPadding(0, 0, 0, cellTextViewSpacing);
         mTitle.setLineSpacing(0, StyleSheet.CELL_TITLE_LINE_HEIGHT_MULTIPLIER);
         mTitle.setTextSize(StyleSheet.CELL_TITLE_FONT_SIZE);
 
-        mDescription = (TextView) view.findViewById(R.id.description);
+        mDescription = (TextView) view.findViewById(R.id.feed_description);
         mDescription.setMaxLines(StyleSheet.CELL_DESCRIPTION_MAX_LINE);
         mDescription.setLineSpacing(1, StyleSheet.CELL_DESCRIPTION_LINE_HEIGHT_MULTIPLIER);
         mDescription.setTextSize(StyleSheet.CELL_DESCRIPTION_FONT_SIZE);

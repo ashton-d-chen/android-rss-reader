@@ -1,6 +1,6 @@
-package com.ashtonchen.rssreader.Reader.Interface;
+package com.ashtonchen.rssreader.reader.listener;
 
-import com.ashtonchen.rssreader.Reader.Model.Channel;
+import com.ashtonchen.rssreader.reader.model.Channel;
 
 /**
  * Created by ashtonchen on 15-12-09.

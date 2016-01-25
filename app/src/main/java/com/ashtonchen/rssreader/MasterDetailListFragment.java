@@ -1,13 +1,8 @@
 package com.ashtonchen.rssreader;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 
-import com.ashtonchen.rssreader.Reader.Interface.OnListFragmentInteractionListener;
-import com.ashtonchen.rssreader.Reader.View.Detail.FeedDetailActivity;
-import com.ashtonchen.rssreader.Reader.View.Detail.FeedDetailFragment;
+import com.ashtonchen.rssreader.reader.listener.OnListFragmentInteractionListener;
 
 /**
  * Created by Ashton Chen on 15-12-14.
@@ -29,8 +24,8 @@ public abstract class MasterDetailListFragment extends BaseFragment implements O
         mListener = null;
     }
 
-    public void onItemClick(View v, String id) {
-        if (mTwoPane) {
+    public void onItemClick(int id) {
+/*        if (mTwoPane) {
             Bundle arguments = new Bundle();
             arguments.putString(FeedDetailFragment.ARG_ITEM_ID, id);
             FeedDetailFragment fragment = new FeedDetailFragment();
@@ -44,7 +39,8 @@ public abstract class MasterDetailListFragment extends BaseFragment implements O
             intent.putExtra(FeedDetailFragment.ARG_ITEM_ID, id);
 
             context.startActivity(intent);
-        }
+        }*/
+
     }
 
     protected void setupAdapter() {

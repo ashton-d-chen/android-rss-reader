@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Main.View;
+package com.ashtonchen.rssreader.main.view;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,8 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.View.FeedListFragment;
-import com.ashtonchen.rssreader.Subscription.View.SubscriptionListFragment;
+import com.ashtonchen.rssreader.reader.view.FeedListFragment;
+import com.ashtonchen.rssreader.subscription.view.SubscriptionListFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

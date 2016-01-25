@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Utility;
+package com.ashtonchen.rssreader.utility;
 
 /**
  * Created by ashtonchen on 15-12-10.

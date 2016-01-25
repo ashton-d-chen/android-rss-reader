@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Subscription.View.Adapter;
+package com.ashtonchen.rssreader.subscription.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 
 import com.ashtonchen.rssreader.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.Model.Channel;
-import com.ashtonchen.rssreader.Subscription.Interface.SubscriptionNetworkCallbackInterface;
-import com.ashtonchen.rssreader.Subscription.Interface.onSubscriptionListInteractionListener;
-import com.ashtonchen.rssreader.Subscription.Model.Subscription;
-import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
-import com.ashtonchen.rssreader.Subscription.View.Widget.SubscriptionViewHolder;
+import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
+import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
+import com.ashtonchen.rssreader.subscription.listener.onSubscriptionListInteractionListener;
+import com.ashtonchen.rssreader.subscription.model.Subscription;
+import com.ashtonchen.rssreader.subscription.view.widget.SubscriptionViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

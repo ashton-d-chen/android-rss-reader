@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Main.Helper;
+package com.ashtonchen.rssreader.main.helper;
 
 import android.app.Activity;
 import android.graphics.ColorFilter;
@@ -33,7 +33,6 @@ public final class ActionBarColorHelper {
      *
      * @param toolbarView       toolbar view being colored
      * @param toolbarIconsColor the target color of toolbar icons
-     * @param activity          reference to activity needed to register observers
      */
  /*   public static void colorizeToolbar(Toolbar toolbarView, int toolbarIconsColor, Activity activity) {
         final PorterDuffColorFilter colorFilter

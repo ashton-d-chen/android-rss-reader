@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Subscription.View;
+package com.ashtonchen.rssreader.subscription.view;
 
 import android.content.Context;
 import android.net.Uri;
@@ -19,9 +19,9 @@ import android.widget.TextView;
 
 import com.ashtonchen.rssreader.BaseFragment;
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.Reader.Model.Channel;
-import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
+import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 
 /**
  * A simple {@link Fragment} subclass.

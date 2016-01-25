@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Subscription.DAO;
+package com.ashtonchen.rssreader.subscription.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.ashtonchen.rssreader.RSSReaderContract;
-import com.ashtonchen.rssreader.Reader.Model.Channel;
+import com.ashtonchen.rssreader.reader.model.Channel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,10 @@
-package com.ashtonchen.rssreader.Reader.Service;
+package com.ashtonchen.rssreader.reader.service;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.Reader.Model.Channel;
+import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.reader.model.Channel;
 
 import org.xmlpull.v1.XmlPullParserException;
 

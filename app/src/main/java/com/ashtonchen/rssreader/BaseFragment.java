@@ -9,8 +9,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ashtonchen.rssreader.Main.Helper.ActionBarColorHelper;
-import com.ashtonchen.rssreader.Main.View.MainActivity;
+import com.ashtonchen.rssreader.main.helper.ActionBarColorHelper;
+import com.ashtonchen.rssreader.main.view.MainActivity;
 
 /**
  * Created by Ashton Chen on 15-12-17.

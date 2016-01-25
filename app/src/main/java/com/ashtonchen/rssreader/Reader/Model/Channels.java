@@ -1,8 +1,8 @@
-package com.ashtonchen.rssreader.Reader.Model;
+package com.ashtonchen.rssreader.reader.model;
 
 import android.content.Context;
 
-import com.ashtonchen.rssreader.Subscription.DAO.SubscriptionDbHelper;
+import com.ashtonchen.rssreader.subscription.dao.SubscriptionDbHelper;
 
 import java.util.List;
 

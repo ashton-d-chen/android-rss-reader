@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Subscription.Model;
+package com.ashtonchen.rssreader.subscription.model;
 
 /**
  * Created by Ashton Chen on 15-12-14.

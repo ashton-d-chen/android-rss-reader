@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
@@ -9,10 +9,10 @@
     <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/feed_list"
         android:name="com.ashtonchen.rssreader.FeedListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".Reader.View.FeedListActivity"
+        tools:context=".reader.view.FeedListActivity"
         tools:listitem="@layout/feed_list_cell" />
 
-</FrameLayout>
+</LinearLayout>

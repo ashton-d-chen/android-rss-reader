@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.Service;
+package com.ashtonchen.rssreader.reader.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.Helper.FeedNetworkHelper;
+import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 
 
 public class NetworkReceiver extends BroadcastReceiver {

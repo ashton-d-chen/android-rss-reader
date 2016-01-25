@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Subscription.Model;
+package com.ashtonchen.rssreader.subscription.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

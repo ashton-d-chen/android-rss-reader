@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.Service;
+package com.ashtonchen.rssreader.reader.service;
 
 /**
  * Created by ashtonchen on 15-12-09.
@@ -7,9 +7,9 @@ package com.ashtonchen.rssreader.Reader.Service;
 import android.util.Log;
 import android.util.Xml;
 
-import com.ashtonchen.rssreader.Reader.Model.Channel;
-import com.ashtonchen.rssreader.Reader.Model.Feed;
-import com.ashtonchen.rssreader.Utility.StringUtility;
+import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.reader.model.Feed;
+import com.ashtonchen.rssreader.utility.StringUtility;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

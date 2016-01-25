@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.Model;
+package com.ashtonchen.rssreader.reader.model;
 
 import android.util.Log;
 

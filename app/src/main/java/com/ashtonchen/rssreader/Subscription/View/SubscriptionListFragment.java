@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Subscription.View;
+package com.ashtonchen.rssreader.subscription.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,15 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.ashtonchen.rssreader.MasterDetailListFragment;
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.View.Widget.DecoratedItemRecyclerView;
-import com.ashtonchen.rssreader.Subscription.Interface.SubscriptionNetworkCallbackInterface;
-import com.ashtonchen.rssreader.Subscription.Model.Subscription;
-import com.ashtonchen.rssreader.Subscription.SubscriptionComponent;
-import com.ashtonchen.rssreader.Subscription.View.Adapter.SubscriptionRecyclerViewAdapter;
+import com.ashtonchen.rssreader.reader.view.widget.DecoratedItemRecyclerView;
+import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
+import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
+import com.ashtonchen.rssreader.subscription.model.Subscription;
+import com.ashtonchen.rssreader.subscription.view.adapter.SubscriptionRecyclerViewAdapter;
 
 /**
  * Created by Ashton Chen on 15-12-14.
@@ -73,7 +73,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FrameLayout view = (FrameLayout) inflater.inflate(R.layout.subscription_list, container, false);
+        LinearLayout view = (LinearLayout) inflater.inflate(R.layout.subscription_list, container, false);
 
         // Set the adapter
         Context context = view.getContext();

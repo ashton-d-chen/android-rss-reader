@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.View.Adapter;
+package com.ashtonchen.rssreader.reader.view.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,10 +8,9 @@ import android.view.ViewGroup;
 
 import com.ashtonchen.rssreader.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.Reader.Interface.OnListFragmentInteractionListener;
-import com.ashtonchen.rssreader.Reader.Model.Channel;
-import com.ashtonchen.rssreader.Reader.Model.Feeds;
-import com.ashtonchen.rssreader.Reader.View.Widget.FeedViewHolder;
+import com.ashtonchen.rssreader.reader.listener.OnListFragmentInteractionListener;
+import com.ashtonchen.rssreader.reader.model.Feeds;
+import com.ashtonchen.rssreader.reader.view.widget.FeedViewHolder;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -20,15 +19,11 @@ import com.squareup.picasso.Picasso;
 public class FeedViewAdapter
         extends BaseRecyclerViewAdapter<FeedViewHolder> {
 
-    //private Channel mData;
     private OnListFragmentInteractionListener mCallback;
-
+    private Context mContext;
     public FeedViewAdapter(Context context, OnListFragmentInteractionListener callback) {
         mCallback = callback;
-    }
-
-    public void setData(Channel data) {
-        notifyDataSetChanged();
+        mContext = context;
     }
 
     @Override
@@ -59,17 +54,23 @@ public class FeedViewAdapter
         Log.d("FeedViewAdapter", "description = " + Feeds.get(position).getDescription());
         holder.mDescription.setText(Feeds.get(position).getDescription());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //callback.onItemClick(v, String.valueOf(index));
-            }
-        });
+        holder.mView.setOnClickListener(getOnClickListener(position));
     }
 
     @Override
     public int getItemCount() {
-        Log.d("FeedViewAdapter", "data size = " + Feeds.size());
+        Log.d(this.getClass().getName(), "data size = " + Feeds.size());
         return Feeds.size();
+    }
+
+    private View.OnClickListener getOnClickListener(final int position) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("URL clicked", "clicked");
+
+                mCallback.onItemClick(position);
+            }
+        };
     }
 }

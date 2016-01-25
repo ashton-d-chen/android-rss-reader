@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader.Reader.Helper;
+package com.ashtonchen.rssreader.reader.helper;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -8,12 +8,12 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.ashtonchen.rssreader.Reader.Interface.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.Reader.Model.Channel;
-import com.ashtonchen.rssreader.Reader.Model.Channels;
-import com.ashtonchen.rssreader.Reader.Model.Feeds;
-import com.ashtonchen.rssreader.Reader.Service.DownloadXmlTask;
-import com.ashtonchen.rssreader.Reader.Service.NetworkReceiver;
+import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.reader.model.Channels;
+import com.ashtonchen.rssreader.reader.model.Feeds;
+import com.ashtonchen.rssreader.reader.service.DownloadXmlTask;
+import com.ashtonchen.rssreader.reader.service.NetworkReceiver;
 
 /**
  * Created by ashtonchen on 15-12-09.
