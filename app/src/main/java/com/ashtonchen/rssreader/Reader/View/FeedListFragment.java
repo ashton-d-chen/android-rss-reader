@@ -85,16 +85,6 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
                              Bundle savedInstanceState) {
         LinearLayout view = (LinearLayout) inflater.inflate(R.layout.feed_list, container, false);
 
-        Log.d(this.getClass().getName(), "try to find two panes");
-        if (view.findViewById(R.id.feed_detail_container) != null) {
-            Log.d(this.getClass().getName(), "two panes");
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
-
 
         // Set the adapter
         Context context = view.getContext();
@@ -124,13 +114,20 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
             }
         });
 
-        if (mTwoPane) {
+        Log.d(this.getClass().getName(), "try to find two panes");
+        if (view.findViewById(R.id.feed_detail_container) != null) {
+            Log.d(this.getClass().getName(), "two panes");
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
             FrameLayout frameLayout = (FrameLayout)view.findViewById(R.id.feed_detail_container);
             frameLayout.addView(fab);
         } else {
             view.addView(fab);
         }
-        
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
         return view;
