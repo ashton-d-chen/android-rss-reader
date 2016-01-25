@@ -124,8 +124,13 @@ public class FeedListFragment extends MasterDetailListFragment implements FeedNe
             }
         });
 
-        view.addView(fab);
-
+        if (mTwoPane) {
+            FrameLayout frameLayout = (FrameLayout)view.findViewById(R.id.feed_detail_container);
+            frameLayout.addView(fab);
+        } else {
+            view.addView(fab);
+        }
+        
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
         return view;
