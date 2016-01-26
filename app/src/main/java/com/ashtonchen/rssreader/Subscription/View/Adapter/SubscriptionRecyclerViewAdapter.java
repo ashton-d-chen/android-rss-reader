@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ashtonchen.rssreader.BaseRecyclerViewAdapter;
+import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.reader.model.Channel;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
@@ -55,7 +55,7 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
         holder.mTitle.setText(mList.get(position).getTitle());
         holder.mDescription.setText(mList.get(position).getDescription());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
@@ -66,7 +66,7 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
             }
         });
 
-        holder.mView.setOnLongClickListener(getOnLongClickListener(mList.get(position), position));
+        holder.itemView.setOnLongClickListener(getOnLongClickListener(mList.get(position), position));
     }
 
     @Override

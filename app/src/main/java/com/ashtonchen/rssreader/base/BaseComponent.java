@@ -1,4 +1,4 @@
-package com.ashtonchen.rssreader;
+package com.ashtonchen.rssreader.base;
 
 import android.content.Context;
 

@@ -1,17 +1,17 @@
-package com.ashtonchen.rssreader.reader.view.adapter;
+package com.ashtonchen.rssreader.favorite.view.adapter;
 
 import com.ashtonchen.rssreader.base.RSSRecyclerViewAdapter;
 import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.reader.model.Feeds;
+import com.ashtonchen.rssreader.reader.view.widget.FeedViewHolder;
 
 import java.util.List;
 
 /**
- * Created by Ashton Chen on 16-01-26.
+ * Created by Ashton Chen on 16-01-25.
  */
-public class FeedViewAdapter extends RSSRecyclerViewAdapter {
+public class FavoriteViewAdapter extends RSSRecyclerViewAdapter {
 
-    @Override
     protected List<Feed> getData() {
         return Feeds.getFeeds();
     }

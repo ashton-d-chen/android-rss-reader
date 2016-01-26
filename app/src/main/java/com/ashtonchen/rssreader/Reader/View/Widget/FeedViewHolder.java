@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ashtonchen.rssreader.BaseRecyclerViewHolder;
+import com.ashtonchen.rssreader.base.BaseRecyclerViewHolder;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.StyleSheet;
 import com.ashtonchen.rssreader.reader.model.Feed;
@@ -13,27 +13,20 @@ import com.ashtonchen.rssreader.reader.model.Feed;
  * Created by Ashton Chen on 15-12-14.
  */
 public class FeedViewHolder extends BaseRecyclerViewHolder {
-    public final View mView;
     public final ImageView mThumbnail;
     public final TextView mTitle;
     public final TextView mDescription;
     public Feed mData;
 
-    private int cellPadding;
-    private int cellThumbnailSize;
-    private int cellThumbnailTextSpacing;
-    private int cellTextViewSpacing;
-
     public FeedViewHolder(View view) {
         super(view);
-        mView = view;
 
-        cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
-        cellThumbnailSize = (int) (StyleSheet.CELL_THUMBNAIL_SIZE * mScale + 0.5f);
-        cellThumbnailTextSpacing = (int) (StyleSheet.CELL_Thumbnail_TEXT_SPACING * mScale + 0.5f);
-        cellTextViewSpacing = (int) (StyleSheet.CELL_TEXT_VIEW_SPACING * mScale + 0.5f);
+        int cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
+        int cellThumbnailSize = (int) (StyleSheet.CELL_THUMBNAIL_SIZE * mScale + 0.5f);
+        int cellThumbnailTextSpacing = (int) (StyleSheet.CELL_Thumbnail_TEXT_SPACING * mScale + 0.5f);
+        int cellTextViewSpacing = (int) (StyleSheet.CELL_TEXT_VIEW_SPACING * mScale + 0.5f);
 
-        mView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
+        this.itemView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
         //mView.setBackgroundColor(Color.GREEN);
 
         mThumbnail = (ImageView) view.findViewById(R.id.feed_thumbnail);

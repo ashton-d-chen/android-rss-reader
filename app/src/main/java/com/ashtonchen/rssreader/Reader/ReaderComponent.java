@@ -3,7 +3,7 @@ package com.ashtonchen.rssreader.reader;
 import android.content.Context;
 import android.util.Log;
 
-import com.ashtonchen.rssreader.BaseComponent;
+import com.ashtonchen.rssreader.base.BaseComponent;
 import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.model.Feeds;

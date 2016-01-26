@@ -3,7 +3,7 @@ package com.ashtonchen.rssreader.subscription;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.ashtonchen.rssreader.BaseComponent;
+import com.ashtonchen.rssreader.base.BaseComponent;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;

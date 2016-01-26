@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ashtonchen.rssreader.BaseRecyclerViewHolder;
+import com.ashtonchen.rssreader.base.BaseRecyclerViewHolder;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.StyleSheet;
 
@@ -12,7 +12,6 @@ import com.ashtonchen.rssreader.StyleSheet;
  * Created by Ashton Chen on 15-12-14.
  */
 public class SubscriptionViewHolder extends BaseRecyclerViewHolder {
-    public final View mView;
     public final TextView mTitle;
     public final TextView mDescription;
     public final ImageView mThumbnail;
@@ -24,14 +23,13 @@ public class SubscriptionViewHolder extends BaseRecyclerViewHolder {
 
     public SubscriptionViewHolder(View view) {
         super(view);
-        mView = view;
 
         cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
         cellThumbnailSize = (int) (StyleSheet.CELL_THUMBNAIL_SIZE * mScale + 0.5f);
         cellThumbnailTextSpacing = (int) (StyleSheet.CELL_Thumbnail_TEXT_SPACING * mScale + 0.5f);
         cellTextViewSpacing = (int) (StyleSheet.CELL_TEXT_VIEW_SPACING * mScale + 0.5f);
 
-        mView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
+        this.itemView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
 
         mThumbnail = (ImageView) view.findViewById(R.id.feed_thumbnail);
         mThumbnail.setPadding(0, 0, cellThumbnailTextSpacing, 0);

@@ -17,7 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ashtonchen.rssreader.BaseFragment;
+import com.ashtonchen.rssreader.base.BaseFragment;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.model.Channel;

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.ashtonchen.rssreader.BaseFragment;
+import com.ashtonchen.rssreader.base.BaseFragment;
 import com.ashtonchen.rssreader.R;
 
 /**
