@@ -7,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.reader.model.Channel;
-import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
-import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
 import com.ashtonchen.rssreader.subscription.listener.onSubscriptionListInteractionListener;
 import com.ashtonchen.rssreader.subscription.model.Subscription;
 import com.ashtonchen.rssreader.subscription.view.widget.SubscriptionViewHolder;
@@ -24,16 +22,10 @@ import java.util.List;
  * specified {@link onSubscriptionListInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<SubscriptionViewHolder> {
+public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Channel, SubscriptionViewHolder> {
 
-    private final SubscriptionNetworkCallbackInterface mListener;
-    private final List<Channel> mList;
-    private final SubscriptionComponent mSubscriptionComponent;
-
-    public SubscriptionRecyclerViewAdapter(Context context, SubscriptionNetworkCallbackInterface listener, SubscriptionComponent component) {
-        mListener = listener;
-        mSubscriptionComponent = component;
-        mList = mSubscriptionComponent.getSubscriptions();
+    public SubscriptionRecyclerViewAdapter(List<Channel> list) {
+        super(list);
     }
 
     @Override
@@ -58,11 +50,6 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    //mListener.onListItemClicked(holder);
-                }
             }
         });
 
@@ -78,10 +65,7 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Sub
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mSubscriptionComponent.removeSubscription(subscription);
-                mList.remove(position);
-                notifyItemRangeChanged(position, mList.size());
-                notifyItemRemoved(position);
+
                 return false;
             }
         };

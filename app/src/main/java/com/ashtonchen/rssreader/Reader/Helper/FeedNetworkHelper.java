@@ -10,10 +10,11 @@ import android.util.Log;
 
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.model.Channel;
-import com.ashtonchen.rssreader.reader.model.Channels;
 import com.ashtonchen.rssreader.reader.model.Feeds;
 import com.ashtonchen.rssreader.reader.service.DownloadXmlTask;
 import com.ashtonchen.rssreader.reader.service.NetworkReceiver;
+
+import java.util.List;
 
 /**
  * Created by ashtonchen on 15-12-09.
@@ -68,9 +69,9 @@ public class FeedNetworkHelper {
         }
     }
 
-    public void getFeedList(FeedNetworkCallbackInterface callback) {
+    public void getFeedList(List<Channel> channels, FeedNetworkCallbackInterface callback) {
         Feeds.reset();
-        for (Channel channel : Channels.getAll(this.context)) {
+        for (Channel channel : channels) {
             new DownloadXmlTask(callback).execute(channel.getUrl());
         }
         /*

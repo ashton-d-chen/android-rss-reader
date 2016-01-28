@@ -3,12 +3,13 @@ package com.ashtonchen.rssreader.subscription;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.ashtonchen.rssreader.base.BaseComponent;
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.base.BaseComponent;
 import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Channels;
+import com.ashtonchen.rssreader.subscription.dao.SubscriptionDAO;
 
 import java.util.List;
 
@@ -18,10 +19,12 @@ import java.util.List;
 public class SubscriptionComponent extends BaseComponent {
     private boolean mNewSubscriptionAdded;
     private FeedNetworkHelper feedNetworkHelper;
+    private SubscriptionDAO mSubscriptionDAO;
 
     public SubscriptionComponent(Context context) {
         super(context);
         this.feedNetworkHelper = new FeedNetworkHelper(mContext);
+        mSubscriptionDAO = new SubscriptionDAO(context);
     }
 
     public boolean subscriptionExists(String url) {
@@ -29,10 +32,12 @@ public class SubscriptionComponent extends BaseComponent {
     }
 
     public void addNewSubscription(Channel subscription) {
-        Channels.add(mContext, subscription);
+        mSubscriptionDAO.addItem(subscription);
+        Channels.add(subscription);
     }
 
     public void removeSubscription(Channel subscription) {
+        mSubscriptionDAO.removeItem(subscription);
         Channels.remove(mContext, subscription);
         Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
     }
@@ -42,7 +47,7 @@ public class SubscriptionComponent extends BaseComponent {
     }
 
     public List<Channel> getSubscriptions() {
-        return Channels.getAll(mContext);
+        return mSubscriptionDAO.getAllItems();
     }
 
     public boolean getNewSubscriptionAdded() {

@@ -2,8 +2,8 @@ package com.ashtonchen.rssreader.reader.view.adapter;
 
 import com.ashtonchen.rssreader.base.RSSRecyclerViewAdapter;
 import com.ashtonchen.rssreader.reader.model.Feed;
-import com.ashtonchen.rssreader.reader.model.Feeds;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,8 +11,10 @@ import java.util.List;
  */
 public class FeedViewAdapter extends RSSRecyclerViewAdapter {
 
-    @Override
-    protected List<Feed> getData() {
-        return Feeds.getFeeds();
+    public FeedViewAdapter() {
+        super(new ArrayList<Feed>());
+    }
+    public FeedViewAdapter(List<Feed> list) {
+        super(list);
     }
 }

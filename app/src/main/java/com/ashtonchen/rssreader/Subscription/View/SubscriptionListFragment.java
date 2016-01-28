@@ -2,18 +2,21 @@ package com.ashtonchen.rssreader.subscription.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ashtonchen.rssreader.base.MasterDetailListFragment;
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
+import com.ashtonchen.rssreader.base.MasterDetailListFragment;
+import com.ashtonchen.rssreader.reader.model.Channel;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
 import com.ashtonchen.rssreader.subscription.view.adapter.SubscriptionRecyclerViewAdapter;
+
+import java.util.List;
 
 /**
  * Created by Ashton Chen on 15-12-14.
@@ -21,7 +24,7 @@ import com.ashtonchen.rssreader.subscription.view.adapter.SubscriptionRecyclerVi
 public class SubscriptionListFragment extends MasterDetailListFragment implements SubscriptionNetworkCallbackInterface {
 
     private SubscriptionComponent mSubscriptionComponent;
-
+    private List<Channel> mList;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -89,8 +92,9 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
 */
 
     @Override
-    protected RecyclerView.Adapter getAdapter() {
-        return new SubscriptionRecyclerViewAdapter(mContext, this, mSubscriptionComponent);
+    protected BaseRecyclerViewAdapter getAdapter() {
+        mList = mSubscriptionComponent.getSubscriptions();
+        return new SubscriptionRecyclerViewAdapter(mList);
     }
 
     @Override
@@ -100,7 +104,22 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
 
     @Override
     protected View.OnLongClickListener getOnLongClickListener() {
-        return null;
+        return new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                final int position = mRecyclerView.getChildAdapterPosition(v);
+
+                mSubscriptionComponent.removeSubscription(mList.get(position));
+                mList.remove(position);
+
+                mAdapter.notifyItemRangeChanged(position, mList.size()
+
+                );
+
+                mAdapter.notifyItemRemoved(position);
+                return false;
+            }
+        };
     }
 }
 

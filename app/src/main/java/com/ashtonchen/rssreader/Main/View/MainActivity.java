@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.favorite.view.FavoriteListFragment;
 import com.ashtonchen.rssreader.reader.view.FeedListFragment;
 import com.ashtonchen.rssreader.subscription.view.SubscriptionListFragment;
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_all) {
             fragment = FeedListFragment.newInstance();
         } else if (id == R.id.nav_favorite) {
-            fragment = FeedListFragment.newInstance();
+            fragment = FavoriteListFragment.newInstance();
         } else if (id == R.id.nav_subscription) {
             fragment = SubscriptionListFragment.newInstance();
         } else {

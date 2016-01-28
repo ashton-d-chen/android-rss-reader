@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class Feeds {
 
-    /**
-     * An array of feed items.
-     */
     private static List<Feed> feeds = new ArrayList<Feed>();
 
     public static void reset() {

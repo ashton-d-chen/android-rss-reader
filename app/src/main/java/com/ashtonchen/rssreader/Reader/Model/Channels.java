@@ -2,7 +2,7 @@ package com.ashtonchen.rssreader.reader.model;
 
 import android.content.Context;
 
-import com.ashtonchen.rssreader.subscription.dao.SubscriptionDbHelper;
+import com.ashtonchen.rssreader.subscription.dao.SubscriptionDAO;
 
 import java.util.List;
 
@@ -17,20 +17,16 @@ public class Channels {
     private static List<Channel> channels;
 
     public static boolean find(Context context, String url) {
-        SubscriptionDbHelper subscriptionDbHelper = new SubscriptionDbHelper(context);
-        return subscriptionDbHelper.findItemExist(url);
+        SubscriptionDAO subscriptionDAO = new SubscriptionDAO(context);
+        return subscriptionDAO.findItemExist(url);
     }
 
-    public static void add(Context context, Channel item) {
-        SubscriptionDbHelper subscriptionDbHelper = new SubscriptionDbHelper(context);
-        subscriptionDbHelper.addItem(item);
-        channels = subscriptionDbHelper.getAllItems();
+    public static void add(Channel item) {
+        channels.add(item);
     }
 
     public static void remove(Context context, Channel item) {
-        SubscriptionDbHelper subscriptionDbHelper = new SubscriptionDbHelper(context);
-        subscriptionDbHelper.removeItem(item);
-        channels = subscriptionDbHelper.getAllItems();
+        //channels = subscriptionDAO.getAllItems();
     }
 
     public static List<Channel> getAll(Context context) {
@@ -41,8 +37,8 @@ public class Channels {
     }
 
     public static void refresh(Context context) {
-        SubscriptionDbHelper subscriptionDbHelper = new SubscriptionDbHelper(context);
-        channels = subscriptionDbHelper.getAllItems();
+
+        //channels = subscriptionDAO.getAllItems();
     }
 
     public static int size() {

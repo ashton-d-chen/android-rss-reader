@@ -17,8 +17,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
+import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
+import com.ashtonchen.rssreader.favorite.dao.FavoriteDAO;
+import com.ashtonchen.rssreader.favorite.model.Favorites;
 import com.ashtonchen.rssreader.reader.ReaderComponent;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
@@ -168,11 +171,26 @@ public class FeedListFragment extends MasterDetailFeedListFragment implements Fe
     }
 
     @Override
-    protected RecyclerView.Adapter getAdapter() {
-        FeedViewAdapter adapter =  new FeedViewAdapter();
-        adapter.setOnClickListener(getOnClickListener());
-        //adapter.setOnLongClickListener();
-        return adapter;
+    protected BaseRecyclerViewAdapter getAdapter() {
+        return new FeedViewAdapter(Feeds.getFeeds());
     }
+
+    @Override
+    protected RecyclerView.OnLongClickListener getOnLongClickListener() {
+        return new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                final int position = mRecyclerView.getChildAdapterPosition(v);
+                Log.d(this.getClass().getName(), "Long click on position = " + position);
+                Favorites.add(Feeds.get(position));
+                FavoriteDAO helper = new FavoriteDAO(mContext);
+                helper.addItem(Feeds.get(position));
+
+                return true;
+            }
+        };
+    }
+
 }
 

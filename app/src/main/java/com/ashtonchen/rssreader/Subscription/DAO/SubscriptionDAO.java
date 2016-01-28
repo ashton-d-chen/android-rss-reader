@@ -3,11 +3,10 @@ package com.ashtonchen.rssreader.subscription.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.ashtonchen.rssreader.RSSReaderContract;
+import com.ashtonchen.rssreader.database.BaseDAO;
+import com.ashtonchen.rssreader.database.RSSReaderContract;
 import com.ashtonchen.rssreader.reader.model.Channel;
 
 import java.util.ArrayList;
@@ -16,32 +15,13 @@ import java.util.List;
 /**
  * Created by Ashton Chen on 15-12-15.
  */
-public class SubscriptionDbHelper extends SQLiteOpenHelper {
+public class SubscriptionDAO extends BaseDAO {
 
-    public SubscriptionDbHelper(Context context) {
-        super(context, RSSReaderContract.DATABASE_NAME, null, RSSReaderContract.DATABASE_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(RSSReaderContract.SubscriptionEntry.SQL_CREATE_ENTRIES);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // This database is only a cache for online data, so its upgrade policy is
-        // to simply to discard the data and start over
-        db.execSQL(RSSReaderContract.SubscriptionEntry.SQL_DELETE_ENTRIES);
-        onCreate(db);
-    }
-
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
+    public SubscriptionDAO(Context context) {
+        super(context);
     }
 
     public boolean findItemExist(String url) {
-        SQLiteDatabase database = getReadableDatabase();
         String[] projection = {
                 RSSReaderContract.SubscriptionEntry._ID,
                 RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL,
@@ -73,8 +53,6 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
 
     public List<Channel> getAllItems() {
         List<Channel> items = new ArrayList<Channel>();
-
-        SQLiteDatabase database = getReadableDatabase();
 
         String[] projection = {
                 RSSReaderContract.SubscriptionEntry._ID,
@@ -113,7 +91,6 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
     }
 
     public long addItem(Channel subscription) {
-        SQLiteDatabase database = getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_TITLE, subscription.getTitle());
@@ -127,7 +104,6 @@ public class SubscriptionDbHelper extends SQLiteOpenHelper {
     }
 
     public void removeItem(Channel subscription) {
-        SQLiteDatabase database = getWritableDatabase();
         String selection = RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL + " = ?";
         String[] selectionArgs = {String.valueOf(subscription.getUrl())};
         database.delete(RSSReaderContract.SubscriptionEntry.TABLE_NAME, selection, selectionArgs);
