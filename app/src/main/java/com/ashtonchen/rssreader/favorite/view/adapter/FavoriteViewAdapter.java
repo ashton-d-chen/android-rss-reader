@@ -2,8 +2,6 @@ package com.ashtonchen.rssreader.favorite.view.adapter;
 
 import com.ashtonchen.rssreader.base.RSSRecyclerViewAdapter;
 import com.ashtonchen.rssreader.reader.model.Feed;
-import com.ashtonchen.rssreader.reader.model.Feeds;
-import com.ashtonchen.rssreader.reader.view.widget.FeedViewHolder;
 
 import java.util.List;
 
@@ -12,7 +10,7 @@ import java.util.List;
  */
 public class FavoriteViewAdapter extends RSSRecyclerViewAdapter {
 
-    protected List<Feed> getData() {
-        return Feeds.getFeeds();
+    public FavoriteViewAdapter(List<Feed> list) {
+        super(list);
     }
 }

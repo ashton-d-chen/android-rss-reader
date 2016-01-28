@@ -3,15 +3,19 @@ package com.ashtonchen.rssreader.base;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.util.List;
+
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public abstract class BaseRecyclerViewAdapter<T extends BaseRecyclerViewHolder> extends RecyclerView.Adapter<T> {
+public abstract class BaseRecyclerViewAdapter<S, T extends BaseRecyclerViewHolder> extends RecyclerView.Adapter<T> {
     protected View.OnClickListener mOnClickListener;
     protected View.OnLongClickListener mOnLongClickListener;
 
-    public BaseRecyclerViewAdapter() {
+    protected List<S> mList;
 
+    public BaseRecyclerViewAdapter(List<S> list) {
+        mList = list;
     }
 
     @Override

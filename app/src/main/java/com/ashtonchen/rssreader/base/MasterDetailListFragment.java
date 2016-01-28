@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
 import com.ashtonchen.rssreader.reader.view.widget.DecoratedItemRecyclerView;
 
 /**
@@ -19,7 +18,7 @@ public abstract class MasterDetailListFragment extends BaseFragment {
 
     protected RecyclerView mRecyclerView;
     protected boolean mTwoPane;
-
+    protected BaseRecyclerViewAdapter mAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +43,15 @@ public abstract class MasterDetailListFragment extends BaseFragment {
     }
 
     public void setupAdapter() {
-        mRecyclerView.setAdapter(getAdapter());
+        mAdapter = getAdapter();
+        mAdapter.setOnClickListener(getOnClickListener());
+        mAdapter.setOnLongClickListener(getOnLongClickListener());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
-    protected abstract RecyclerView.Adapter getAdapter();
-
+    protected abstract BaseRecyclerViewAdapter getAdapter();
 
     protected abstract RecyclerView.OnClickListener getOnClickListener();
 
     protected abstract RecyclerView.OnLongClickListener getOnLongClickListener();
-
 }

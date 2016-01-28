@@ -17,7 +17,11 @@ import java.util.List;
  * Created by ashtonchen on 15-12-09.
  */
 public abstract class RSSRecyclerViewAdapter
-        extends BaseRecyclerViewAdapter<FeedViewHolder> {
+        extends BaseRecyclerViewAdapter<Feed, FeedViewHolder> {
+
+    public RSSRecyclerViewAdapter(List<Feed> list) {
+        super(list);
+    }
 
     @Override
     public FeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,26 +34,26 @@ public abstract class RSSRecyclerViewAdapter
     public void onBindViewHolder(FeedViewHolder viewHolder, int position) {
         Log.d(this.getClass().getName(), "position = " + position);
         FeedViewHolder holder = viewHolder;
-        holder.mData = getData().get(position);
+        holder.mData = mList.get(position);
 
         holder.itemView.setOnClickListener(mOnClickListener);
         holder.itemView.setOnLongClickListener(mOnLongClickListener);
 
         getThumbnail(holder);
 
-        holder.mTitle.setText(getData().get(position).getTitle());
+        holder.mTitle.setText(mList.get(position).getTitle());
 
-        Log.d(this.getClass().getName(), "description = " + getData().get(position).getDescription());
-        holder.mDescription.setText(getData().get(position).getDescription());
+        Log.d(this.getClass().getName(), "description = " + mList.get(position).getDescription());
+        holder.mDescription.setText(mList.get(position).getDescription());
     }
 
     @Override
     public int getItemCount() {
-        Log.d(this.getClass().getName(), "data size = " + getData().size());
-        return getData().size();
+        Log.d(this.getClass().getName(), "data size = " + mList.size());
+        return mList.size();
     }
 
-    protected abstract List<Feed> getData();
+    //protected abstract List<Feed> getData();
 
     protected void getThumbnail(FeedViewHolder holder) {
         Context context = holder.mThumbnail.getContext();
