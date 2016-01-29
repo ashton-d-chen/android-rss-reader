@@ -21,7 +21,7 @@ import com.ashtonchen.rssreader.base.BaseFragment;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.model.Channel;
-import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
+import com.ashtonchen.rssreader.subscription.SubscriptionComponentList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +33,7 @@ import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
  */
 public class SubscriptionNewFragment extends BaseFragment implements FeedNetworkCallbackInterface {
     EditText mEditText;
-    private SubscriptionComponent mSubscriptionComponent;
+    private SubscriptionComponentList mSubscriptionComponent;
     private String mRSSlink;
     private OnFragmentInteractionListener mListener;
 
@@ -60,7 +60,7 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mSubscriptionComponent = new SubscriptionComponent(mContext);
+        this.mSubscriptionComponent = new SubscriptionComponentList(mContext);
 
         setSubtitle(R.string.action_bar_subtitle_new_subscription);
 /*        if (getArguments() != null) {

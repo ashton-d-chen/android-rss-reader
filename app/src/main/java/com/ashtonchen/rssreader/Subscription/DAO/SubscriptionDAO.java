@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Ashton Chen on 15-12-15.
  */
-public class SubscriptionDAO extends BaseDAO {
+public class SubscriptionDAO extends BaseDAO<Channel> {
 
     public SubscriptionDAO(Context context) {
         super(context);

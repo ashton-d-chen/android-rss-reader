@@ -30,4 +30,8 @@ public abstract class BaseRecyclerViewAdapter<S, T extends BaseRecyclerViewHolde
     public final void setOnLongClickListener(View.OnLongClickListener listener) {
         mOnLongClickListener = listener;
     }
+
+    public final List<S> getList() {
+        return mList;
+    }
 }

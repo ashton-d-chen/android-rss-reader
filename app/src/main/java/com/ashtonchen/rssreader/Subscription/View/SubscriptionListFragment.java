@@ -12,7 +12,7 @@ import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.base.MasterDetailListFragment;
 import com.ashtonchen.rssreader.reader.model.Channel;
-import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
+import com.ashtonchen.rssreader.subscription.SubscriptionComponentList;
 import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
 import com.ashtonchen.rssreader.subscription.view.adapter.SubscriptionRecyclerViewAdapter;
 
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class SubscriptionListFragment extends MasterDetailListFragment implements SubscriptionNetworkCallbackInterface {
 
-    private SubscriptionComponent mSubscriptionComponent;
+    private SubscriptionComponentList mSubscriptionComponent;
     private List<Channel> mList;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -42,7 +42,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
         super.onCreate(savedInstanceState);
         mContext = getContext();
 
-        this.mSubscriptionComponent = new SubscriptionComponent(mContext);
+        this.mSubscriptionComponent = new SubscriptionComponentList(mContext);
 
         setSubtitle(R.string.action_bar_subtitle_subscriptions);
         setHasOptionsMenu(true);

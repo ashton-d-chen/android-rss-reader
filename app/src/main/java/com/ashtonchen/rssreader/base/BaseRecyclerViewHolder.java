@@ -6,7 +6,7 @@ import android.view.View;
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
+public abstract class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
     protected float mScale;
 
     public BaseRecyclerViewHolder(View view) {

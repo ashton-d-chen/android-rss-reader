@@ -22,7 +22,7 @@ import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
 import com.ashtonchen.rssreader.favorite.dao.FavoriteDAO;
 import com.ashtonchen.rssreader.favorite.model.Favorites;
-import com.ashtonchen.rssreader.reader.ReaderComponent;
+import com.ashtonchen.rssreader.reader.ReaderListComponent;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
 import com.ashtonchen.rssreader.reader.model.Channel;
@@ -43,7 +43,7 @@ import com.ashtonchen.rssreader.reader.view.adapter.FeedViewAdapter;
  */
 public class FeedListFragment extends MasterDetailFeedListFragment implements FeedNetworkCallbackInterface {
 
-    private ReaderComponent mReaderComponent;
+    private ReaderListComponent mReaderComponent;
     private int downloadChannelCount = 0;
 
     /**
@@ -62,7 +62,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment implements Fe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mReaderComponent = new ReaderComponent(mContext, this);
+        mReaderComponent = new ReaderListComponent(mContext, this);
 
         setSubtitle(R.string.action_bar_subtitle_feeds);
         setHasOptionsMenu(true);

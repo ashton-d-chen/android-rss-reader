@@ -53,7 +53,7 @@ public abstract class RSSRecyclerViewAdapter
         return mList.size();
     }
 
-    //protected abstract List<Feed> getData();
+    //protected abstract List<Feed> getListData();
 
     protected void getThumbnail(FeedViewHolder holder) {
         Context context = holder.mThumbnail.getContext();

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Ashton Chen on 16-01-26.
  */
-public class FavoriteDAO extends BaseDAO {
+public class FavoriteDAO extends BaseDAO<Feed> {
 
     public FavoriteDAO(Context context) {
         super(context);
@@ -47,7 +47,6 @@ public class FavoriteDAO extends BaseDAO {
             itemExist = cursor.getCount() > 0;
             cursor.close();
         }
-        database.close();
         return itemExist;
     }
 
@@ -85,13 +84,11 @@ public class FavoriteDAO extends BaseDAO {
             }
             cursor.close();
         }
-
-        database.close();
         return items;
     }
 
     public long addItem(Feed favorite) {
-
+        open();
         ContentValues values = new ContentValues();
         values.put(RSSReaderContract.FavoriteEntry.COLUMN_NAME_TITLE, favorite.getTitle());
         values.put(RSSReaderContract.FavoriteEntry.COLUMN_NAME_DESCRIPTION, favorite.getDescription());
@@ -99,7 +96,6 @@ public class FavoriteDAO extends BaseDAO {
         values.put(RSSReaderContract.FavoriteEntry.COLUMN_NAME_THUMBNAIL_URL, favorite.getThumbnailURL());
 
         long newRowId = database.insert(RSSReaderContract.FavoriteEntry.TABLE_NAME, null, values);
-        database.close();
         return newRowId;
     }
 
@@ -107,6 +103,5 @@ public class FavoriteDAO extends BaseDAO {
         String selection = RSSReaderContract.FavoriteEntry.COLUMN_NAME_URL + " = ?";
         String[] selectionArgs = {String.valueOf(favorite.getUrl())};
         database.delete(RSSReaderContract.FavoriteEntry.TABLE_NAME, selection, selectionArgs);
-        database.close();
     }
 }
