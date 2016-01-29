@@ -16,13 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
 import com.ashtonchen.rssreader.favorite.dao.FavoriteDAO;
 import com.ashtonchen.rssreader.favorite.model.Favorites;
-import com.ashtonchen.rssreader.reader.ReaderListComponent;
+import com.ashtonchen.rssreader.reader.ReaderComponent;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
 import com.ashtonchen.rssreader.reader.model.Channel;
@@ -41,9 +41,8 @@ import com.ashtonchen.rssreader.reader.view.adapter.FeedViewAdapter;
  * Activities containing this fragment MUST implement the {@link RecyclerViewInteractionListener}
  * interface.
  */
-public class FeedListFragment extends MasterDetailFeedListFragment implements FeedNetworkCallbackInterface {
+public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapter, ReaderComponent> implements FeedNetworkCallbackInterface {
 
-    private ReaderListComponent mReaderComponent;
     private int downloadChannelCount = 0;
 
     /**
@@ -62,8 +61,6 @@ public class FeedListFragment extends MasterDetailFeedListFragment implements Fe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mReaderComponent = new ReaderListComponent(mContext, this);
-
         setSubtitle(R.string.action_bar_subtitle_feeds);
         setHasOptionsMenu(true);
     }
@@ -79,7 +76,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment implements Fe
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Log.d(this.getClass().getName(), "Start getting feed list");
-        mReaderComponent.getFeedList(this);
+        mComponent.getFeedList(this);
     }
 
     @Override
@@ -94,7 +91,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment implements Fe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh_feed:
-                mReaderComponent.getFeedList(this);
+                mComponent.getFeedList(this);
                 // User chose the "Settings" item, show the app settings UI...
                 return true;
             default:
@@ -119,6 +116,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment implements Fe
         //void onListFragmentInteraction(SubscriptionItem item);
     }
 */
+
 
     private void addFloatingActionButton(View view) {
         //FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -171,22 +169,28 @@ public class FeedListFragment extends MasterDetailFeedListFragment implements Fe
     }
 
     @Override
-    protected BaseRecyclerViewAdapter getAdapter() {
+    protected ReaderComponent getComponent() {
+        return new ReaderComponent(mContext, this);
+    }
+
+    @Override
+    protected FeedViewAdapter getAdapter() {
         return new FeedViewAdapter(Feeds.getFeeds());
     }
 
     @Override
     protected RecyclerView.OnLongClickListener getOnLongClickListener() {
         return new View.OnLongClickListener() {
-
             @Override
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
                 Log.d(this.getClass().getName(), "Long click on position = " + position);
                 Favorites.add(Feeds.get(position));
                 FavoriteDAO helper = new FavoriteDAO(mContext);
-                helper.addItem(Feeds.get(position));
-
+                long result = helper.addItem(Feeds.get(position));
+                if (result > 0) {
+                    Toast.makeText(mContext, R.string.toast_added_to_favorite, Toast.LENGTH_SHORT).show();
+                }
                 return true;
             }
         };

@@ -14,12 +14,11 @@ import com.ashtonchen.rssreader.reader.view.widget.DecoratedItemRecyclerView;
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter, S extends ListDatabaseComponent> extends BaseFragment {
+public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent> extends DatabaseComponentFragment<S> {
 
     protected RecyclerView mRecyclerView;
     protected boolean mTwoPane;
     protected T mAdapter;
-    protected S mComponent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,22 +31,6 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         View view = inflater.inflate(R.layout.mater_detail_list, container, false);
         setupRecyclerView(view);
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        if (mComponent != null) {
-            mComponent.closeListDAO();
-        }
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        if (mComponent != null) {
-            mComponent.openListDAO();
-        }
-        super.onResume();
     }
 
     protected void setupRecyclerView(View view) {
@@ -66,6 +49,7 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         mAdapter.setOnLongClickListener(getOnLongClickListener());
         mRecyclerView.setAdapter(mAdapter);
     }
+
 
     protected abstract T getAdapter();
 

@@ -39,7 +39,7 @@ public abstract class BaseFragment extends Fragment {
         ActionBarColorHelper.colorizeToolbar(mMainActivity.getToolbar(), Color.WHITE);
     }
 
-    protected void setSubtitle(int subtitle) {
+    protected final void setSubtitle(int subtitle) {
         mMainActivity.getSupportActionBar().setSubtitle(getString(subtitle));
     }
 }

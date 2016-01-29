@@ -99,9 +99,9 @@ public class FavoriteDAO extends BaseDAO<Feed> {
         return newRowId;
     }
 
-    public void removeItem(Feed favorite) {
+    public int removeItem(Feed favorite) {
         String selection = RSSReaderContract.FavoriteEntry.COLUMN_NAME_URL + " = ?";
         String[] selectionArgs = {String.valueOf(favorite.getUrl())};
-        database.delete(RSSReaderContract.FavoriteEntry.TABLE_NAME, selection, selectionArgs);
+        return database.delete(RSSReaderContract.FavoriteEntry.TABLE_NAME, selection, selectionArgs);
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.ashtonchen.rssreader.subscription.dao.SubscriptionDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class Channels {
     /**
      * An array of feed items.
      */
-    private static List<Channel> channels;
+    private static List<Channel> channels = new ArrayList();
 
     public static boolean find(Context context, String url) {
         SubscriptionDAO subscriptionDAO = new SubscriptionDAO(context);

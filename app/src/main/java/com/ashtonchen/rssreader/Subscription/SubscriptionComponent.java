@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.base.ListDatabaseComponent;
+import com.ashtonchen.rssreader.base.DatabaseComponent;
 import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.model.Channel;
@@ -16,17 +16,17 @@ import java.util.List;
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public class SubscriptionComponentList extends ListDatabaseComponent<SubscriptionDAO, Channel> {
+public class SubscriptionComponent extends DatabaseComponent<SubscriptionDAO, Channel> {
     private boolean mNewSubscriptionAdded;
     private FeedNetworkHelper feedNetworkHelper;
 
-    public SubscriptionComponentList(Context context) {
+    public SubscriptionComponent(Context context) {
         super(context);
         this.feedNetworkHelper = new FeedNetworkHelper(mContext);
     }
 
     @Override
-    protected SubscriptionDAO getListDAO() {
+    protected SubscriptionDAO getDAO() {
         return new SubscriptionDAO(mContext);
     }
 
@@ -35,12 +35,12 @@ public class SubscriptionComponentList extends ListDatabaseComponent<Subscriptio
     }
 
     public void addNewSubscription(Channel subscription) {
-        addListData(subscription);
+        addData(subscription);
         Channels.add(subscription);
     }
 
     public void removeSubscription(Channel subscription) {
-        removeListData(subscription);
+        removeData(subscription);
         Channels.remove(mContext, subscription);
         Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
     }
@@ -50,7 +50,7 @@ public class SubscriptionComponentList extends ListDatabaseComponent<Subscriptio
     }
 
     public List<Channel> getSubscriptions() {
-        return getListData();
+        return getData();
     }
 
     public boolean getNewSubscriptionAdded() {

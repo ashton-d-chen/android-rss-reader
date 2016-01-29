@@ -47,7 +47,6 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
             itemExist = cursor.getCount() > 0;
             cursor.close();
         }
-        database.close();
         return itemExist;
     }
 
@@ -85,8 +84,6 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
             }
             cursor.close();
         }
-
-        database.close();
         return items;
     }
 
@@ -98,15 +95,12 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
         values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL, subscription.getUrl());
         values.put(RSSReaderContract.SubscriptionEntry.COLUMN_NAME_THUMBNAIL_URL, subscription.getThumbnailURL());
 
-        long newRowId = database.insert(RSSReaderContract.SubscriptionEntry.TABLE_NAME, null, values);
-        database.close();
-        return newRowId;
+        return database.insert(RSSReaderContract.SubscriptionEntry.TABLE_NAME, null, values);
     }
 
-    public void removeItem(Channel subscription) {
+    public int removeItem(Channel subscription) {
         String selection = RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL + " = ?";
         String[] selectionArgs = {String.valueOf(subscription.getUrl())};
-        database.delete(RSSReaderContract.SubscriptionEntry.TABLE_NAME, selection, selectionArgs);
-        database.close();
+        return database.delete(RSSReaderContract.SubscriptionEntry.TABLE_NAME, selection, selectionArgs);
     }
 }

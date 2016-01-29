@@ -36,5 +36,5 @@ public abstract class BaseDAO<T> {
 
     public abstract long addItem(T item);
 
-    public abstract void removeItem(T item);
+    public abstract int removeItem(T item);
 }

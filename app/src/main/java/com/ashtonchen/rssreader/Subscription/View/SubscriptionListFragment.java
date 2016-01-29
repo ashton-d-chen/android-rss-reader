@@ -9,10 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.base.MasterDetailListFragment;
 import com.ashtonchen.rssreader.reader.model.Channel;
-import com.ashtonchen.rssreader.subscription.SubscriptionComponentList;
+import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
 import com.ashtonchen.rssreader.subscription.view.adapter.SubscriptionRecyclerViewAdapter;
 
@@ -21,12 +20,11 @@ import java.util.List;
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public class SubscriptionListFragment extends MasterDetailListFragment implements SubscriptionNetworkCallbackInterface {
+public class SubscriptionListFragment extends MasterDetailListFragment<SubscriptionRecyclerViewAdapter,SubscriptionComponent> implements SubscriptionNetworkCallbackInterface {
 
-    private SubscriptionComponentList mSubscriptionComponent;
     private List<Channel> mList;
     /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
+     * Mandator y empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public SubscriptionListFragment() {
@@ -40,9 +38,6 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
-
-        this.mSubscriptionComponent = new SubscriptionComponentList(mContext);
 
         setSubtitle(R.string.action_bar_subtitle_subscriptions);
         setHasOptionsMenu(true);
@@ -90,10 +85,14 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
         //void onListFragmentInteraction(SubscriptionItem item);
     }
 */
+    @Override
+    protected SubscriptionComponent getComponent() {
+        return new SubscriptionComponent(mContext);
+    }
 
     @Override
-    protected BaseRecyclerViewAdapter getAdapter() {
-        mList = mSubscriptionComponent.getSubscriptions();
+    protected SubscriptionRecyclerViewAdapter getAdapter() {
+        mList = mComponent.getSubscriptions();
         return new SubscriptionRecyclerViewAdapter(mList);
     }
 
@@ -109,7 +108,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment implement
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
 
-                mSubscriptionComponent.removeSubscription(mList.get(position));
+                mComponent.removeSubscription(mList.get(position));
                 mList.remove(position);
 
                 mAdapter.notifyItemRangeChanged(position, mList.size()

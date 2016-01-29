@@ -16,12 +16,14 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ashtonchen.rssreader.base.BaseFragment;
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.base.ComponentFragment;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.model.Channel;
-import com.ashtonchen.rssreader.subscription.SubscriptionComponentList;
+import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,9 +33,8 @@ import com.ashtonchen.rssreader.subscription.SubscriptionComponentList;
  * Use the {@link SubscriptionNewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SubscriptionNewFragment extends BaseFragment implements FeedNetworkCallbackInterface {
+public class SubscriptionNewFragment extends ComponentFragment<SubscriptionComponent> implements FeedNetworkCallbackInterface {
     EditText mEditText;
-    private SubscriptionComponentList mSubscriptionComponent;
     private String mRSSlink;
     private OnFragmentInteractionListener mListener;
 
@@ -50,23 +51,14 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
     // TODO: Rename and change types and number of parameters
     public static SubscriptionNewFragment newInstance() {
         SubscriptionNewFragment fragment = new SubscriptionNewFragment();
-/*        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);*/
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mSubscriptionComponent = new SubscriptionComponentList(mContext);
 
         setSubtitle(R.string.action_bar_subtitle_new_subscription);
-/*        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
     }
 
     @Override
@@ -143,6 +135,10 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
         mListener = null;
     }
 
+    protected SubscriptionComponent getComponent() {
+        return new SubscriptionComponent(mContext);
+    }
+
     private View.OnClickListener onAddNewButtonClicked(final FeedNetworkCallbackInterface callback) {
         return new View.OnClickListener() {
             @Override
@@ -151,9 +147,9 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
                 //link = "http://rss.cnn.com/rss/cnn_topstories.rss";
                 if (!mRSSlink.isEmpty()) {
                     if (Patterns.WEB_URL.matcher(mRSSlink).matches()) {
-                        if (!mSubscriptionComponent.subscriptionExists(mRSSlink)) {
+                        if (!mComponent.subscriptionExists(mRSSlink)) {
                             Log.d(getClass().getName(), "Subscription does not exist in database");
-                            mSubscriptionComponent.loadSubscriptionInfo(mRSSlink, callback);
+                            mComponent.loadSubscriptionInfo(mRSSlink, callback);
                         }
                     }
 
@@ -181,7 +177,8 @@ public class SubscriptionNewFragment extends BaseFragment implements FeedNetwork
     public void onDownloadFinished(Channel channel) {
         if (channel != null) {
             channel.setUrl(mRSSlink);
-            mSubscriptionComponent.addNewSubscription(channel);
+            mComponent.addNewSubscription(channel);
+            Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
             getActivity().onBackPressed();
         }
     }

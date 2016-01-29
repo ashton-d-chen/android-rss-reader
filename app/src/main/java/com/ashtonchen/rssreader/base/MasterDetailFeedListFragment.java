@@ -12,7 +12,7 @@ import com.ashtonchen.rssreader.reader.view.detail.FeedDetailFragment;
 /**
  * Created by Ashton Chen on 16-01-26.
  */
-public abstract class MasterDetailFeedListFragment extends MasterDetailListFragment {
+public abstract class MasterDetailFeedListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent> extends MasterDetailListFragment<T , S> {
     @Override
     protected void setupRecyclerView(View view) {
         super.setupRecyclerView(view);
