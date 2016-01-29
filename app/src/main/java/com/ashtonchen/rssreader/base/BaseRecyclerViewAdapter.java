@@ -1,6 +1,7 @@
 package com.ashtonchen.rssreader.base;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import java.util.List;
@@ -21,6 +22,12 @@ public abstract class BaseRecyclerViewAdapter<S, T extends BaseRecyclerViewHolde
     @Override
     public void onBindViewHolder(T viewHolder, int position) {
 
+    }
+
+    @Override
+    public int getItemCount() {
+        Log.d(this.getClass().getName(), "data size = " + mList.size());
+        return mList.size();
     }
 
     public final void setOnClickListener(View.OnClickListener listener) {

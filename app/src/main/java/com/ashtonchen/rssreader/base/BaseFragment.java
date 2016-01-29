@@ -16,14 +16,14 @@ import com.ashtonchen.rssreader.main.view.MainActivity;
  * Created by Ashton Chen on 15-12-17.
  */
 public abstract class BaseFragment extends Fragment {
-    protected Context mContext;
-    protected MainActivity mMainActivity;
+    protected MainActivity mContext;
+    //protected MainActivity mMainActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getActivity();
-        mMainActivity = (MainActivity) mContext;
+        mContext = (MainActivity) getActivity();
+        //mMainActivity = (MainActivity) mContext;
     }
 
     @Override
@@ -36,10 +36,10 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        ActionBarColorHelper.colorizeToolbar(mMainActivity.getToolbar(), Color.WHITE);
+        ActionBarColorHelper.colorizeToolbar(mContext.getToolbar(), Color.WHITE);
     }
 
     protected final void setSubtitle(int subtitle) {
-        mMainActivity.getSupportActionBar().setSubtitle(getString(subtitle));
+        mContext.getSupportActionBar().setSubtitle(getString(subtitle));
     }
 }

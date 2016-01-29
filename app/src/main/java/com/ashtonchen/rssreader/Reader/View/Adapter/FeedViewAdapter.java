@@ -14,6 +14,7 @@ public class FeedViewAdapter extends RSSRecyclerViewAdapter {
     public FeedViewAdapter() {
         super(new ArrayList<Feed>());
     }
+
     public FeedViewAdapter(List<Feed> list) {
         super(list);
     }

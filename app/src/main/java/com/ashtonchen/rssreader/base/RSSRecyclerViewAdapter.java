@@ -47,12 +47,6 @@ public abstract class RSSRecyclerViewAdapter
         holder.mDescription.setText(mList.get(position).getDescription());
     }
 
-    @Override
-    public int getItemCount() {
-        Log.d(this.getClass().getName(), "data size = " + mList.size());
-        return mList.size();
-    }
-
     protected void getThumbnail(FeedViewHolder holder) {
         Context context = holder.mThumbnail.getContext();
         Log.d(this.getClass().getName(), "Thumbnail URL = " + holder.mData.getThumbnailURL());

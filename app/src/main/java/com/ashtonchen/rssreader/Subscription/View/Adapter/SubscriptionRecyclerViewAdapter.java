@@ -47,27 +47,7 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Cha
         holder.mTitle.setText(mList.get(position).getTitle());
         holder.mDescription.setText(mList.get(position).getDescription());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(getOnLongClickListener(mList.get(position), position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
-
-    private View.OnLongClickListener getOnLongClickListener(final Channel subscription, final int position) {
-        return new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                return false;
-            }
-        };
+        holder.itemView.setOnClickListener(mOnClickListener);
+        holder.itemView.setOnLongClickListener(mOnLongClickListener);
     }
 }

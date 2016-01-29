@@ -2,11 +2,13 @@ package com.ashtonchen.rssreader.subscription.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.MasterDetailListFragment;
@@ -61,7 +63,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Fragment fragment = SubscriptionNewFragment.newInstance();
-                mMainActivity.fragmentTransaction(fragment);
+                mContext.fragmentTransaction(fragment);
                 return false;
             }
         });
@@ -107,16 +109,15 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
             @Override
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
-
+                Log.d(this.getClass().getName(), "Long click at " + position);
                 mComponent.removeSubscription(mList.get(position));
                 mList.remove(position);
 
-                mAdapter.notifyItemRangeChanged(position, mList.size()
-
-                );
+                mAdapter.notifyItemRangeChanged(position, mList.size());
 
                 mAdapter.notifyItemRemoved(position);
-                return false;
+                Toast.makeText(mContext, R.string.toast_rss_removed, Toast.LENGTH_SHORT).show();
+                return true;
             }
         };
     }

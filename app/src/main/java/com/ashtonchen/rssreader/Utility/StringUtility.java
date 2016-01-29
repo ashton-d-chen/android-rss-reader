@@ -6,6 +6,11 @@ package com.ashtonchen.rssreader.utility;
 public class StringUtility {
 
     public static String removeTrailingTags(String text) {
-        return text.substring(0, text.indexOf("<br"));
+        int index = text.indexOf("<br");
+        if (index >= 0) {
+            return text.substring(0, index);
+        } else {
+            return text;
+        }
     }
 }

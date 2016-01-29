@@ -176,6 +176,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
 
     public void onDownloadFinished(Channel channel) {
         if (channel != null) {
+            Log.d(this.getClass().getName(), "got new channel");
             channel.setUrl(mRSSlink);
             mComponent.addNewSubscription(channel);
             Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
