@@ -9,8 +9,8 @@
     <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/list"
         android:name="com.ashtonchen.rssreader.FeedListFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layoutManager="LinearLayoutManager"
         tools:context=".reader.view.FeedListActivity"
         tools:listitem="@layout/feed_list_cell" />

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
 import com.ashtonchen.rssreader.favorite.FavoriteComponent;
 import com.ashtonchen.rssreader.favorite.view.adapter.FavoriteViewAdapter;

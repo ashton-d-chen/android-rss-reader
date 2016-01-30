@@ -53,9 +53,19 @@ public abstract class RSSRecyclerViewAdapter
         Log.d(this.getClass().getName(), "Web Thumbnail URL = " + holder.mData.getWebThumbnailURL());
 
         if (!holder.mData.getThumbnailURL().isEmpty()) {
-            Picasso.with(context).load(holder.mData.getThumbnailURL()).into(holder.mThumbnail);
+            Picasso
+                    .with(context)
+                    .load(holder.mData.getThumbnailURL())
+                    .fit()
+                    .centerCrop()
+                    .into(holder.mThumbnail);
         } else if (!holder.mData.getWebThumbnailURL().isEmpty()) {
-            Picasso.with(context).load(holder.mData.getWebThumbnailURL()).into(holder.mThumbnail);
+            Picasso
+                    .with(context)
+                    .load(holder.mData.getWebThumbnailURL())
+                    .fit()
+                    .centerCrop()
+                    .into(holder.mThumbnail);
         }
     }
 }

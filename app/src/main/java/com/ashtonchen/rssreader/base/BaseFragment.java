@@ -1,6 +1,5 @@
 package com.ashtonchen.rssreader.base;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,12 +16,14 @@ import com.ashtonchen.rssreader.main.view.MainActivity;
  */
 public abstract class BaseFragment extends Fragment {
     protected MainActivity mContext;
+    protected float mScale;
     //protected MainActivity mMainActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = (MainActivity) getActivity();
+        mScale = mContext.getResources().getDisplayMetrics().density;
         //mMainActivity = (MainActivity) mContext;
     }
 
