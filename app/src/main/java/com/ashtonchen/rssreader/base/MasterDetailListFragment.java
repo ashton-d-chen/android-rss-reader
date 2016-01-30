@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.reader.view.widget.DecoratedItemRecyclerView;
@@ -28,7 +30,13 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.mater_detail_list, container, false);
+        View view = inflater.inflate(R.layout.master_detail_list, container, false);
+        Log.d(this.getClass().getName(), "try to find two panes");
+
+        if (view.findViewById(R.id.feed_detail_container) != null) {
+            mTwoPane = true;
+        }
+
         setupRecyclerView(view);
         return view;
     }

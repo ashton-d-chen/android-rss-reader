@@ -23,8 +23,6 @@ import java.util.List;
  * Created by Ashton Chen on 15-12-14.
  */
 public class SubscriptionListFragment extends MasterDetailListFragment<SubscriptionRecyclerViewAdapter,SubscriptionComponent> implements SubscriptionNetworkCallbackInterface {
-
-    private List<Channel> mList;
     /**
      * Mandator y empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -94,8 +92,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
 
     @Override
     protected SubscriptionRecyclerViewAdapter getAdapter() {
-        mList = mComponent.getSubscriptions();
-        return new SubscriptionRecyclerViewAdapter(mList);
+        return new SubscriptionRecyclerViewAdapter(mComponent.getData());
     }
 
     @Override
@@ -110,13 +107,11 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
                 Log.d(this.getClass().getName(), "Long click at " + position);
-                mComponent.removeSubscription(mList.get(position));
-                mList.remove(position);
+                mComponent.removeData(position);
 
-                mAdapter.notifyItemRangeChanged(position, mList.size());
-
+                mAdapter.notifyItemRangeChanged(position, mComponent.getData().size());
                 mAdapter.notifyItemRemoved(position);
-                Toast.makeText(mContext, R.string.toast_rss_removed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
                 return true;
             }
         };

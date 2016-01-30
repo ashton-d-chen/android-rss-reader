@@ -21,7 +21,8 @@ public class FavoriteDAO extends BaseDAO<Feed> {
         super(context);
     }
 
-    public boolean findItemExist(String url) {
+    @Override
+    public boolean findItem(String url) {
         String[] projection = {
                 RSSReaderContract.FavoriteEntry._ID,
                 RSSReaderContract.FavoriteEntry.COLUMN_NAME_URL,
@@ -50,6 +51,7 @@ public class FavoriteDAO extends BaseDAO<Feed> {
         return itemExist;
     }
 
+    @Override
     public List<Feed> getAllItems() {
         List<Feed> items = new ArrayList<Feed>();
 
@@ -87,6 +89,7 @@ public class FavoriteDAO extends BaseDAO<Feed> {
         return items;
     }
 
+    @Override
     public long addItem(Feed favorite) {
         open();
         ContentValues values = new ContentValues();
@@ -99,6 +102,7 @@ public class FavoriteDAO extends BaseDAO<Feed> {
         return newRowId;
     }
 
+    @Override
     public int removeItem(Feed favorite) {
         String selection = RSSReaderContract.FavoriteEntry.COLUMN_NAME_URL + " = ?";
         String[] selectionArgs = {String.valueOf(favorite.getUrl())};

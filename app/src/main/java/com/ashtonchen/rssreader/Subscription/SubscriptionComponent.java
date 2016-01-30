@@ -34,23 +34,8 @@ public class SubscriptionComponent extends DatabaseComponent<SubscriptionDAO, Ch
         return Channels.find(mContext, url);
     }
 
-    public void addNewSubscription(Channel subscription) {
-        addData(subscription);
-        Channels.add(subscription);
-    }
-
-    public void removeSubscription(Channel subscription) {
-        removeData(subscription);
-        Channels.remove(mContext, subscription);
-        Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
-    }
-
     public void loadSubscriptionInfo(String url, FeedNetworkCallbackInterface callback) {
         this.feedNetworkHelper.getSubscriptionInfo(url, callback);
-    }
-
-    public List<Channel> getSubscriptions() {
-        return getData();
     }
 
     public boolean getNewSubscriptionAdded() {

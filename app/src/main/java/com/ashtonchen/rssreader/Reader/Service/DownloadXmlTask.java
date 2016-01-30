@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by ashtonchen on 15-12-09.
+ * Created by Ashton Chen on 15-12-09.
  */
 public class DownloadXmlTask extends AsyncTask<String, Void, Channel> {
     FeedNetworkCallbackInterface callback;

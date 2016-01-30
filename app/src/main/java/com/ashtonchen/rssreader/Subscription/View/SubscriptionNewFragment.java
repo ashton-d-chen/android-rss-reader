@@ -147,7 +147,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
                 //link = "http://rss.cnn.com/rss/cnn_topstories.rss";
                 if (!mRSSlink.isEmpty()) {
                     if (Patterns.WEB_URL.matcher(mRSSlink).matches()) {
-                        if (!mComponent.subscriptionExists(mRSSlink)) {
+                        if (!mComponent.findData(mRSSlink)) {
                             Log.d(getClass().getName(), "Subscription does not exist in database");
                             mComponent.loadSubscriptionInfo(mRSSlink, callback);
                         }
@@ -178,7 +178,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         if (channel != null) {
             Log.d(this.getClass().getName(), "got new channel");
             channel.setUrl(mRSSlink);
-            mComponent.addNewSubscription(channel);
+            mComponent.addData(channel);
             Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
             getActivity().onBackPressed();
         }

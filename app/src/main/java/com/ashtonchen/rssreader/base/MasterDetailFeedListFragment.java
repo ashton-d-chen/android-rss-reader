@@ -6,13 +6,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.main.view.MainActivity;
 import com.ashtonchen.rssreader.reader.view.detail.FeedDetailFragment;
 
 /**
  * Created by Ashton Chen on 16-01-26.
  */
-public abstract class MasterDetailFeedListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent> extends MasterDetailListFragment<T , S> {
+public abstract class MasterDetailFeedListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent> extends MasterDetailListFragment<T, S> {
     @Override
     protected void setupRecyclerView(View view) {
         super.setupRecyclerView(view);
@@ -25,15 +24,17 @@ public abstract class MasterDetailFeedListFragment<T extends BaseRecyclerViewAda
             @Override
             public void onClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
-                Log.d(this.getClass().getName(), "clicked position =  " + position);
+                Log.d(this.getClass().getName(), "item clicked position =  " + position);
                 if (mTwoPane) {
+                    Log.d(this.getClass().getName(), "It's two panel");
                     Fragment fragment = FeedDetailFragment.newInstance(position);
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.feed_detail_container, fragment)
                             .commit();
                 } else {
+                    Log.d(this.getClass().getName(), "It's single panel");
                     Fragment fragment = FeedDetailFragment.newInstance(position);
-                    ((MainActivity) mContext).fragmentTransaction(fragment);
+                    mContext.fragmentTransaction(fragment);
                 }
             }
         };

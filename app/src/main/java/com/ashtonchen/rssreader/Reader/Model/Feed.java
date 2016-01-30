@@ -7,17 +7,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by ashtonchen on 15-12-09.
+ * Created by Ashton Chen on 15-12-09.
  */
 public class Feed implements Comparable<Feed> {
-    private String webTitle;
-    private String webThumbnailURL;
-    private String webDescription;
-    private String title;
-    private String description;
-    private String url;
-    private String thumbnailURL;
-    private String pubDate;
+    private String webTitle = "";
+    private String webThumbnailURL = "";
+    private String webDescription = "";
+    private String title = "";
+    private String description = "";
+    private String url = "";
+    private String thumbnailURL = "";
+    private String pubDate = "";
 
     public String getWebTitle() {
         return webTitle;
@@ -32,7 +32,7 @@ public class Feed implements Comparable<Feed> {
     }
 
     public void setWebThumbnailURL(String webThumbnailURL) {
-        this.webThumbnailURL = webThumbnailURL;
+            this.webThumbnailURL = webThumbnailURL;
     }
 
     public String getWebDescription() {
@@ -72,7 +72,7 @@ public class Feed implements Comparable<Feed> {
     }
 
     public void setThumbnailURL(String thumbnailURL) {
-        this.thumbnailURL = thumbnailURL;
+            this.thumbnailURL = thumbnailURL;
     }
 
     public String getPubDate() {

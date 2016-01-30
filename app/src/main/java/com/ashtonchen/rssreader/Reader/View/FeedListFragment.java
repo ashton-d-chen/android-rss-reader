@@ -27,6 +27,7 @@ import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
 import com.ashtonchen.rssreader.reader.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Channels;
+import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.reader.model.Feeds;
 import com.ashtonchen.rssreader.reader.view.adapter.FeedViewAdapter;
 
@@ -139,14 +140,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             }
         });
 
-        Log.d(this.getClass().getName(), "try to find two panes");
-        if (view.findViewById(R.id.feed_detail_container) != null) {
-            Log.d(this.getClass().getName(), "two panes");
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
+        if (mTwoPane) {
             FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.feed_detail_container);
             frameLayout.addView(fab);
         } else {
@@ -185,11 +179,13 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
                 Log.d(this.getClass().getName(), "Long click on position = " + position);
-                Favorites.add(Feeds.get(position));
-                FavoriteDAO helper = new FavoriteDAO(mContext);
-                long result = helper.addItem(Feeds.get(position));
-                if (result > 0) {
-                    Toast.makeText(mContext, R.string.toast_added_to_favorite, Toast.LENGTH_SHORT).show();
+                Feed feed = Feeds.get(position);
+
+                if (!mComponent.findFavorite(feed.getUrl())) {
+                    long result = mComponent.addToFavorite(feed);
+                    if (result > 0) {
+                        Toast.makeText(mContext, R.string.toast_added_to_favorite, Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return true;
             }

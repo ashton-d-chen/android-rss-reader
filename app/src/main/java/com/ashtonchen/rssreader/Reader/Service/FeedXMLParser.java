@@ -1,7 +1,7 @@
 package com.ashtonchen.rssreader.reader.service;
 
 /**
- * Created by ashtonchen on 15-12-09.
+ * Created by Ashton Chen on 15-12-09.
  */
 
 import android.util.Log;

@@ -19,7 +19,7 @@ public class Channels {
 
     public static boolean find(Context context, String url) {
         SubscriptionDAO subscriptionDAO = new SubscriptionDAO(context);
-        return subscriptionDAO.findItemExist(url);
+        return subscriptionDAO.findItem(url);
     }
 
     public static void add(Channel item) {

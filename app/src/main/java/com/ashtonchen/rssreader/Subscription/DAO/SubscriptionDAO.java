@@ -21,7 +21,8 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
         super(context);
     }
 
-    public boolean findItemExist(String url) {
+    @Override
+    public boolean findItem(String url) {
         String[] projection = {
                 RSSReaderContract.SubscriptionEntry._ID,
                 RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL,
@@ -50,6 +51,7 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
         return itemExist;
     }
 
+    @Override
     public List<Channel> getAllItems() {
         List<Channel> items = new ArrayList<Channel>();
 
@@ -87,6 +89,7 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
         return items;
     }
 
+    @Override
     public long addItem(Channel subscription) {
 
         ContentValues values = new ContentValues();
@@ -98,6 +101,7 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
         return database.insert(RSSReaderContract.SubscriptionEntry.TABLE_NAME, null, values);
     }
 
+    @Override
     public int removeItem(Channel subscription) {
         String selection = RSSReaderContract.SubscriptionEntry.COLUMN_NAME_URL + " = ?";
         String[] selectionArgs = {String.valueOf(subscription.getUrl())};

@@ -11,16 +11,11 @@ import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
 import com.ashtonchen.rssreader.favorite.FavoriteComponent;
 import com.ashtonchen.rssreader.favorite.view.adapter.FavoriteViewAdapter;
-import com.ashtonchen.rssreader.reader.model.Feed;
-
-import java.util.List;
 
 /**
  * Created by Ashton Chen on 16-01-25.
  */
 public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteViewAdapter, FavoriteComponent> {
-
-    private FavoriteComponent mFavoriteComponent;
 
     public static FavoriteListFragment newInstance() {
         return new FavoriteListFragment();
@@ -29,7 +24,6 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFavoriteComponent = new FavoriteComponent(mContext);
         setSubtitle(R.string.action_bar_subtitle_favorites);
     }
 
@@ -48,7 +42,7 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
 
     @Override
     protected FavoriteViewAdapter getAdapter() {
-        return new FavoriteViewAdapter(mFavoriteComponent.getData());
+        return new FavoriteViewAdapter(mComponent.getData());
     }
 
     @Override
@@ -59,10 +53,10 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
                 Log.d(this.getClass().getName(), "Long click on position = " + position);
-                List<Feed> list = mAdapter.getList();
-                Feed feed = list.get(position);
-                int result = mFavoriteComponent.removeData(feed);
+                int result = mComponent.removeData(position);
                 if (result > 0) {
+                    mAdapter.notifyItemRemoved(position);
+                    mAdapter.notifyItemRangeChanged(position, mComponent.getData().size() - 1);
                     Toast.makeText(mContext, R.string.toast_removed_from_favorite, Toast.LENGTH_SHORT).show();
                 }
                 return true;

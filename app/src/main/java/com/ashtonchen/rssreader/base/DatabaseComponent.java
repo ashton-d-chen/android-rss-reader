@@ -11,6 +11,7 @@ import java.util.List;
  */
 public abstract class DatabaseComponent<T extends BaseDAO<S>, S> extends BaseComponent {
     protected T mDAO;
+    protected List<S> mList;
 
     public DatabaseComponent(Context context) {
         super(context);
@@ -28,14 +29,30 @@ public abstract class DatabaseComponent<T extends BaseDAO<S>, S> extends BaseCom
     protected abstract T getDAO();
 
     public List<S> getData() {
-        return mDAO.getAllItems();
+        if (mList == null) {
+            mList = mDAO.getAllItems();
+        }
+        return mList;
     }
 
     public long addData(S data) {
+        if (mList == null) {
+            mList = mDAO.getAllItems();
+        }
+        mList.add(data);
         return mDAO.addItem(data);
     }
 
-    public int removeData(S data) {
+    public int removeData(int position) {
+        if (mList == null) {
+            mList = mDAO.getAllItems();
+        }
+        S data = mList.get(position);
+        mList.remove(position);
         return mDAO.removeItem(data);
+    }
+
+    public boolean findData(String id) {
+        return mDAO.findItem(id);
     }
 }

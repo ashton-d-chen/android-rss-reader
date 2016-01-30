@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by ashtonchen on 15-12-09.
+ * Created by Ashton Chen on 15-12-09.
  */
 public abstract class RSSRecyclerViewAdapter
         extends BaseRecyclerViewAdapter<Feed, FeedViewHolder> {

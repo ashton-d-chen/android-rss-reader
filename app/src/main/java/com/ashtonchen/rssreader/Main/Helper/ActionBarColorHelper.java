@@ -28,93 +28,6 @@ import java.util.ArrayList;
  */
 public final class ActionBarColorHelper {
 
-    /**
-     * Use this method to colorize toolbar icons to the desired target color
-     *
-     * @param toolbarView       toolbar view being colored
-     * @param toolbarIconsColor the target color of toolbar icons
-     */
- /*   public static void colorizeToolbar(Toolbar toolbarView, int toolbarIconsColor, Activity activity) {
-        final PorterDuffColorFilter colorFilter
-                = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.MULTIPLY);
-
-        Log.d("ActionBarColorHelper", " toolbar view chlid count = " + toolbarView.getChildCount());
-        for (int i = 0; i < toolbarView.getChildCount(); i++) {
-            final View v = toolbarView.getChildAt(i);
-
-            Log.d("ActionBarColorHelper", "view is " + v.getClass().getName());
-            //Step 1 : Changing the color of back button (or open drawer button).
-            if (v instanceof ImageButton) {
-                //Action Bar back button
-                ((ImageButton) v).getDrawable().setColorFilter(colorFilter);
-            }
-
-            if(v instanceof ImageView) {
-                ((ImageView)v).getDrawable().setAlpha(255);
-                ((ImageView)v).getDrawable().setColorFilter(colorFilter);
-            }
-
-            if(v instanceof AutoCompleteTextView) {
-                ((AutoCompleteTextView)v).setTextColor(toolbarIconsColor);
-            }
-
-            if(v instanceof TextView) {
-                ((TextView)v).setTextColor(toolbarIconsColor);
-            }
-
-            if(v instanceof EditText) {
-                ((EditText)v).setTextColor(toolbarIconsColor);
-            }
-
-            if (v instanceof ViewGroup){
-                for (int lli =0; lli< ((ViewGroup)v).getChildCount(); lli ++){
-                    colorizeToolbar(((ViewGroup) v).getChildAt(lli), toolbarIconsColor, activity);
-                }
-            }
-
-            if (v instanceof ActionMenuView) {
-                Log.d("ActionBarColorHelper", " it is action menu view");
-                Log.d("ActionBarColorHelper", " chlid count = " + ((ActionMenuView) v).getChildCount());
-                if (((ActionMenuView) v).getChildCount() == 0) {
-
-                }
-                for (int j = 0; j < ((ActionMenuView) v).getChildCount(); j++) {
-
-                    //Step 2: Changing the color of any ActionMenuViews - icons that
-                    //are not back button, nor text, nor overflow menu icon.
-                    final View innerView = ((ActionMenuView) v).getChildAt(j);
-
-                    if (innerView instanceof ActionMenuItemView) {
-                        int drawablesCount = ((ActionMenuItemView) innerView).getCompoundDrawables().length;
-                        for (int k = 0; k < drawablesCount; k++) {
-                            if (((ActionMenuItemView) innerView).getCompoundDrawables()[k] != null) {
-                                final int finalK = k;
-
-                                //Important to set the color filter in seperate thread,
-                                //by adding it to the message queue
-                                //Won't work otherwise.
-                                innerView.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setColorFilter(colorFilter);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-
-            //Step 3: Changing the color of title and subtitle.
-            toolbarView.setTitleTextColor(toolbarIconsColor);
-            toolbarView.setSubtitleTextColor(toolbarIconsColor);
-
-            //Step 4: Changing the color of the Overflow Menu icon.
-            setOverflowButtonColor(activity, colorFilter);
-        }
-    }*/
-
-
     /* Use this method to colorize toolbar icons to the desired target color
     * @param toolbarView toolbar view being colored
     * @param toolbarIconsColor the target color of toolbar icons
@@ -178,7 +91,7 @@ public final class ActionBarColorHelper {
         if (v instanceof ActionMenuView) {
             ActionMenuView view = (ActionMenuView) v;
 
-            Log.d("ActionBarColorHelper", " chlid count = " + ((ActionMenuView) v).getChildCount());
+            Log.d("ActionBarColorHelper", " child count = " + ((ActionMenuView) v).getChildCount());
 
             for (int j = 0; j < ((ActionMenuView) v).getChildCount(); j++) {
 
@@ -192,7 +105,7 @@ public final class ActionBarColorHelper {
                         if (((ActionMenuItemView) innerView).getCompoundDrawables()[k] != null) {
                             final int finalK = k;
 
-                            //Important to set the color filter in seperate thread,
+                            //Important to set the color filter in separate thread,
                             //by adding it to the message queue
                             //Won't work otherwise.
                             //Works fine for my case but needs more testing
@@ -214,7 +127,7 @@ public final class ActionBarColorHelper {
 
 
     /**
-     * It's important to set overflowDescription atribute in styles, so we can grab the reference
+     * It's important to set overflowDescription attribute in styles, so we can grab the reference
      * to the overflow icon. Check: res/values/styles.xml
      *
      * @param activity

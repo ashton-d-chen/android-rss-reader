@@ -1,7 +1,7 @@
 package com.ashtonchen.rssreader.utility;
 
 /**
- * Created by ashtonchen on 15-12-10.
+ * Created by Ashton Chen on 15-12-10.
  */
 public class StringUtility {
 
