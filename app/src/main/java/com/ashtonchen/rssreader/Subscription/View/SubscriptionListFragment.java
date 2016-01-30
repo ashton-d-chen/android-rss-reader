@@ -11,11 +11,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.base.MasterDetailListFragment;
 import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.reader.model.Feed;
+import com.ashtonchen.rssreader.reader.view.detail.FeedDetailFragment;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
 import com.ashtonchen.rssreader.subscription.view.adapter.SubscriptionRecyclerViewAdapter;
+import com.ashtonchen.rssreader.subscription.view.detail.SubscriptionDetailFragment;
 
 import java.util.List;
 
@@ -96,8 +100,9 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
     }
 
     @Override
-    protected View.OnClickListener getOnClickListener() {
-        return null;
+    protected DetailFragment getDetailFragment(int position) {
+        List<Channel> list = mAdapter.getList();
+        return SubscriptionDetailFragment.newInstance(list.get(position));
     }
 
     @Override

@@ -20,13 +20,10 @@ import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
-import com.ashtonchen.rssreader.favorite.dao.FavoriteDAO;
-import com.ashtonchen.rssreader.favorite.model.Favorites;
 import com.ashtonchen.rssreader.reader.ReaderComponent;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
 import com.ashtonchen.rssreader.reader.model.Channel;
-import com.ashtonchen.rssreader.reader.model.Channels;
 import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.reader.model.Feeds;
 import com.ashtonchen.rssreader.reader.view.adapter.FeedViewAdapter;
@@ -117,8 +114,6 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
         //void onListFragmentInteraction(SubscriptionItem item);
     }
 */
-
-
     private void addFloatingActionButton(View view) {
         //FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         FloatingActionButton fab = new FloatingActionButton(getActivity());
@@ -141,10 +136,10 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
         });
 
         if (mTwoPane) {
-            FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.feed_detail_container);
+            FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.detail_container);
             frameLayout.addView(fab);
         } else {
-            ((LinearLayout)view).addView(fab);
+            ((LinearLayout) view).addView(fab);
         }
     }
 
@@ -155,7 +150,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
         }
         downloadChannelCount++;
         Log.d(this.getClass().getName(), "Downloaded Channel Count: " + downloadChannelCount);
-        if (downloadChannelCount >= Channels.size()) {
+        if (downloadChannelCount >= mComponent.getData().size()) {
             downloadChannelCount = 0;
             setupAdapter();
         }
@@ -179,7 +174,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
                 Log.d(this.getClass().getName(), "Long click on position = " + position);
-                Feed feed = Feeds.get(position);
+                Feed feed = mAdapter.getList().get(position);
 
                 if (!mComponent.findFavorite(feed.getUrl())) {
                     long result = mComponent.addToFavorite(feed);
@@ -191,6 +186,5 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             }
         };
     }
-
 }
 
