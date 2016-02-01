@@ -40,8 +40,6 @@ public class DownloadXmlTask extends AsyncTask<String, Void, Channel> {
         this.callback.onDownloadFinished(result);
     }
 
-    // Uploads XML from stackoverflow.com, parses it, and combines it with
-    // HTML markup. Returns HTML string.
     private Channel loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
         InputStream stream = null;
         FeedXMLParser parser = new FeedXMLParser();

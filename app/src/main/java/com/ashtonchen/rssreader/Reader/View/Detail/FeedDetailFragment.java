@@ -1,12 +1,15 @@
 package com.ashtonchen.rssreader.reader.view.detail;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.StyleSheet;
 import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.reader.model.Feed;
 
@@ -19,14 +22,15 @@ import com.ashtonchen.rssreader.reader.model.Feed;
 public class FeedDetailFragment extends DetailFragment {
     private Feed mFeed;
 
+    public FeedDetailFragment() {
+
+    }
+
     public static FeedDetailFragment newInstance(Feed feed) {
         FeedDetailFragment fragment = new FeedDetailFragment();
         fragment.mFeed = feed;
+
         return fragment;
-    }
-
-    public FeedDetailFragment() {
-
     }
 
     @Override
@@ -38,12 +42,49 @@ public class FeedDetailFragment extends DetailFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.feed_detail, container, false);
-
-
         if (mFeed != null) {
-            ((TextView) rootView.findViewById(R.id.feed_detail_title)).setText(mFeed.getTitle());
-            ((TextView) rootView.findViewById(R.id.feed_detail_description)).setText(mFeed.getDescription());
+            int cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
+            rootView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
+
+            TextView title = (TextView) rootView.findViewById(R.id.feed_detail_title);
+            title.setText(mFeed.getTitle());
+            title.setTextSize(StyleSheet.DETAIL_TITLE_FONT_SIZE);
+            title.setTypeface(null, Typeface.BOLD);
+
+            TextView description = (TextView) rootView.findViewById(R.id.feed_detail_description);
+            description.setText(mFeed.getDescription());
+            description.setTextSize(StyleSheet.DETAIL_DESCRIPTION_FONT_SIZE);
+
+            //ImageView imageView = (ImageView) rootView.findViewById(R.id.feed_detail_thumbnail);
+            //imageView.getViewTreeObserver().addOnGlobalLayoutListener(getGlobalLayoutListener(imageView));
         }
         return rootView;
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+ /*   protected ViewTreeObserver.OnGlobalLayoutListener getGlobalLayoutListener(final ImageView view) {
+        return new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int width = (int) (view.getWidth() * 0.5);
+                if (!mFeed.getThumbnailURL().isEmpty()) {
+                    Picasso
+                            .with(mContext)
+                            .load(mFeed.getThumbnailURL())
+                            .resize(width, width)
+                            .into(view);
+                } else if (!mFeed.getWebThumbnailURL().isEmpty()) {
+                    Picasso
+                            .with(mContext)
+                            .load(mFeed.getWebThumbnailURL())
+                            .resize(width, width)
+                            .into(view);
+                }
+            }
+        };
+    }*/
 }

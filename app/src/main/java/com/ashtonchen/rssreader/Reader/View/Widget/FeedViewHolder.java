@@ -1,12 +1,13 @@
 package com.ashtonchen.rssreader.reader.view.widget;
 
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ashtonchen.rssreader.base.BaseRecyclerViewHolder;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.StyleSheet;
+import com.ashtonchen.rssreader.base.BaseRecyclerViewHolder;
 import com.ashtonchen.rssreader.reader.model.Feed;
 
 /**
@@ -39,6 +40,7 @@ public class FeedViewHolder extends BaseRecyclerViewHolder {
         mTitle.setPadding(0, 0, 0, cellTextViewSpacing);
         mTitle.setLineSpacing(0, StyleSheet.CELL_TITLE_LINE_HEIGHT_MULTIPLIER);
         mTitle.setTextSize(StyleSheet.CELL_TITLE_FONT_SIZE);
+        mTitle.setTypeface(null, Typeface.BOLD);
         //mTitle.setBackgroundColor(Color.RED);
 
         mDescription = (TextView) view.findViewById(R.id.feed_description);

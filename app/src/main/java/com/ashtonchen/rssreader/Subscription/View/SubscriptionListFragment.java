@@ -14,8 +14,6 @@ import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.base.MasterDetailListFragment;
 import com.ashtonchen.rssreader.reader.model.Channel;
-import com.ashtonchen.rssreader.reader.model.Feed;
-import com.ashtonchen.rssreader.reader.view.detail.FeedDetailFragment;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
 import com.ashtonchen.rssreader.subscription.view.adapter.SubscriptionRecyclerViewAdapter;
@@ -28,7 +26,7 @@ import java.util.List;
  */
 public class SubscriptionListFragment extends MasterDetailListFragment<SubscriptionRecyclerViewAdapter,SubscriptionComponent> implements SubscriptionNetworkCallbackInterface {
     /**
-     * Mandator y empty constructor for the fragment manager to instantiate the
+     * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public SubscriptionListFragment() {

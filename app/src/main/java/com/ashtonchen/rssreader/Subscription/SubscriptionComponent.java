@@ -1,17 +1,12 @@
 package com.ashtonchen.rssreader.subscription;
 
 import android.content.Context;
-import android.widget.Toast;
 
-import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.DatabaseComponent;
 import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.model.Channel;
-import com.ashtonchen.rssreader.reader.model.Channels;
 import com.ashtonchen.rssreader.subscription.dao.SubscriptionDAO;
-
-import java.util.List;
 
 /**
  * Created by Ashton Chen on 15-12-14.
@@ -21,7 +16,7 @@ public class SubscriptionComponent extends DatabaseComponent<SubscriptionDAO, Ch
 
     public SubscriptionComponent(Context context) {
         super(context);
-        this.feedNetworkHelper = new FeedNetworkHelper(mContext);
+        this.feedNetworkHelper = new FeedNetworkHelper();
     }
 
     @Override

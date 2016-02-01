@@ -26,7 +26,7 @@ public class ReaderComponent extends DatabaseComponent<SubscriptionDAO, Channel>
 
     public ReaderComponent(Context context, FeedListFragment fragment) {
         super(context);
-        mFeedNetworkHelper = new FeedNetworkHelper(mContext);
+        mFeedNetworkHelper = new FeedNetworkHelper();
         mFragment = fragment;
         mFavoriteDAO = new FavoriteDAO(mContext);
     }

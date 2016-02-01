@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
+import com.ashtonchen.rssreader.favorite.view.FavoriteListFragment;
 import com.ashtonchen.rssreader.reader.ReaderComponent;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
@@ -130,8 +131,8 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             @Override
             public void onClick(View view) {
                 Log.d(this.getClass().getName(), "Floating action button clicked!");
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Fragment fragment = FavoriteListFragment.newInstance();
+                mContext.fragmentTransaction(fragment);
             }
         });
 
