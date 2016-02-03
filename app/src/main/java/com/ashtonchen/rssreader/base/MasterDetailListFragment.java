@@ -1,8 +1,8 @@
 package com.ashtonchen.rssreader.base;
 
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,6 +25,8 @@ import java.util.List;
  * Created by Ashton Chen on 15-12-14.
  */
 public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent, U> extends DatabaseComponentFragment<S> {
+    private static final String BUNDLE_RECYCLER_LAYOUT = "KeyForLayoutManagerState";
+    private static Bundle mBundleRecyclerViewState;
 
     protected EmptyRecyclerView mRecyclerView;
     protected boolean mTwoPane;
@@ -72,8 +74,24 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+        // save RecyclerView state
+        mBundleRecyclerViewState = new Bundle();
+        Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        mBundleRecyclerViewState.putParcelable(BUNDLE_RECYCLER_LAYOUT, listState);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+
+        // restore RecyclerView state
+        if (mBundleRecyclerViewState != null) {
+            Parcelable listState = mBundleRecyclerViewState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
+        }
     }
 
     public final void setupAdapter() {
