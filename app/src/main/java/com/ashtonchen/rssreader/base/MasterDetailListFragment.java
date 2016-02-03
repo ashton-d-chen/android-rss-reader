@@ -138,17 +138,17 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
                 Log.d(this.getClass().getName(), "item clicked position =  " + position);
                 if (mTwoPane) {
                     Log.d(this.getClass().getName(), "It's two panel");
-                    setDetailContent(position);
+                    DisplayDetailContent(position);
                 } else {
                     Log.d(this.getClass().getName(), "It's single panel");
                     Fragment fragment = getDetailFragment(position);
-                    mContext.fragmentTransaction(fragment);
+                    mContext.displayFragment(fragment);
                 }
             }
         };
     }
 
-    protected final void setDetailContent(int position) {
+    protected final void DisplayDetailContent(int position) {
         Fragment fragment = getDetailFragment(position);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.detail_container, fragment)
@@ -178,7 +178,7 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
                 mAdapter.setList(result);
                 mAdapter.notifyDataSetChanged();
                 if (mTwoPane && mAdapter.getItemCount() > 0) {
-                    setDetailContent(0);
+                    DisplayDetailContent(0);
                 }
             }
         }.execute();

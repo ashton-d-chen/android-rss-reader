@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
@@ -87,7 +86,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Fragment fragment = SubscriptionNewFragment.newInstance();
-                mContext.fragmentTransaction(fragment);
+                mContext.displayFragment(fragment);
                 return true;
             }
         });
@@ -148,7 +147,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             public void onClick(View view) {
                 Log.d(this.getClass().getName(), "Floating action button clicked!");
                 Fragment fragment = FavoriteListFragment.newInstance();
-                mContext.fragmentTransaction(fragment);
+                mContext.displayFragment(fragment);
             }
         });
 
@@ -173,7 +172,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             mAdapter.setList(Feeds.getFeeds());
             mAdapter.notifyDataSetChanged();
             if (mTwoPane && mAdapter.getItemCount() > 0) {
-                setDetailContent(0);
+                DisplayDetailContent(0);
             }
         }
 

@@ -144,7 +144,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
             public boolean onMenuItemClick(MenuItem item) {
                 Fragment fragment = SubscriptionNewFragment.newInstance();
                 fragment.setTargetFragment(listFragment, NEW_SUBSCRIPTION);
-                mContext.fragmentTransaction(fragment);
+                mContext.displayFragment(fragment);
                 return true;
             }
         };

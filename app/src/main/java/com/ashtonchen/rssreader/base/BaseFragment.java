@@ -41,7 +41,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        ActionBarColorHelper.colorizeToolbar(mContext.getToolbar(), Color.WHITE);
+        ActionBarColorHelper.colorizeToolbar(mContext.getToolBar(), Color.WHITE);
     }
 
     protected final void setSubtitle(int subtitle) {

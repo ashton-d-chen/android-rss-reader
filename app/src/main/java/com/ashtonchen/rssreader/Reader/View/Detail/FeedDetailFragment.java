@@ -78,7 +78,7 @@ public class FeedDetailFragment extends DetailFragment {
             public void onClick(View v) {
                 Log.d(this.getClass().getName(), "detail view clicked");
                 WebViewFragment fragment = WebViewFragment.newInstance(mFeed.getUrl());
-                mContext.fragmentTransaction(fragment);
+                mContext.displayFragment(fragment);
             }
         };
     }
