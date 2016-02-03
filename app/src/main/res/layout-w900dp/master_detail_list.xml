@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,32 +7,26 @@
     android:orientation="horizontal"
     android:showDividers="middle">
 
-    <!--
-    This layout is a two-pane layout for the Feeds
-    master/detail flow.
-    
-    -->
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_list"
+        android:layout_width="@dimen/item_width"
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/list"
-            android:name="com.ashtonchen.rssreader.FeedListFragment"
-            android:layout_width="@dimen/item_width"
-            android:layout_height="match_parent"
-            app:layoutManager="LinearLayoutManager"
-            tools:context=".main.view.MainActivity"
-            tools:listitem="@layout/feed_list_cell" />
-    </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <FrameLayout
         android:id="@+id/detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:padding="@dimen/fragment_feed_detail_padding"
-        android:layout_weight="3"/>
+        android:layout_weight="3"
+        android:padding="@dimen/fragment_feed_detail_padding" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

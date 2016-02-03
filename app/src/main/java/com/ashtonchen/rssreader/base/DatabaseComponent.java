@@ -1,9 +1,11 @@
 package com.ashtonchen.rssreader.base;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ashtonchen.rssreader.database.BaseDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +18,7 @@ public abstract class DatabaseComponent<T extends BaseDAO<S>, S> extends BaseCom
     public DatabaseComponent(Context context) {
         super(context);
         mDAO = getDAO();
+        mList = new ArrayList<S>();
     }
 
     public void openDAO() {
@@ -28,25 +31,23 @@ public abstract class DatabaseComponent<T extends BaseDAO<S>, S> extends BaseCom
 
     protected abstract T getDAO();
 
+    public List<S> loadData() {
+        mList = mDAO.getAllItems();
+        return mList;
+    }
+
     public List<S> getData() {
-        if (mList == null) {
-            mList = mDAO.getAllItems();
-        }
+        Log.d(this.getClass().getName(), "component get data size = " + mList.size() );
         return mList;
     }
 
     public long addData(S data) {
-        if (mList == null) {
-            mList = mDAO.getAllItems();
-        }
+        long result = mDAO.addItem(data);
         mList.add(data);
-        return mDAO.addItem(data);
+        return result;
     }
 
     public int removeData(int position) {
-        if (mList == null) {
-            mList = mDAO.getAllItems();
-        }
         S data = mList.get(position);
         mList.remove(position);
         return mDAO.removeItem(data);
@@ -55,4 +56,5 @@ public abstract class DatabaseComponent<T extends BaseDAO<S>, S> extends BaseCom
     public boolean findData(String id) {
         return mDAO.findItem(id);
     }
+
 }

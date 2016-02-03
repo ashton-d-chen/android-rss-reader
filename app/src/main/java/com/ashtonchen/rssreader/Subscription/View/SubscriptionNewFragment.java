@@ -1,5 +1,6 @@
 package com.ashtonchen.rssreader.subscription.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ashtonchen.rssreader.base.BaseFragment;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.ComponentFragment;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
@@ -57,7 +57,6 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setSubtitle(R.string.action_bar_subtitle_new_subscription);
     }
 
@@ -77,22 +76,17 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         Button cancelButton = new Button(mContext);
         cancelButton.setText(R.string.button_cancel);
         cancelButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
+        cancelButton.setOnClickListener(getOnCancelButtonClicked());
 
-        Button button = new Button(mContext);
-        button.setText(R.string.button_subscribe);
-        button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        button.setOnClickListener(onAddNewButtonClicked(this));
+        Button okButton = new Button(mContext);
+        okButton.setText(R.string.button_subscribe);
+        okButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        okButton.setOnClickListener(getOnAddNewButtonClicked(this));
 
         LinearLayout buttonLinearLayout = new LinearLayout(mContext);
         buttonLinearLayout.setGravity(Gravity.CENTER);
         buttonLinearLayout.addView(cancelButton);
-        buttonLinearLayout.addView(button);
+        buttonLinearLayout.addView(okButton);
 
         LinearLayout linearLayout = new LinearLayout(mContext);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -139,7 +133,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         return new SubscriptionComponent(mContext);
     }
 
-    private View.OnClickListener onAddNewButtonClicked(final FeedNetworkCallbackInterface callback) {
+    private View.OnClickListener getOnAddNewButtonClicked(final FeedNetworkCallbackInterface callback) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +142,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
                 if (!mRSSlink.isEmpty()) {
                     if (Patterns.WEB_URL.matcher(mRSSlink).matches()) {
                         if (!mComponent.findData(mRSSlink)) {
-                            Log.d(getClass().getName(), "Subscription does not exist in database");
+                            Log.d(getClass().getName(), "Add RSS link");
                             mComponent.loadSubscriptionInfo(mRSSlink, callback);
                         }
                     }
@@ -174,11 +168,23 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         };
     }
 
+    private View.OnClickListener getOnCancelButtonClicked() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
+                getActivity().onBackPressed();
+            }
+        };
+    }
     public void onDownloadFinished(Channel channel) {
         if (channel != null) {
             Log.d(this.getClass().getName(), "got new channel");
             channel.setUrl(mRSSlink);
             mComponent.addData(channel);
+            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
+
             Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
             getActivity().onBackPressed();
         }

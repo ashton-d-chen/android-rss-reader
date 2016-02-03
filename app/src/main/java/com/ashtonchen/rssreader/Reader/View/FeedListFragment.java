@@ -2,10 +2,11 @@ package com.ashtonchen.rssreader.reader.view;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +29,10 @@ import com.ashtonchen.rssreader.reader.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.reader.model.Feeds;
 import com.ashtonchen.rssreader.reader.view.adapter.FeedViewAdapter;
+import com.ashtonchen.rssreader.subscription.view.SubscriptionNewFragment;
+import com.ashtonchen.rssreader.utility.NetworkUtility;
+
+import java.util.List;
 
 /**
  * Created by Ashton Chen on 15-12-12.
@@ -43,6 +48,7 @@ import com.ashtonchen.rssreader.reader.view.adapter.FeedViewAdapter;
 public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapter, ReaderComponent> implements FeedNetworkCallbackInterface {
 
     private int downloadChannelCount = 0;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -68,21 +74,30 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        mListContainer.setEnabled(true);
+        mListContainer.setOnRefreshListener(getSwipeRefreshLayoutListener(this));
         addFloatingActionButton(view);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        Log.d(this.getClass().getName(), "Start getting feed list");
-        mComponent.getFeedList(this);
-    }
-
-    @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.add(Menu.NONE, R.id.action_refresh_feed, Menu.NONE, "Refresh");
-        item.setIcon(R.drawable.ic_refresh);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        MenuItem addItem = menu.add(Menu.NONE, R.id.subscription_new, Menu.NONE, "Add");
+        addItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Fragment fragment = SubscriptionNewFragment.newInstance();
+                mContext.fragmentTransaction(fragment);
+                return true;
+            }
+        });
+        addItem.setIcon(R.drawable.ic_action_bar_add);
+        addItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        MenuItem refreshItem = menu.add(Menu.NONE, R.id.action_refresh_feed, Menu.NONE, "Refresh");
+        refreshItem.setIcon(R.drawable.ic_refresh);
+        refreshItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -90,7 +105,8 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh_feed:
-                mComponent.getFeedList(this);
+                mListContainer.setRefreshing(true);
+                getFeedList();
                 // User chose the "Settings" item, show the app settings UI...
                 return true;
             default:
@@ -136,12 +152,12 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             }
         });
 
-        if (mTwoPane) {
+ /*       if (mTwoPane) {
             FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.detail_container);
             frameLayout.addView(fab);
         } else {
-            ((LinearLayout) view).addView(fab);
-        }
+            mListContainer.addView(fab);
+        }*/
     }
 
 
@@ -153,14 +169,20 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
         Log.d(this.getClass().getName(), "Downloaded Channel Count: " + downloadChannelCount);
         if (downloadChannelCount >= mComponent.getData().size()) {
             downloadChannelCount = 0;
-            setupAdapter();
+            mListContainer.setRefreshing(false);
+            mAdapter.setList(Feeds.getFeeds());
+            mAdapter.notifyDataSetChanged();
+            if (mTwoPane && mAdapter.getItemCount() > 0) {
+                setDetailContent(0);
+            }
         }
+
         //mFeedViewAdapter.setData(mChannel);
     }
 
     @Override
     protected ReaderComponent getComponent() {
-        return new ReaderComponent(mContext, this);
+        return new ReaderComponent(mContext);
     }
 
     @Override
@@ -186,6 +208,59 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
                 return true;
             }
         };
+    }
+
+
+    private SwipeRefreshLayout.OnRefreshListener getSwipeRefreshLayoutListener(final FeedListFragment fragment) {
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mListContainer.setRefreshing(true);
+                getFeedList();
+            }
+        };
+    }
+
+    @Override
+    protected String getEmptyViewMessage() {
+        return getString(R.string.list_empty_list_message_no_feed);
+    }
+
+    private void getFeedList() {
+        Log.d(this.getClass().getName(), "get feed list");
+        if (NetworkUtility.isOnline(mContext)) {
+            mComponent.getFeedList(this);
+        } else if (Feeds.size() > 0) {
+            Log.d(this.getClass().getName(), "is offline, get list from Feeds");
+            setupAdapter();
+            //mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void startGetItemListsTask() {
+        new AsyncTask<Void, String, List<Channel>>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+            }
+
+            @Override
+            protected List<Channel> doInBackground(Void... params) {
+                return mComponent.loadData();
+            }
+
+            @Override
+            protected void onPostExecute(List<Channel> result) {
+                Log.d(this.getClass().getName(), "onPostExecute: adapter list size = " + result.size());
+                getFeedList();
+            }
+        }.execute();
     }
 }
 

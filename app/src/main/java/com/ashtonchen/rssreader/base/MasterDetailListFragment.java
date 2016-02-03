@@ -1,17 +1,22 @@
 package com.ashtonchen.rssreader.base;
 
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.reader.model.Feed;
-import com.ashtonchen.rssreader.reader.view.detail.FeedDetailFragment;
 import com.ashtonchen.rssreader.reader.view.widget.DecoratedItemRecyclerView;
 
 import java.util.List;
@@ -19,11 +24,14 @@ import java.util.List;
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent> extends DatabaseComponentFragment<S> {
+public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent, U> extends DatabaseComponentFragment<S> {
 
-    protected RecyclerView mRecyclerView;
+    protected EmptyRecyclerView mRecyclerView;
     protected boolean mTwoPane;
     protected T mAdapter;
+    protected SwipeRefreshLayout mListContainer;
+    protected SwipeRefreshLayout mEmptyListContainer;
+    protected View mDetailView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,39 +41,78 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.master_detail_list, container, false);
+        LinearLayout rootView = (LinearLayout) inflater.inflate(R.layout.master_detail_list, container, false);
         Log.d(this.getClass().getName(), "try to find two panes");
-
-        if (view.findViewById(R.id.detail_container) != null) {
+        mDetailView = rootView.findViewById(R.id.detail_container);
+        if (mDetailView != null) {
             mTwoPane = true;
+            mDetailView.setVisibility(View.GONE);
         }
 
-        setupRecyclerView(view);
-        return view;
+        mListContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout_list);
+        mListContainer.setEnabled(false);
+        mListContainer.setBackgroundColor(Color.GREEN);
+        mListContainer.setVisibility(View.GONE);
+
+        mEmptyListContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout_empty_view);
+        mEmptyListContainer.setEnabled(false);
+        mEmptyListContainer.setBackgroundColor(Color.YELLOW);
+        mEmptyListContainer.addView(getEmptyView());
+        mEmptyListContainer.setVisibility(View.GONE);
+
+        setupAdapter();
+        setupRecyclerView();
+
+        return rootView;
     }
 
-    protected void setupRecyclerView(View view) {
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
-
-        if (mRecyclerView == null) {
-            Log.d(this.getClass().getName(), "recycler view is null");
-        }
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        startGetItemListsTask();
     }
 
-    public void setupAdapter() {
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    public final void setupAdapter() {
+        Log.d(this.getClass().getName(), "setup adapter");
         mAdapter = getAdapter();
         mAdapter.setOnClickListener(getOnClickListener());
         mAdapter.setOnLongClickListener(getOnLongClickListener());
-        mRecyclerView.setAdapter(mAdapter);
-        if (mTwoPane && mAdapter.getItemCount() > 0) {
-            setDetailContent(0);
+    }
+
+    protected final View getEmptyView() {
+        TextView view = new TextView(mContext);
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        view.setText(getEmptyViewMessage());
+        view.setGravity(Gravity.CENTER);
+        view.setTextSize(18);
+        view.setBackgroundColor(Color.RED);
+
+        return view;
+    }
+
+    protected final void setupRecyclerView() {
+        mRecyclerView = new EmptyRecyclerView(mContext);
+        mRecyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mRecyclerView.setBackgroundColor(Color.BLUE);
+        if (mRecyclerView == null) {
+            Log.d(this.getClass().getName(), "recycler view is null");
         }
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
+
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setContainerView(mListContainer);
+        mRecyclerView.setEmptyView(mEmptyListContainer);
+        mRecyclerView.setDetailView(mDetailView);
+        mListContainer.addView(mRecyclerView);
     }
 
     protected RecyclerView.OnClickListener getOnClickListener() {
-
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,11 +130,40 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         };
     }
 
-    protected void setDetailContent(int position) {
+    protected final void setDetailContent(int position) {
         Fragment fragment = getDetailFragment(position);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.detail_container, fragment)
                 .commit();
+    }
+
+    protected void startGetItemListsTask() {
+        new AsyncTask<Void, String, List<U>>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+            }
+
+            @Override
+            protected List<U> doInBackground(Void... params) {
+                return mComponent.loadData();
+            }
+
+            @Override
+            protected void onPostExecute(List<U> result) {
+                Log.d(this.getClass().getName(), "onPostExecute: adapter list size = " + result.size());
+                mAdapter.setList(result);
+                mAdapter.notifyDataSetChanged();
+                if (mTwoPane && mAdapter.getItemCount() > 0) {
+                    setDetailContent(0);
+                }
+            }
+        }.execute();
     }
 
     protected abstract T getAdapter();
@@ -95,4 +171,8 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
     protected abstract DetailFragment getDetailFragment(int position);
 
     protected abstract RecyclerView.OnLongClickListener getOnLongClickListener();
+
+    protected String getEmptyViewMessage() {
+        return getString(R.string.list_empty_list_message_no_data);
+    }
 }

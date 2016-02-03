@@ -1,5 +1,7 @@
 package com.ashtonchen.rssreader.subscription.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,7 +26,9 @@ import java.util.List;
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public class SubscriptionListFragment extends MasterDetailListFragment<SubscriptionRecyclerViewAdapter,SubscriptionComponent> implements SubscriptionNetworkCallbackInterface {
+public class SubscriptionListFragment extends MasterDetailListFragment<SubscriptionRecyclerViewAdapter, SubscriptionComponent, Channel> implements SubscriptionNetworkCallbackInterface {
+    private static final int NEW_SUBSCRIPTION = 1;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -40,7 +44,6 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setSubtitle(R.string.action_bar_subtitle_subscriptions);
         setHasOptionsMenu(true);
     }
@@ -51,22 +54,13 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
         //LinearLayout view = (LinearLayout) inflater.inflate(R.layout.subscription_list, container, false);
 
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        // Set the adapter
-        setupAdapter();
         return view;
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.add(Menu.NONE, R.id.subscription_new, Menu.NONE, "Add");
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Fragment fragment = SubscriptionNewFragment.newInstance();
-                mContext.fragmentTransaction(fragment);
-                return false;
-            }
-        });
+        item.setOnMenuItemClickListener(getMenuItemClickListener(this));
         item.setIcon(R.drawable.ic_action_bar_add);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         super.onPrepareOptionsMenu(menu);
@@ -77,7 +71,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -110,11 +104,47 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
                 Log.d(this.getClass().getName(), "Long click at " + position);
-                mComponent.removeData(position);
+                int result = mComponent.removeData(position);
+                if (result > 0) {
+                    Log.d(this.getClass().getName(), "Adapter list size = " + mAdapter.getList().size());
+                    mAdapter.notifyItemRemoved(position);
+                    Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        };
+    }
 
-                mAdapter.notifyItemRangeChanged(position, mComponent.getData().size());
-                mAdapter.notifyItemRemoved(position);
-                Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
+    @Override
+    protected String getEmptyViewMessage() {
+        return getString(R.string.list_empty_list_message_no_subscription);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case NEW_SUBSCRIPTION:
+                if (resultCode == Activity.RESULT_OK) {
+                    //Log.d(this.getClass().getName(), "get new subscription");
+                    //Log.d(this.getClass().getName(), "new subscription list size = " + mComponent.getData().size());
+                    //mAdapter.notifyItemInserted(mComponent.getData().size() - 1);
+                    //mAdapter.setList(mComponent.getData());
+                    //mAdapter.notifyDataSetChanged();
+                    startGetItemListsTask();
+                }
+
+                break;
+        }
+    }
+
+    private MenuItem.OnMenuItemClickListener getMenuItemClickListener(final SubscriptionListFragment listFragment) {
+        return new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Fragment fragment = SubscriptionNewFragment.newInstance();
+                fragment.setTargetFragment(listFragment, NEW_SUBSCRIPTION);
+                mContext.fragmentTransaction(fragment);
                 return true;
             }
         };

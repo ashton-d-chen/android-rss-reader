@@ -1,7 +1,6 @@
 package com.ashtonchen.rssreader.reader.view;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +14,14 @@ import com.ashtonchen.rssreader.R;
 /**
  * Created by Ashton Chen on 16-01-22.
  */
-public class WebviewFragment extends BaseFragment {
+public class WebViewFragment extends BaseFragment {
 
     private static final String ARG_URL = "url";
 
     private String currentURL;
 
-    public static Fragment newInstance(String url) {
-        Fragment fragment = new WebviewFragment();
+    public static WebViewFragment newInstance(String url) {
+        WebViewFragment fragment = new WebViewFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_URL, url);
         fragment.setArguments(bundle);

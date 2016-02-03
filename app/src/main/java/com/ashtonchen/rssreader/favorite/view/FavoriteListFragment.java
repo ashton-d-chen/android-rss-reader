@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
 import com.ashtonchen.rssreader.favorite.FavoriteComponent;
 import com.ashtonchen.rssreader.favorite.view.adapter.FavoriteViewAdapter;
@@ -32,7 +31,6 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        setupAdapter();
         return view;
     }
 
@@ -57,11 +55,16 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
                 int result = mComponent.removeData(position);
                 if (result > 0) {
                     mAdapter.notifyItemRemoved(position);
-                    mAdapter.notifyItemRangeChanged(position, mComponent.getData().size() - 1);
+                    mAdapter.notifyItemRangeChanged(position, mComponent.getData().size());
                     Toast.makeText(mContext, R.string.toast_removed_from_favorite, Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
         };
+    }
+
+    @Override
+    protected String getEmptyViewMessage() {
+        return getString(R.string.list_empty_list_message_no_favorite);
     }
 }

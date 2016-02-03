@@ -3,6 +3,7 @@ package com.ashtonchen.rssreader.reader.view.detail;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.StyleSheet;
 import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.reader.model.Feed;
+import com.ashtonchen.rssreader.reader.view.WebViewFragment;
 
 /**
  * A fragment representing a single Feed detail screen.
@@ -46,14 +48,17 @@ public class FeedDetailFragment extends DetailFragment {
             int cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
             rootView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
 
+
             TextView title = (TextView) rootView.findViewById(R.id.feed_detail_title);
             title.setText(mFeed.getTitle());
             title.setTextSize(StyleSheet.DETAIL_TITLE_FONT_SIZE);
             title.setTypeface(null, Typeface.BOLD);
+            title.setOnClickListener(getOnClickListener());
 
             TextView description = (TextView) rootView.findViewById(R.id.feed_detail_description);
             description.setText(mFeed.getDescription());
             description.setTextSize(StyleSheet.DETAIL_DESCRIPTION_FONT_SIZE);
+            description.setOnClickListener(getOnClickListener());
 
             //ImageView imageView = (ImageView) rootView.findViewById(R.id.feed_detail_thumbnail);
             //imageView.getViewTreeObserver().addOnGlobalLayoutListener(getGlobalLayoutListener(imageView));
@@ -64,6 +69,18 @@ public class FeedDetailFragment extends DetailFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+    }
+
+    private View.OnClickListener getOnClickListener() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Log.d(this.getClass().getName(), "detail view clicked");
+                WebViewFragment fragment = WebViewFragment.newInstance(mFeed.getUrl());
+                mContext.fragmentTransaction(fragment);
+            }
+        };
     }
 
  /*   protected ViewTreeObserver.OnGlobalLayoutListener getGlobalLayoutListener(final ImageView view) {

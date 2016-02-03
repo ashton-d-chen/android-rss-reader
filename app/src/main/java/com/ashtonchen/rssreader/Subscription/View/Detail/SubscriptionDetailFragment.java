@@ -1,5 +1,6 @@
 package com.ashtonchen.rssreader.subscription.view.detail;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.StyleSheet;
 import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.reader.model.Channel;
 
@@ -35,8 +37,17 @@ public class SubscriptionDetailFragment extends DetailFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.subscription_detail, container, false);
         if (mChannel != null) {
-            ((TextView) rootView.findViewById(R.id.subscription_detail_title)).setText(mChannel.getTitle());
-            ((TextView) rootView.findViewById(R.id.subscription_detail_description)).setText(mChannel.getDescription());
+            int cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
+            rootView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
+
+            TextView title = (TextView) rootView.findViewById(R.id.subscription_detail_title);
+            title.setText(mChannel.getTitle());
+            title.setTextSize(StyleSheet.DETAIL_TITLE_FONT_SIZE);
+            title.setTypeface(null, Typeface.BOLD);
+
+            TextView description = (TextView) rootView.findViewById(R.id.subscription_detail_description);
+            description.setText(mChannel.getDescription());
+            description.setTextSize(StyleSheet.DETAIL_DESCRIPTION_FONT_SIZE);
         }
         return rootView;
     }

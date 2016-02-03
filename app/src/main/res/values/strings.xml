@@ -31,4 +31,10 @@
     <string name="toast_rss_added">RSS added</string>
     <string name="toast_rss_removed">RSS removed</string>
 
+    <string name="list_empty_list_message_no_data">No data available</string>
+    <string name="list_empty_list_message_no_feed">No feed available</string>
+    <string name="list_empty_list_message_no_favorite">No favorite feed</string>
+    <string name="list_empty_list_message_no_subscription">No RSS link added</string>
+    <string name="list_empty_list_message_button_add_RSS">Add a RSS feed</string>
+
 </resources>
