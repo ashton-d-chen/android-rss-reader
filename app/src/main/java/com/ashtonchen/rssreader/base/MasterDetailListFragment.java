@@ -51,12 +51,12 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
 
         mListContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout_list);
         mListContainer.setEnabled(false);
-        mListContainer.setBackgroundColor(Color.GREEN);
+        //mListContainer.setBackgroundColor(Color.GREEN);
         mListContainer.setVisibility(View.GONE);
 
         mEmptyListContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout_empty_view);
         mEmptyListContainer.setEnabled(false);
-        mEmptyListContainer.setBackgroundColor(Color.YELLOW);
+        //mEmptyListContainer.setBackgroundColor(Color.YELLOW);
         mEmptyListContainer.addView(getEmptyView());
         mEmptyListContainer.setVisibility(View.GONE);
 
@@ -89,7 +89,7 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         view.setText(getEmptyViewMessage());
         view.setGravity(Gravity.CENTER);
         view.setTextSize(18);
-        view.setBackgroundColor(Color.RED);
+        //view.setBackgroundColor(Color.RED);
 
         return view;
     }
@@ -97,7 +97,7 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
     protected final void setupRecyclerView() {
         mRecyclerView = new EmptyRecyclerView(mContext);
         mRecyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        mRecyclerView.setBackgroundColor(Color.BLUE);
+        //mRecyclerView.setBackgroundColor(Color.BLUE);
         if (mRecyclerView == null) {
             Log.d(this.getClass().getName(), "recycler view is null");
         }
