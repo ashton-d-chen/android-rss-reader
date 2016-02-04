@@ -14,6 +14,7 @@ import com.ashtonchen.rssreader.R;
  * Created by Ashton Chen on 16-02-03.
  */
 public abstract class DrawerActivity extends ActionBarActivity {
+    private int mCurrentFragmentID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,12 @@ public abstract class DrawerActivity extends ActionBarActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
-                displayFragment(getContentFragment(item.getItemId()));
+
+                int id = item.getItemId();
+                if (id != mCurrentFragmentID) {
+                    mCurrentFragmentID = id;
+                    displayFragment(getContentFragment(id));
+                }
                 return true;
             }
         };
