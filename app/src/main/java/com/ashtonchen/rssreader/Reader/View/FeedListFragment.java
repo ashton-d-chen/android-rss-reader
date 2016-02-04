@@ -24,7 +24,7 @@ import com.ashtonchen.rssreader.favorite.view.FavoriteListFragment;
 import com.ashtonchen.rssreader.reader.ReaderComponent;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.reader.model.Feeds;
 import com.ashtonchen.rssreader.reader.view.adapter.FeedViewAdapter;

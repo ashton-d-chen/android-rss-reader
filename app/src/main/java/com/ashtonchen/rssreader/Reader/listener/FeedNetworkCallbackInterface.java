@@ -1,6 +1,6 @@
 package com.ashtonchen.rssreader.reader.listener;
 
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 
 /**
  * Created by Ashton Chen on 15-12-09.

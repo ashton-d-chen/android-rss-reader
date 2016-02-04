@@ -1,15 +1,13 @@
 package com.ashtonchen.rssreader.reader;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ashtonchen.rssreader.base.DatabaseComponent;
 import com.ashtonchen.rssreader.favorite.dao.FavoriteDAO;
 import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Feed;
-import com.ashtonchen.rssreader.reader.view.FeedListFragment;
 import com.ashtonchen.rssreader.subscription.dao.SubscriptionDAO;
 
 import java.util.List;

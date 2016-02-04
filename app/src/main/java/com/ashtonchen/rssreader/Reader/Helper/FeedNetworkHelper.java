@@ -1,7 +1,7 @@
 package com.ashtonchen.rssreader.reader.helper;
 
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Feeds;
 import com.ashtonchen.rssreader.reader.service.DownloadXmlTask;
 

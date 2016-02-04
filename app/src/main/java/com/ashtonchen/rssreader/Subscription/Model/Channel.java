@@ -1,7 +1,9 @@
-package com.ashtonchen.rssreader.reader.model;
+package com.ashtonchen.rssreader.subscription.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.ashtonchen.rssreader.reader.model.Feed;
 
 import java.util.ArrayList;
 import java.util.List;

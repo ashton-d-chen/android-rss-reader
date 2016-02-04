@@ -7,7 +7,7 @@ package com.ashtonchen.rssreader.reader.service;
 import android.util.Log;
 import android.util.Xml;
 
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.utility.StringUtility;
 

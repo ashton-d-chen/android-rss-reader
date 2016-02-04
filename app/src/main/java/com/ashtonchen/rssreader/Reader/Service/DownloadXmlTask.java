@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 
 import org.xmlpull.v1.XmlPullParserException;
 

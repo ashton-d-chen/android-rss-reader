@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.ashtonchen.rssreader.database.BaseDAO;
 import com.ashtonchen.rssreader.database.RSSReaderContract;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 
 import java.util.ArrayList;
 import java.util.List;

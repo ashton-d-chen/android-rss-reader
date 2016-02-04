@@ -5,7 +5,7 @@ import android.content.Context;
 import com.ashtonchen.rssreader.base.DatabaseComponent;
 import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.dao.SubscriptionDAO;
 
 /**

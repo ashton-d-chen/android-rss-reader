@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.listener.onSubscriptionListInteractionListener;
 import com.ashtonchen.rssreader.subscription.view.widget.SubscriptionViewHolder;
 import com.squareup.picasso.Picasso;
@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Subscription} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Channel} and makes a call to the
  * specified {@link onSubscriptionListInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */

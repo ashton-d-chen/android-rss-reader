@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.base.MasterDetailListFragment;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
 import com.ashtonchen.rssreader.subscription.view.adapter.SubscriptionRecyclerViewAdapter;

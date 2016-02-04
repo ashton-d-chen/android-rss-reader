@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.StyleSheet;
 import com.ashtonchen.rssreader.base.DetailFragment;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 
 /**
  * Created by Ashton Chen on 15-12-14.

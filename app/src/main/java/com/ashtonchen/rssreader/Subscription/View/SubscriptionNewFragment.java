@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.ComponentFragment;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.reader.model.Channel;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 
 /**
