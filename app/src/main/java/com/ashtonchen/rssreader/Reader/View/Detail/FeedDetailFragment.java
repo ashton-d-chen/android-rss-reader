@@ -3,6 +3,7 @@ package com.ashtonchen.rssreader.reader.view.detail;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,42 +22,41 @@ import com.ashtonchen.rssreader.reader.view.WebViewFragment;
  * in two-pane mode (on tablets)
  * on handsets.
  */
-public class FeedDetailFragment extends DetailFragment {
-    private Feed mFeed;
+public class FeedDetailFragment extends DetailFragment<Feed> {
 
-    public FeedDetailFragment() {
-
-    }
-
-    public static FeedDetailFragment newInstance(Feed feed) {
+    public static DetailFragment newInstance(Feed feed, boolean twoPane) {
         FeedDetailFragment fragment = new FeedDetailFragment();
-        fragment.mFeed = feed;
-
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Feed.ARG_FEED, feed);
+        bundle.putBoolean(ARG_TWO_PANE, twoPane);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mData = getArguments().getParcelable(Feed.ARG_FEED);
+        mTwoPane = getArguments().getBoolean(ARG_TWO_PANE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.feed_detail, container, false);
-        if (mFeed != null) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        if (mData != null) {
             int cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
             rootView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
 
 
             TextView title = (TextView) rootView.findViewById(R.id.feed_detail_title);
-            title.setText(mFeed.getTitle());
+            title.setText(mData.getTitle());
             title.setTextSize(StyleSheet.DETAIL_TITLE_FONT_SIZE);
             title.setTypeface(null, Typeface.BOLD);
             title.setOnClickListener(getOnClickListener());
 
             TextView description = (TextView) rootView.findViewById(R.id.feed_detail_description);
-            description.setText(mFeed.getDescription());
+            description.setText(mData.getDescription());
             description.setTextSize(StyleSheet.DETAIL_DESCRIPTION_FONT_SIZE);
             description.setOnClickListener(getOnClickListener());
 
@@ -77,7 +77,7 @@ public class FeedDetailFragment extends DetailFragment {
             @Override
             public void onClick(View v) {
                 Log.d(this.getClass().getName(), "detail view clicked");
-                WebViewFragment fragment = WebViewFragment.newInstance(mFeed.getUrl());
+                WebViewFragment fragment = WebViewFragment.newInstance(mData.getUrl());
                 mContext.displayFragment(fragment);
             }
         };

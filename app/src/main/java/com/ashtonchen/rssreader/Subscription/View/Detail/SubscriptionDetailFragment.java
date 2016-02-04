@@ -20,16 +20,20 @@ public class SubscriptionDetailFragment extends DetailFragment {
 
     public static SubscriptionDetailFragment newInstance(Channel channel) {
         SubscriptionDetailFragment fragment = new SubscriptionDetailFragment();
-        fragment.mChannel = channel;
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Channel.ARG_CHANNEL, channel);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     public SubscriptionDetailFragment() {
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mChannel = getArguments().getParcelable(Channel.ARG_CHANNEL);
     }
 
     @Override

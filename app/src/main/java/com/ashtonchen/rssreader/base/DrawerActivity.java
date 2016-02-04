@@ -48,9 +48,9 @@ public abstract class DrawerActivity extends ActionBarActivity {
 
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                getContentFragment(item.getItemId());
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
+                displayFragment(getContentFragment(item.getItemId()));
                 return true;
             }
         };

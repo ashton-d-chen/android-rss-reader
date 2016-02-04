@@ -11,7 +11,6 @@ import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
 import com.ashtonchen.rssreader.reader.model.Channel;
 import com.ashtonchen.rssreader.subscription.listener.onSubscriptionListInteractionListener;
-import com.ashtonchen.rssreader.subscription.model.Subscription;
 import com.ashtonchen.rssreader.subscription.view.widget.SubscriptionViewHolder;
 import com.squareup.picasso.Picasso;
 

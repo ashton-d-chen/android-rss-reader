@@ -18,7 +18,6 @@ public class MainActivity extends DrawerActivity {
         displayFragment(getContentFragment(R.id.nav_all));
     }
 
-
     protected Fragment getContentFragment(int id) {
         Fragment fragment;
         if (id == R.id.nav_all) {

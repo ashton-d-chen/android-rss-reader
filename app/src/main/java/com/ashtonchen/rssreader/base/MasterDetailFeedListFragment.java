@@ -19,7 +19,7 @@ public abstract class MasterDetailFeedListFragment<T extends BaseRecyclerViewAda
     @Override
     protected DetailFragment getDetailFragment(int position) {
         List<Feed> list = mAdapter.getList();
-        return FeedDetailFragment.newInstance(list.get(position));
+        return FeedDetailFragment.newInstance(list.get(position), mTwoPane);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.ashtonchen.rssreader.reader.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.text.ParseException;
@@ -9,7 +11,8 @@ import java.util.Date;
 /**
  * Created by Ashton Chen on 15-12-09.
  */
-public class Feed implements Comparable<Feed> {
+public class Feed implements Comparable<Feed>, Parcelable {
+    public static final String ARG_FEED = "argumentFeed";
     private String webTitle = "";
     private String webThumbnailURL = "";
     private String webDescription = "";
@@ -18,6 +21,31 @@ public class Feed implements Comparable<Feed> {
     private String url = "";
     private String thumbnailURL = "";
     private String pubDate = "";
+
+    public static final Parcelable.Creator<Feed> CREATOR = new Parcelable.Creator<Feed>() {
+        public Feed createFromParcel(Parcel in) {
+            return new Feed(in);
+        }
+
+        public Feed[] newArray(int size) {
+            return new Feed[size];
+        }
+    };
+
+    public Feed() {
+
+    }
+
+    public Feed(Parcel in) {
+        webTitle = in.readString();
+        webThumbnailURL = in.readString();
+        webDescription = in.readString();
+        title = in.readString();
+        description = in.readString();
+        url = in.readString();
+        thumbnailURL = in.readString();
+        pubDate = in.readString();
+    }
 
     public String getWebTitle() {
         return webTitle;
@@ -105,5 +133,22 @@ public class Feed implements Comparable<Feed> {
         }
 
         return String.valueOf(timeInMilliseconds);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(webTitle);
+        dest.writeString(webThumbnailURL);
+        dest.writeString(webDescription);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(url);
+        dest.writeString(thumbnailURL);
+        dest.writeString(pubDate);
     }
 }

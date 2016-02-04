@@ -1,22 +1,55 @@
 package com.ashtonchen.rssreader.reader.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Ashton Chen on 15-12-09.
  */
-public class Channel {
-    private String title;
-
-    private String url;
-    private String webURL;
-    private String description;
-    private String thumbnailURL;
+public class Channel implements Parcelable {
+    public static final String ARG_CHANNEL = "argumentChannel";
+    private String title = "";
+    private String url = "";
+    private String webURL = "";
+    private String description = "";
+    private String thumbnailURL = "";
     private List<Feed> feeds;
 
     public Channel() {
         feeds = new ArrayList();
+    }
+
+    public static final Parcelable.Creator<Channel> CREATOR = new Parcelable.Creator<Channel>() {
+        public Channel createFromParcel(Parcel in) {
+            return new Channel(in);
+        }
+
+        public Channel[] newArray(int size) {
+            return new Channel[size];
+        }
+    };
+
+    public Channel(Parcel in) {
+        title = in.readString();
+        description = in.readString();
+        url = in.readString();
+        thumbnailURL = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(url);
+        dest.writeString(thumbnailURL);
     }
 
     public List<Feed> getFeeds() {
