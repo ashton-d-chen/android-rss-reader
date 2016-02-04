@@ -17,7 +17,7 @@ import java.util.List;
 public abstract class MasterDetailFeedListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent> extends MasterDetailListFragment<T, S, Feed> {
 
     @Override
-    protected DetailFragment getDetailFragment(int position) {
+    protected Fragment getDetailFragment(int position) {
         List<Feed> list = mAdapter.getList();
         return FeedDetailFragment.newInstance(list.get(position), mTwoPane);
     }

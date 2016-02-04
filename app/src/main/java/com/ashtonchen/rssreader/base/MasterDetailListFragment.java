@@ -186,7 +186,7 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
 
     protected abstract T getAdapter();
 
-    protected abstract DetailFragment getDetailFragment(int position);
+    protected abstract Fragment getDetailFragment(int position);
 
     protected abstract RecyclerView.OnLongClickListener getOnLongClickListener();
 

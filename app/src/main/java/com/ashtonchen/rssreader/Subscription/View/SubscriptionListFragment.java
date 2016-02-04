@@ -92,9 +92,9 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
     }
 
     @Override
-    protected DetailFragment getDetailFragment(int position) {
+    protected Fragment getDetailFragment(int position) {
         List<Channel> list = mAdapter.getList();
-        return SubscriptionDetailFragment.newInstance(list.get(position));
+        return SubscriptionDetailFragment.newInstance(list.get(position), mTwoPane);
     }
 
     @Override

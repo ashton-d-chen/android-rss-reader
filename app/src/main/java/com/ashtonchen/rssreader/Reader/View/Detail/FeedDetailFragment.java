@@ -24,12 +24,10 @@ import com.ashtonchen.rssreader.reader.view.WebViewFragment;
  */
 public class FeedDetailFragment extends DetailFragment<Feed> {
 
-    public static DetailFragment newInstance(Feed feed, boolean twoPane) {
-        FeedDetailFragment fragment = new FeedDetailFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Feed.ARG_FEED, feed);
-        bundle.putBoolean(ARG_TWO_PANE, twoPane);
-        fragment.setArguments(bundle);
+    public static Fragment newInstance(Feed feed, boolean twoPane) {
+        Fragment fragment = new FeedDetailFragment();
+        fragment = DetailFragment.newInstance(fragment, twoPane);
+        fragment.getArguments().putParcelable(Feed.ARG_FEED, feed);
         return fragment;
     }
 
@@ -37,7 +35,6 @@ public class FeedDetailFragment extends DetailFragment<Feed> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mData = getArguments().getParcelable(Feed.ARG_FEED);
-        mTwoPane = getArguments().getBoolean(ARG_TWO_PANE);
     }
 
     @Override
