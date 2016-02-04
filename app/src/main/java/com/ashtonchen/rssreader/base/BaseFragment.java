@@ -18,7 +18,6 @@ import com.ashtonchen.rssreader.main.view.MainActivity;
 public abstract class BaseFragment extends Fragment {
     protected MainActivity mContext;
     protected float mScale;
-    //protected MainActivity mMainActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +26,6 @@ public abstract class BaseFragment extends Fragment {
         Log.d(this.getClass().getName(), "onCreate()");
         mContext = (MainActivity) getActivity();
         mScale = mContext.getResources().getDisplayMetrics().density;
-        //mMainActivity = (MainActivity) mContext;
     }
 
     @Override

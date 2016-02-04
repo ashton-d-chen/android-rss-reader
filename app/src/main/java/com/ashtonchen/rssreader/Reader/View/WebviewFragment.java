@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.ashtonchen.rssreader.base.BaseFragment;
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.base.BaseFragment;
 
 /**
  * Created by Ashton Chen on 16-01-22.
@@ -47,8 +47,9 @@ public class WebViewFragment extends BaseFragment {
             webView.getSettings().setJavaScriptEnabled(true);
             webView.setWebViewClient(new WebViewClient());
             webView.loadUrl(currentURL);
-
         }
+        mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+        mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return view;
     }
 

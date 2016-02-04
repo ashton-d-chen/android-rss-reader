@@ -65,6 +65,10 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         setupAdapter();
         setupRecyclerView();
 
+        Log.d(this.getClass().getName(), "Toggle enabled");
+        mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+
         return rootView;
     }
 

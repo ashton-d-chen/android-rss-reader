@@ -18,15 +18,15 @@ import com.ashtonchen.rssreader.subscription.model.Channel;
  */
 public class SubscriptionDetailFragment extends DetailFragment<Channel> {
 
+    public SubscriptionDetailFragment() {
+
+    }
+
     public static Fragment newInstance(Channel channel, boolean twoPane) {
         Fragment fragment = new SubscriptionDetailFragment();
         fragment = DetailFragment.newInstance(fragment, twoPane);
         fragment.getArguments().putParcelable(Channel.ARG_CHANNEL, channel);
         return fragment;
-    }
-
-    public SubscriptionDetailFragment() {
-
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SubscriptionDetailFragment extends DetailFragment<Channel> {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.subscription_detail, container, false);
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
         if (mData != null) {
             int cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
             rootView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
@@ -53,5 +53,10 @@ public class SubscriptionDetailFragment extends DetailFragment<Channel> {
             description.setTextSize(StyleSheet.DETAIL_DESCRIPTION_FONT_SIZE);
         }
         return rootView;
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.subscription_detail;
     }
 }

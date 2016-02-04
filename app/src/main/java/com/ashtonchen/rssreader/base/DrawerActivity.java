@@ -15,20 +15,15 @@ import com.ashtonchen.rssreader.R;
  */
 public abstract class DrawerActivity extends ActionBarActivity {
     private int mCurrentFragmentID;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(getDrawerLayout());
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this,
-                drawer,
-                getToolBar(),
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        mActionBarDrawerToggle = getActionBarDrawerToggle(drawer);
+        drawer.setDrawerListener(mActionBarDrawerToggle);
 
         NavigationView navigationView = (NavigationView) findViewById(getNavigationView());
         navigationView.setNavigationItemSelectedListener(getOnNavigationItemSelectedListener());
@@ -42,6 +37,17 @@ public abstract class DrawerActivity extends ActionBarActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    private ActionBarDrawerToggle getActionBarDrawerToggle(DrawerLayout drawer) {
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawer,
+                getToolBar(),
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        actionBarDrawerToggle.syncState();
+        return actionBarDrawerToggle;
     }
 
     protected NavigationView.OnNavigationItemSelectedListener getOnNavigationItemSelectedListener() {
@@ -60,6 +66,10 @@ public abstract class DrawerActivity extends ActionBarActivity {
                 return true;
             }
         };
+    }
+
+    public final ActionBarDrawerToggle getActionBarDrawerToggle() {
+        return mActionBarDrawerToggle;
     }
 
     protected int getDrawerLayout() {

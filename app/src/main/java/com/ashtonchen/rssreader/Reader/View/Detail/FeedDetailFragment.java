@@ -45,7 +45,6 @@ public class FeedDetailFragment extends DetailFragment<Feed> {
             int cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
             rootView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
 
-
             TextView title = (TextView) rootView.findViewById(R.id.feed_detail_title);
             title.setText(mData.getTitle());
             title.setTextSize(StyleSheet.DETAIL_TITLE_FONT_SIZE);
@@ -66,6 +65,11 @@ public class FeedDetailFragment extends DetailFragment<Feed> {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.feed_detail;
     }
 
     private View.OnClickListener getOnClickListener() {
