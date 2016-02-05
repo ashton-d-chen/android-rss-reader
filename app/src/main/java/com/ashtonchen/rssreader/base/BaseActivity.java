@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.ashtonchen.rssreader.R;
 
+import java.util.List;
+
 /**
  * Created by Ashton Chen on 16-02-03.
  */
@@ -23,6 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             Log.d(this.getClass().getSimpleName(), "savedInstanceState found");
             mRestoredFragmentTag = savedInstanceState.getString(STATE_CURRENT_FRAGMENT_TAG, null);
+            mCurrentFragmentTag = mRestoredFragmentTag;
         }
         displayFragment(getContentFragment());
     }
@@ -37,7 +40,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
         if (count > 1) {
-            getSupportFragmentManager().popBackStack();
+            List<Fragment> list = getSupportFragmentManager().getFragments();
+            Fragment fragment = list.get(list.size() - 2);
+            if (fragment != null) {
+                mCurrentFragmentTag = fragment.getClass().getSimpleName();
+            }
+            getSupportFragmentManager().popBackStackImmediate();
         } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
         } else {
