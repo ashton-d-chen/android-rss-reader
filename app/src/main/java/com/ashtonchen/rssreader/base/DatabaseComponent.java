@@ -16,8 +16,7 @@ public abstract class DatabaseComponent<T extends BaseDAO<S>, S> extends BaseCom
     protected List<S> mList;
 
     public DatabaseComponent(Context context) {
-        super(context);
-        mDAO = getDAO();
+        mDAO = getDAO(context);
         mList = new ArrayList<S>();
     }
 
@@ -54,5 +53,5 @@ public abstract class DatabaseComponent<T extends BaseDAO<S>, S> extends BaseCom
         return mDAO.findItem(id);
     }
 
-    protected abstract T getDAO();
+    protected abstract T getDAO(Context context);
 }

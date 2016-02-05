@@ -16,7 +16,7 @@ public class FavoriteComponent extends DatabaseComponent<FavoriteDAO, Feed> {
     }
 
     @Override
-    protected FavoriteDAO getDAO() {
-        return new FavoriteDAO(mContext);
+    protected FavoriteDAO getDAO(Context context) {
+        return new FavoriteDAO(context);
     }
 }

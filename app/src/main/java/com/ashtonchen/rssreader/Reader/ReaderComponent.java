@@ -6,9 +6,9 @@ import com.ashtonchen.rssreader.base.DatabaseComponent;
 import com.ashtonchen.rssreader.favorite.dao.FavoriteDAO;
 import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.subscription.dao.SubscriptionDAO;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 
 import java.util.List;
 
@@ -22,12 +22,12 @@ public class ReaderComponent extends DatabaseComponent<SubscriptionDAO, Channel>
     public ReaderComponent(Context context) {
         super(context);
         mFeedNetworkHelper = new FeedNetworkHelper();
-        mFavoriteDAO = new FavoriteDAO(mContext);
+        mFavoriteDAO = new FavoriteDAO(context);
     }
 
     @Override
-    protected SubscriptionDAO getDAO() {
-        return new SubscriptionDAO(mContext);
+    protected SubscriptionDAO getDAO(Context context) {
+        return new SubscriptionDAO(context);
     }
 
     public void getFeedList(FeedNetworkCallbackInterface callback) {

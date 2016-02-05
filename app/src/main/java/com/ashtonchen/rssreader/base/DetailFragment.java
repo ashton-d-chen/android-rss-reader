@@ -3,7 +3,6 @@ package com.ashtonchen.rssreader.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -36,15 +35,6 @@ public abstract class DetailFragment<T> extends BaseFragment {
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (mTwoPane) {
-            Log.d(this.getClass().getSimpleName(), "Toggle enabled");
-            mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
-        } else {
-            Log.d(this.getClass().getSimpleName(), "Toggle disabled");
-            mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
-            mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
         mContext.getActionBarDrawerToggle().setToolbarNavigationClickListener(getToolbarNavigationClickListener());
     }
 
@@ -55,5 +45,9 @@ public abstract class DetailFragment<T> extends BaseFragment {
                 mContext.onBackPressed();
             }
         };
+    }
+
+    protected boolean shouldDisplayDrawerIcon() {
+        return mTwoPane;
     }
 }

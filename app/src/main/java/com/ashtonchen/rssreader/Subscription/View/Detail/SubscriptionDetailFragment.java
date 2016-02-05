@@ -62,4 +62,8 @@ public class SubscriptionDetailFragment extends DetailFragment<Channel> {
     protected String getSubtitle() {
         return getString(R.string.action_bar_subtitle_subscription_detail);
     }
+
+    protected boolean shouldDisplayDrawerIcon() {
+        return false;
+    }
 }

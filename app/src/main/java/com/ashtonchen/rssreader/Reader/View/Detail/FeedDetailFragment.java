@@ -80,6 +80,10 @@ public class FeedDetailFragment extends DetailFragment<Feed> {
         return getString(R.string.action_bar_subtitle_feed_detail);
     }
 
+    protected boolean shouldDisplayDrawerIcon() {
+        return false;
+    }
+
  /*   protected ViewTreeObserver.OnGlobalLayoutListener getGlobalLayoutListener(final ImageView view) {
         return new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

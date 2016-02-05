@@ -1,6 +1,6 @@
 package com.ashtonchen.rssreader.base;
 
-import android.content.Context;
+import android.os.Bundle;
 
 /**
  * Created by Ashton Chen on 16-01-28.
@@ -9,14 +9,14 @@ public abstract class ComponentFragment<T extends BaseComponent> extends BaseFra
     protected T mComponent;
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mComponent = getComponent();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
         mComponent = null;
     }
 

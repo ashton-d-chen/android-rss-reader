@@ -192,4 +192,8 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
     protected String getSubtitle() {
         return getString(R.string.action_bar_subtitle_new_subscription);
     }
+
+    protected  boolean shouldDisplayDrawerIcon() {
+        return false;
+    }
 }

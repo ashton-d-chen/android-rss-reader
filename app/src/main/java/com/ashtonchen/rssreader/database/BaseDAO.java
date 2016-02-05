@@ -14,7 +14,6 @@ public abstract class BaseDAO<T> {
     private DatabaseHelper dbHelper;
     private Context mContext;
 
-
     public BaseDAO(Context context) {
         this.mContext = context.getApplicationContext();
         dbHelper = DatabaseHelper.getInstance(mContext);

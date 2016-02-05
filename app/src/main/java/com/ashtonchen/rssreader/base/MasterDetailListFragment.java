@@ -80,9 +80,6 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
         startGetItemListsTask();
     }
 
@@ -171,5 +168,9 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
 
     protected String getEmptyViewMessage() {
         return getString(R.string.list_empty_list_message_no_data);
+    }
+
+    protected boolean shouldDisplayDrawerIcon() {
+        return true;
     }
 }

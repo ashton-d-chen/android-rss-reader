@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -49,6 +50,7 @@ public abstract class BaseFragment extends Fragment {
         if (mContext.getSupportActionBar() != null && !getSubtitle().isEmpty()) {
             mContext.getSupportActionBar().setSubtitle(getSubtitle());
         }
+        setNavigationMenuIcon(shouldDisplayDrawerIcon());
     }
 
     @Override
@@ -75,4 +77,18 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected abstract String getSubtitle();
+
+    private void setNavigationMenuIcon(boolean isDrawerIcon) {
+        if (isDrawerIcon) {
+            Log.d(this.getClass().getSimpleName(), "Toggle enabled");
+            mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        } else {
+            Log.d(this.getClass().getSimpleName(), "Toggle disabled");
+            mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+            mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    protected abstract boolean shouldDisplayDrawerIcon();
 }

@@ -51,11 +51,13 @@ public class WebViewFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
-        mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     protected String getSubtitle() {
         return getString(R.string.action_bar_subtitle_website);
+    }
+
+    protected boolean shouldDisplayDrawerIcon() {
+        return false;
     }
 }
