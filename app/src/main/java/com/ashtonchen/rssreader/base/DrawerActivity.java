@@ -9,13 +9,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.favorite.view.FavoriteListFragment;
+import com.ashtonchen.rssreader.reader.view.FeedListFragment;
+import com.ashtonchen.rssreader.subscription.view.SubscriptionListFragment;
 
 /**
  * Created by Ashton Chen on 16-02-03.
  */
 public abstract class DrawerActivity extends ActionBarActivity {
-    private int mCurrentFragmentID;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
+    private int mMenuItemID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,23 @@ public abstract class DrawerActivity extends ActionBarActivity {
 
         NavigationView navigationView = (NavigationView) findViewById(getNavigationView());
         navigationView.setNavigationItemSelectedListener(getOnNavigationItemSelectedListener());
+    }
+
+    @Override
+    protected Fragment getContentFragment() {
+        Fragment fragment = super.getContentFragment();
+        if (fragment == null) {
+            if (mMenuItemID == R.id.nav_all) {
+                fragment = FeedListFragment.newInstance();
+            } else if (mMenuItemID == R.id.nav_favorite) {
+                fragment = FavoriteListFragment.newInstance();
+            } else if (mMenuItemID == R.id.nav_subscription) {
+                fragment = SubscriptionListFragment.newInstance();
+            } else {
+                fragment = FeedListFragment.newInstance();
+            }
+        }
+        return fragment;
     }
 
     @Override
@@ -57,12 +77,8 @@ public abstract class DrawerActivity extends ActionBarActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
-
-                int id = item.getItemId();
-                if (id != mCurrentFragmentID) {
-                    mCurrentFragmentID = id;
-                    displayFragment(getContentFragment(id));
-                }
+                mMenuItemID = item.getItemId();
+                displayFragment(getContentFragment());
                 return true;
             }
         };
@@ -79,6 +95,4 @@ public abstract class DrawerActivity extends ActionBarActivity {
     protected int getNavigationView() {
         return R.id.nav_view;
     }
-
-    protected abstract Fragment getContentFragment(int id);
 }

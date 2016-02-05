@@ -33,6 +33,7 @@ import com.ashtonchen.rssreader.subscription.model.Channel;
  * create an instance of this fragment.
  */
 public class SubscriptionNewFragment extends ComponentFragment<SubscriptionComponent> implements FeedNetworkCallbackInterface {
+    public  static final int NEW_SUBSCRIPTION = 1;
     private EditText mEditText;
     private String mRSSlink;
 
@@ -55,7 +56,6 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSubtitle(R.string.action_bar_subtitle_new_subscription);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         linearLayout.addView(mEditText);
         linearLayout.addView(buttonLinearLayout);
 
-        ((LinearLayout)view).addView(linearLayout);
+        ((FrameLayout)view).addView(linearLayout);
     }
 
     @Override
@@ -187,5 +187,9 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
             Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
             getActivity().onBackPressed();
         }
+    }
+
+    protected String getSubtitle() {
+        return getString(R.string.action_bar_subtitle_new_subscription);
     }
 }

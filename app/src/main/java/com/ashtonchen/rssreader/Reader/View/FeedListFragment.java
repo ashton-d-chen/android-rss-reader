@@ -61,7 +61,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setSubtitle(R.string.action_bar_subtitle_feeds);
+
         setHasOptionsMenu(true);
     }
 
@@ -84,14 +84,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem addItem = menu.add(Menu.NONE, R.id.subscription_new, Menu.NONE, "Add");
-        addItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Fragment fragment = SubscriptionNewFragment.newInstance();
-                mContext.displayFragment(fragment);
-                return true;
-            }
-        });
+        addItem.setOnMenuItemClickListener(getMenuItemClickListener(this));
         addItem.setIcon(R.drawable.ic_action_bar_add);
         addItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
@@ -241,6 +234,22 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     @Override
     protected void startOnPostExecute() {
         getFeedList();
+    }
+
+    private MenuItem.OnMenuItemClickListener getMenuItemClickListener(final Fragment listFragment) {
+        return new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Fragment fragment = SubscriptionNewFragment.newInstance();
+                fragment.setTargetFragment(listFragment, SubscriptionNewFragment.NEW_SUBSCRIPTION);
+                mContext.displayFragment(fragment);
+                return true;
+            }
+        };
+    }
+
+    protected String getSubtitle() {
+        return getString(R.string.action_bar_subtitle_feeds);
     }
 }
 

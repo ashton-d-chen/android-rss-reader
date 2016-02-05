@@ -21,9 +21,12 @@
     <string name="subscription_removed">Subscription removed</string>
 
     <string name="action_bar_subtitle_feeds">Feeds</string>
+    <string name="action_bar_subtitle_feed_detail">Feed Detail</string>
     <string name="action_bar_subtitle_favorites">Favorites</string>
     <string name="action_bar_subtitle_subscriptions">Subscriptions</string>
+    <string name="action_bar_subtitle_subscription_detail">Subscription Detail</string>
     <string name="action_bar_subtitle_new_subscription">New Subscription</string>
+    <string name="action_bar_subtitle_website">Website</string>
 
     <string name="toast_added_to_favorite">Added to favorite</string>
     <string name="toast_removed_from_favorite">Removed from favorite</string>

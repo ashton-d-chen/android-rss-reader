@@ -54,4 +54,8 @@ public class WebViewFragment extends BaseFragment {
         mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
         mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    protected String getSubtitle() {
+        return getString(R.string.action_bar_subtitle_website);
+    }
 }

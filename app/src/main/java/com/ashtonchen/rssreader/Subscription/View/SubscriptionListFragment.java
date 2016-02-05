@@ -3,6 +3,7 @@ package com.ashtonchen.rssreader.subscription.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,7 +26,6 @@ import java.util.List;
  * Created by Ashton Chen on 15-12-14.
  */
 public class SubscriptionListFragment extends MasterDetailListFragment<SubscriptionRecyclerViewAdapter, SubscriptionComponent, Channel> implements SubscriptionNetworkCallbackInterface {
-    private static final int NEW_SUBSCRIPTION = 1;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -42,7 +42,6 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSubtitle(R.string.action_bar_subtitle_subscriptions);
         setHasOptionsMenu(true);
     }
 
@@ -56,12 +55,17 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
         MenuItem item = menu.add(Menu.NONE, R.id.subscription_new, Menu.NONE, "Add");
         item.setOnMenuItemClickListener(getMenuItemClickListener(this));
         item.setIcon(R.drawable.ic_action_bar_add);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        super.onPrepareOptionsMenu(menu);
     }
 
     /**
@@ -120,7 +124,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         switch (requestCode) {
-            case NEW_SUBSCRIPTION:
+            case SubscriptionNewFragment.NEW_SUBSCRIPTION:
                 if (resultCode == Activity.RESULT_OK) {
                     //Log.d(this.getClass().getSimpleName(), "get new subscription");
                     //Log.d(this.getClass().getSimpleName(), "new subscription list size = " + mComponent.getData().size());
@@ -138,11 +142,15 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Fragment fragment = SubscriptionNewFragment.newInstance();
-                fragment.setTargetFragment(listFragment, NEW_SUBSCRIPTION);
+                fragment.setTargetFragment(listFragment, SubscriptionNewFragment.NEW_SUBSCRIPTION);
                 mContext.displayFragment(fragment);
                 return true;
             }
         };
+    }
+
+    protected String getSubtitle() {
+        return getString(R.string.action_bar_subtitle_subscriptions);
     }
 }
 

@@ -34,14 +34,21 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return null;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (mContext.getSupportActionBar() != null && !getSubtitle().isEmpty()) {
+            mContext.getSupportActionBar().setSubtitle(getSubtitle());
+        }
     }
 
     @Override
@@ -67,7 +74,5 @@ public abstract class BaseFragment extends Fragment {
         ActionBarColorHelper.colorizeToolbar(mContext.getToolBar(), Color.WHITE);
     }
 
-    protected final void setSubtitle(int subtitle) {
-        mContext.getSupportActionBar().setSubtitle(getString(subtitle));
-    }
+    protected abstract String getSubtitle();
 }

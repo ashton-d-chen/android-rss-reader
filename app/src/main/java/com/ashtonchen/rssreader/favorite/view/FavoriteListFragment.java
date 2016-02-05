@@ -1,6 +1,7 @@
 package com.ashtonchen.rssreader.favorite.view;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +24,19 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSubtitle(R.string.action_bar_subtitle_favorites);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getSubtitle();
     }
 
     @Override
@@ -63,5 +70,9 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
     @Override
     protected String getEmptyViewMessage() {
         return getString(R.string.list_empty_list_message_no_favorite);
+    }
+
+    protected String getSubtitle() {
+        return getString(R.string.action_bar_subtitle_favorites);
     }
 }

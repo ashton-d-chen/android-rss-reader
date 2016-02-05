@@ -76,6 +76,10 @@ public class FeedDetailFragment extends DetailFragment<Feed> {
         };
     }
 
+    protected String getSubtitle() {
+        return getString(R.string.action_bar_subtitle_feed_detail);
+    }
+
  /*   protected ViewTreeObserver.OnGlobalLayoutListener getGlobalLayoutListener(final ImageView view) {
         return new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

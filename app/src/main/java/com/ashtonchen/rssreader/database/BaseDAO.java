@@ -14,15 +14,16 @@ public abstract class BaseDAO<T> {
     private DatabaseHelper dbHelper;
     private Context mContext;
 
+
     public BaseDAO(Context context) {
-        this.mContext = context;
-        dbHelper = DatabaseHelper.getHelper(mContext);
+        this.mContext = context.getApplicationContext();
+        dbHelper = DatabaseHelper.getInstance(mContext);
         open();
     }
 
     public void open() throws SQLException {
         if (dbHelper == null) {
-            dbHelper = DatabaseHelper.getHelper(mContext);
+            dbHelper = DatabaseHelper.getInstance(mContext);
         }
         database = dbHelper.getWritableDatabase();
     }

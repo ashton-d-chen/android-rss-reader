@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, RSSReaderContract.DATABASE_NAME, null, RSSReaderContract.DATABASE_VERSION);
     }
 
-    public static synchronized DatabaseHelper getHelper(Context context) {
+    public static synchronized DatabaseHelper getInstance(Context context) {
         if (instance == null) {
             instance = new DatabaseHelper(context);
         }

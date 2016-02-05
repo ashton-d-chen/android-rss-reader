@@ -58,4 +58,8 @@ public class SubscriptionDetailFragment extends DetailFragment<Channel> {
             description.setTextSize(StyleSheet.DETAIL_DESCRIPTION_FONT_SIZE);
         }
     }
+
+    protected String getSubtitle() {
+        return getString(R.string.action_bar_subtitle_subscription_detail);
+    }
 }
