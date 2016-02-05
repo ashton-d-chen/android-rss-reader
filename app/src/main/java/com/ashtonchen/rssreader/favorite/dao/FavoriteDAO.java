@@ -43,7 +43,7 @@ public class FavoriteDAO extends BaseDAO<Feed> {
                 null,
                 null);
         if (cursor != null) {
-            Log.d(this.getClass().getName(), "DB Helper, cursor size: " + cursor.getCount());
+            Log.d(this.getClass().getSimpleName(), "DB Helper, cursor size: " + cursor.getCount());
 
             itemExist = cursor.getCount() > 0;
             cursor.close();
@@ -74,11 +74,11 @@ public class FavoriteDAO extends BaseDAO<Feed> {
         );
 
         if (cursor != null) {
-            Log.d(this.getClass().getName(), "DB Helper, cursor size: " + cursor.getCount());
+            Log.d(this.getClass().getSimpleName(), "DB Helper, cursor size: " + cursor.getCount());
             for (cursor.moveToFirst(); cursor.isAfterLast() == false; cursor.moveToNext()) {
                 Feed item = new Feed();
                 item.setUrl(cursor.getString(1));
-                Log.d(this.getClass().getName(), "Select URl = " + cursor.getString(1));
+                Log.d(this.getClass().getSimpleName(), "Select URl = " + cursor.getString(1));
                 item.setTitle(cursor.getString(2));
                 item.setDescription(cursor.getString(3));
                 item.setThumbnailURL(cursor.getString(4));

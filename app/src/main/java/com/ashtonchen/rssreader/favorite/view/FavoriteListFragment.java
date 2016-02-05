@@ -1,7 +1,6 @@
 package com.ashtonchen.rssreader.favorite.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +29,7 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        return view;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -41,7 +39,7 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
 
     @Override
     protected FavoriteViewAdapter getAdapter() {
-        return new FavoriteViewAdapter(mComponent.getData());
+        return new FavoriteViewAdapter(mList);
     }
 
     @Override
@@ -51,7 +49,6 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
             @Override
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
-                Log.d(this.getClass().getName(), "Long click on position = " + position);
                 int result = mComponent.removeData(position);
                 if (result > 0) {
                     mAdapter.notifyItemRemoved(position);

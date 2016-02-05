@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,11 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
-import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.base.MasterDetailListFragment;
-import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.subscription.listener.SubscriptionNetworkCallbackInterface;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.view.adapter.SubscriptionRecyclerViewAdapter;
 import com.ashtonchen.rssreader.subscription.view.detail.SubscriptionDetailFragment;
 
@@ -59,11 +57,11 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         MenuItem item = menu.add(Menu.NONE, R.id.subscription_new, Menu.NONE, "Add");
         item.setOnMenuItemClickListener(getMenuItemClickListener(this));
         item.setIcon(R.drawable.ic_action_bar_add);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        super.onPrepareOptionsMenu(menu);
     }
 
     /**
@@ -71,7 +69,7 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -103,10 +101,8 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
             @Override
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
-                Log.d(this.getClass().getName(), "Long click at " + position);
                 int result = mComponent.removeData(position);
                 if (result > 0) {
-                    Log.d(this.getClass().getName(), "Adapter list size = " + mAdapter.getList().size());
                     mAdapter.notifyItemRemoved(position);
                     Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
                 }
@@ -126,14 +122,13 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
         switch (requestCode) {
             case NEW_SUBSCRIPTION:
                 if (resultCode == Activity.RESULT_OK) {
-                    //Log.d(this.getClass().getName(), "get new subscription");
-                    //Log.d(this.getClass().getName(), "new subscription list size = " + mComponent.getData().size());
+                    //Log.d(this.getClass().getSimpleName(), "get new subscription");
+                    //Log.d(this.getClass().getSimpleName(), "new subscription list size = " + mComponent.getData().size());
                     //mAdapter.notifyItemInserted(mComponent.getData().size() - 1);
                     //mAdapter.setList(mComponent.getData());
                     //mAdapter.notifyDataSetChanged();
                     startGetItemListsTask();
                 }
-
                 break;
         }
     }

@@ -2,8 +2,8 @@ package com.ashtonchen.rssreader.subscription.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
@@ -22,21 +22,19 @@ import android.widget.Toast;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.ComponentFragment;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
-import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SubscriptionNewFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link SubscriptionNewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class SubscriptionNewFragment extends ComponentFragment<SubscriptionComponent> implements FeedNetworkCallbackInterface {
-    EditText mEditText;
+    private EditText mEditText;
     private String mRSSlink;
-    private OnFragmentInteractionListener mListener;
 
     public SubscriptionNewFragment() {
         // Required empty public constructor
@@ -63,7 +61,15 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
+        FrameLayout frameLayout = new FrameLayout(mContext);
+        frameLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+
+        return frameLayout;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         TextView textView = new TextView(mContext);
         textView.setText(R.string.new_subscription);
@@ -96,19 +102,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         linearLayout.addView(mEditText);
         linearLayout.addView(buttonLinearLayout);
 
-        FrameLayout frameLayout = new FrameLayout(mContext);
-        frameLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        frameLayout.addView(linearLayout);
-
-        //return inflater.inflate(R.layout.fragment_subscription_new, container, false);
-        return frameLayout;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        ((LinearLayout)view).addView(linearLayout);
     }
 
     @Override
@@ -124,9 +118,14 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mEditText = null;
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     protected SubscriptionComponent getComponent() {
@@ -150,17 +149,17 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
                     /*
                     try {
                         URL url = new URL(link);
-                        Log.d(this.getClass().getName(), "URL ok");
+                        Log.d(this.getClass().getSimpleName(), "URL ok");
                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                        Log.d(this.getClass().getName(), "HttpURLConnection ok");
+                        Log.d(this.getClass().getSimpleName(), "HttpURLConnection ok");
                         int code = connection.getResponseCode();
                         if(code == 200) {
                             mSubscriptionComponent.loadSubscriptionInfo(link, callback);
                         } else {
-                            Log.d(this.getClass().getName(), "Invalid RSS link");
+                            Log.d(this.getClass().getSimpleName(), "Invalid RSS link");
                         }
                     } catch (Exception e) {
-                        Log.d(this.getClass().getName(), "Exception when reading RSS link");
+                        Log.d(this.getClass().getSimpleName(), "Exception when reading RSS link");
                     }
                     */
                 }
@@ -180,7 +179,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
     }
     public void onDownloadFinished(Channel channel) {
         if (channel != null) {
-            Log.d(this.getClass().getName(), "got new channel");
+            Log.d(this.getClass().getSimpleName(), "got new channel");
             channel.setUrl(mRSSlink);
             mComponent.addData(channel);
             getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
@@ -188,20 +187,5 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
             Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
             getActivity().onBackPressed();
         }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

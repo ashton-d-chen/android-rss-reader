@@ -32,7 +32,7 @@ public abstract class RSSRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(FeedViewHolder viewHolder, int position) {
-        Log.d(this.getClass().getName(), "position = " + position);
+        Log.d(this.getClass().getSimpleName(), "position = " + position);
         FeedViewHolder holder = viewHolder;
         holder.mData = mList.get(position);
 
@@ -43,14 +43,14 @@ public abstract class RSSRecyclerViewAdapter
 
         holder.mTitle.setText(mList.get(position).getTitle());
 
-        Log.d(this.getClass().getName(), "description = " + mList.get(position).getDescription());
+        Log.d(this.getClass().getSimpleName(), "description = " + mList.get(position).getDescription());
         holder.mDescription.setText(mList.get(position).getDescription());
     }
 
     protected void getThumbnail(FeedViewHolder holder) {
         Context context = holder.mThumbnail.getContext();
-        Log.d(this.getClass().getName(), "Thumbnail URL = " + holder.mData.getThumbnailURL());
-        Log.d(this.getClass().getName(), "Web Thumbnail URL = " + holder.mData.getWebThumbnailURL());
+        Log.d(this.getClass().getSimpleName(), "Thumbnail URL = " + holder.mData.getThumbnailURL());
+        Log.d(this.getClass().getSimpleName(), "Web Thumbnail URL = " + holder.mData.getWebThumbnailURL());
 
         if (!holder.mData.getThumbnailURL().isEmpty()) {
             Picasso

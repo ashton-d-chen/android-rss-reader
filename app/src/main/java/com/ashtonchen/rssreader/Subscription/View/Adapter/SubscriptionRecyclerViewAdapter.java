@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.BaseRecyclerViewAdapter;
-import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.listener.onSubscriptionListInteractionListener;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.view.widget.SubscriptionViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -36,7 +36,7 @@ public class SubscriptionRecyclerViewAdapter extends BaseRecyclerViewAdapter<Cha
 
     @Override
     public void onBindViewHolder(final SubscriptionViewHolder holder, int position) {
-        Log.d(this.getClass().getName(), "adapter subscription: " + position);
+        Log.d(this.getClass().getSimpleName(), "adapter subscription: " + position);
 
         Context context = holder.mThumbnail.getContext();
         if (!mList.get(position).getThumbnailURL().isEmpty()) {

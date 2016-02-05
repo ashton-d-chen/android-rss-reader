@@ -1,9 +1,10 @@
 package com.ashtonchen.rssreader.base;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -20,20 +21,44 @@ public abstract class BaseFragment extends Fragment {
     protected float mScale;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        Log.d(this.getClass().getName(), "onCreate()");
+    public void onAttach(Context context) {
+        super.onAttach(context);
         mContext = (MainActivity) getActivity();
         mScale = mContext.getResources().getDisplayMetrics().density;
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(this.getClass().getName(), "onCreateView()");
-        return super.onCreateView(inflater, container,
-                savedInstanceState);
+        return null;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mScale = 0f;
+        mContext = null;
     }
 
     @Override

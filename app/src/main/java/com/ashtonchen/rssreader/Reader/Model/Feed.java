@@ -13,15 +13,6 @@ import java.util.Date;
  */
 public class Feed implements Comparable<Feed>, Parcelable {
     public static final String ARG_FEED = "argumentFeed";
-    private String webTitle = "";
-    private String webThumbnailURL = "";
-    private String webDescription = "";
-    private String title = "";
-    private String description = "";
-    private String url = "";
-    private String thumbnailURL = "";
-    private String pubDate = "";
-
     public static final Parcelable.Creator<Feed> CREATOR = new Parcelable.Creator<Feed>() {
         public Feed createFromParcel(Parcel in) {
             return new Feed(in);
@@ -31,6 +22,14 @@ public class Feed implements Comparable<Feed>, Parcelable {
             return new Feed[size];
         }
     };
+    private String webTitle = "";
+    private String webThumbnailURL = "";
+    private String webDescription = "";
+    private String title = "";
+    private String description = "";
+    private String url = "";
+    private String thumbnailURL = "";
+    private String pubDate = "";
 
     public Feed() {
 
@@ -113,8 +112,8 @@ public class Feed implements Comparable<Feed>, Parcelable {
 
     @Override
     public int compareTo(Feed another) {
-        Log.d(this.getClass().getName(), "first date time: " + this.getPubDate());
-        Log.d(this.getClass().getName(), "second date time: " + another.getPubDate());
+        Log.d(this.getClass().getSimpleName(), "first date time: " + this.getPubDate());
+        Log.d(this.getClass().getSimpleName(), "second date time: " + another.getPubDate());
 
         return convertDate(another.getPubDate()).compareTo(convertDate(this.getPubDate()));
     }

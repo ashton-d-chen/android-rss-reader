@@ -37,7 +37,7 @@ public final class ActionBarColorHelper {
         final PorterDuffColorFilter colorFilter
                 = new PorterDuffColorFilter(toolbarIconsColor, PorterDuff.Mode.SRC_IN);
 
-        //Log.d("ActionBarColorHelper", "view is " + v.getClass().getName());
+        //Log.d("ActionBarColorHelper", "view is " + v.getClass().getSimpleName());
 
         for (int i = 0; i < toolbarView.getMenu().size(); i++) {
             toolbarView.getMenu().getItem(i).getIcon().setColorFilter(colorFilter);
@@ -55,7 +55,7 @@ public final class ActionBarColorHelper {
     }
 
     public static void doColorizing(View v, final ColorFilter colorFilter, int toolbarIconsColor) {
-        Log.d("ActionBarColorHelper", "view is " + v.getClass().getName());
+        Log.d("ActionBarColorHelper", "view is " + v.getClass().getSimpleName());
         if (v instanceof ImageButton) {
             ((ImageButton) v).getDrawable().setAlpha(255);
             ((ImageButton) v).getDrawable().setColorFilter(colorFilter);

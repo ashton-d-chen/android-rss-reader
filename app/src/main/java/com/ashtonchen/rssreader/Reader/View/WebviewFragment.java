@@ -1,7 +1,7 @@
 package com.ashtonchen.rssreader.reader.view;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,7 @@ public class WebViewFragment extends BaseFragment {
 
     private static final String ARG_URL = "url";
 
-    private String currentURL;
+    private String mCurrentURL;
 
     public static WebViewFragment newInstance(String url) {
         WebViewFragment fragment = new WebViewFragment();
@@ -29,48 +29,29 @@ public class WebViewFragment extends BaseFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mCurrentURL = getArguments().getString(ARG_URL);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.webview_layout, container, false);
+    }
 
-        currentURL = getArguments().getString(ARG_URL);
-        Log.d("SwA", "WVF onCreateView");
-        View view = inflater.inflate(R.layout.webview_layout, container, false);
-        if (currentURL != null) {
-            Log.d("SwA", "Current URL  1[" + currentURL + "]");
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        WebView webView = (WebView) view.findViewById(R.id.webview);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl(mCurrentURL);
+    }
 
-            WebView webView = (WebView) view.findViewById(R.id.webview);
-            webView.getSettings().setJavaScriptEnabled(true);
-            webView.setWebViewClient(new WebViewClient());
-            webView.loadUrl(currentURL);
-        }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
         mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        return view;
     }
-
-
-/*    public void updateUrl(String url) {
-        Log.d("SwA", "Update URL [" + url + "] - View [" + getView() + "]");
-        currentURL = url;
-
-        WebView wv = (WebView) getView().findViewById(R.id.webPage);
-        wv.getSettings().setJavaScriptEnabled(true);
-        wv.loadUrl(url);
-
-    }*/
-
-    private class SwAWebClient extends WebViewClient {
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return false;
-        }
-
-    }
-
 }

@@ -7,8 +7,8 @@ package com.ashtonchen.rssreader.reader.service;
 import android.util.Log;
 import android.util.Xml;
 
-import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Feed;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.utility.StringUtility;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -188,7 +188,7 @@ public class FeedXMLParser {
             parser.nextTag();
         }
         parser.require(XmlPullParser.END_TAG, ns, MEDIA_THUMBNAIL);
-        Log.d(this.getClass().getName(), "Thumbnail URL = " + link);
+        Log.d(this.getClass().getSimpleName(), "Thumbnail URL = " + link);
         return link;
     }
 

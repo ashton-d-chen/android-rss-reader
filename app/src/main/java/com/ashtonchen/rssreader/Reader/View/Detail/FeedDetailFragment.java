@@ -40,18 +40,21 @@ public class FeedDetailFragment extends DetailFragment<Feed> {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.feed_detail, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if (mData != null) {
             int cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
-            rootView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
+            view.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
 
-            TextView title = (TextView) rootView.findViewById(R.id.feed_detail_title);
+            TextView title = (TextView) view.findViewById(R.id.feed_detail_title);
             title.setText(mData.getTitle());
             title.setTextSize(StyleSheet.DETAIL_TITLE_FONT_SIZE);
             title.setTypeface(null, Typeface.BOLD);
             title.setOnClickListener(getOnClickListener());
-
-            TextView description = (TextView) rootView.findViewById(R.id.feed_detail_description);
+            TextView description = (TextView) view.findViewById(R.id.feed_detail_description);
             description.setText(mData.getDescription());
             description.setTextSize(StyleSheet.DETAIL_DESCRIPTION_FONT_SIZE);
             description.setOnClickListener(getOnClickListener());
@@ -59,17 +62,6 @@ public class FeedDetailFragment extends DetailFragment<Feed> {
             //ImageView imageView = (ImageView) rootView.findViewById(R.id.feed_detail_thumbnail);
             //imageView.getViewTreeObserver().addOnGlobalLayoutListener(getGlobalLayoutListener(imageView));
         }
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.feed_detail;
     }
 
     private View.OnClickListener getOnClickListener() {
@@ -77,7 +69,7 @@ public class FeedDetailFragment extends DetailFragment<Feed> {
 
             @Override
             public void onClick(View v) {
-                Log.d(this.getClass().getName(), "detail view clicked");
+                Log.d(this.getClass().getSimpleName(), "detail view clicked");
                 WebViewFragment fragment = WebViewFragment.newInstance(mData.getUrl());
                 mContext.displayFragment(fragment);
             }

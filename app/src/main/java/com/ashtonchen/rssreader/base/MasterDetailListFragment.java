@@ -1,6 +1,5 @@
 package com.ashtonchen.rssreader.base;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -13,27 +12,23 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.reader.view.widget.DecoratedItemRecyclerView;
 
-import java.util.List;
-
 /**
  * Created by Ashton Chen on 15-12-14.
  */
-public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent, U> extends DatabaseComponentFragment<S> {
+public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent, U> extends DatabaseComponentFragment<S, U> {
     private static final String BUNDLE_RECYCLER_LAYOUT = "KeyForLayoutManagerState";
     private static Bundle mBundleRecyclerViewState;
 
-    protected EmptyRecyclerView mRecyclerView;
     protected boolean mTwoPane;
     protected T mAdapter;
+    protected EmptyRecyclerView mRecyclerView;
     protected SwipeRefreshLayout mListContainer;
-    protected SwipeRefreshLayout mEmptyListContainer;
-    protected View mDetailView;
+    SwipeRefreshLayout mEmptyListContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,48 +38,52 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        LinearLayout rootView = (LinearLayout) inflater.inflate(R.layout.master_detail_list, container, false);
-        Log.d(this.getClass().getName(), "try to find two panes");
-        mDetailView = rootView.findViewById(R.id.detail_container);
-        if (mDetailView != null) {
+        return inflater.inflate(R.layout.master_detail_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        View detailView = view.findViewById(R.id.detail_container);
+        if (detailView != null) {
             mTwoPane = true;
-            mDetailView.setVisibility(View.GONE);
+            detailView.setVisibility(View.GONE);
+        } else {
+            mTwoPane = false;
         }
 
-        mListContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout_list);
+        mListContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_list);
         mListContainer.setEnabled(false);
         //mListContainer.setBackgroundColor(Color.GREEN);
         mListContainer.setVisibility(View.GONE);
 
-        mEmptyListContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout_empty_view);
+        mEmptyListContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_empty_view);
         mEmptyListContainer.setEnabled(false);
         //mEmptyListContainer.setBackgroundColor(Color.YELLOW);
         mEmptyListContainer.addView(getEmptyView());
         mEmptyListContainer.setVisibility(View.GONE);
 
         setupAdapter();
-        setupRecyclerView();
 
-        Log.d(this.getClass().getName(), "Toggle enabled");
+        mRecyclerView = new EmptyRecyclerView(mContext);
+        mRecyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        //mRecyclerView.setBackgroundColor(Color.BLUE);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setContainerView(mListContainer);
+        mRecyclerView.setEmptyView(mEmptyListContainer);
+        mRecyclerView.setDetailView(detailView);
+        mListContainer.addView(mRecyclerView);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
         mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
-
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         startGetItemListsTask();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        // save RecyclerView state
-        mBundleRecyclerViewState = new Bundle();
-        Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
-        mBundleRecyclerViewState.putParcelable(BUNDLE_RECYCLER_LAYOUT, listState);
     }
 
     @Override
@@ -96,6 +95,22 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
             Parcelable listState = mBundleRecyclerViewState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
             mRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(this.getClass().getSimpleName(), "onPause()");
+        // save RecyclerView state
+        mBundleRecyclerViewState = new Bundle();
+        Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        mBundleRecyclerViewState.putParcelable(BUNDLE_RECYCLER_LAYOUT, listState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView = null;
     }
 
     public final void setupAdapter() {
@@ -112,26 +127,7 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         view.setGravity(Gravity.CENTER);
         view.setTextSize(18);
         //view.setBackgroundColor(Color.RED);
-
         return view;
-    }
-
-    protected final void setupRecyclerView() {
-        mRecyclerView = new EmptyRecyclerView(mContext);
-        mRecyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        //mRecyclerView.setBackgroundColor(Color.BLUE);
-        if (mRecyclerView == null) {
-            Log.d(this.getClass().getName(), "recycler view is null");
-        }
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
-
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setContainerView(mListContainer);
-        mRecyclerView.setEmptyView(mEmptyListContainer);
-        mRecyclerView.setDetailView(mDetailView);
-        mListContainer.addView(mRecyclerView);
     }
 
     protected RecyclerView.OnClickListener getOnClickListener() {
@@ -139,12 +135,12 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
             @Override
             public void onClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
-                Log.d(this.getClass().getName(), "item clicked position =  " + position);
+                Log.d(this.getClass().getSimpleName(), "item clicked position =  " + position);
                 if (mTwoPane) {
-                    Log.d(this.getClass().getName(), "It's two panel");
+                    Log.d(this.getClass().getSimpleName(), "It's two panel");
                     DisplayDetailContent(position);
                 } else {
-                    Log.d(this.getClass().getName(), "It's single panel");
+                    Log.d(this.getClass().getSimpleName(), "It's single panel");
                     Fragment fragment = getDetailFragment(position);
                     mContext.displayFragment(fragment);
                 }
@@ -159,33 +155,12 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
                 .commit();
     }
 
-    protected void startGetItemListsTask() {
-        new AsyncTask<Void, String, List<U>>() {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected void onProgressUpdate(String... values) {
-                super.onProgressUpdate(values);
-            }
-
-            @Override
-            protected List<U> doInBackground(Void... params) {
-                return mComponent.loadData();
-            }
-
-            @Override
-            protected void onPostExecute(List<U> result) {
-                Log.d(this.getClass().getName(), "onPostExecute: adapter list size = " + result.size());
-                mAdapter.setList(result);
-                mAdapter.notifyDataSetChanged();
-                if (mTwoPane && mAdapter.getItemCount() > 0) {
-                    DisplayDetailContent(0);
-                }
-            }
-        }.execute();
+    protected void startOnPostExecute() {
+        mAdapter.setList(mList);
+        mAdapter.notifyDataSetChanged();
+        if (mTwoPane && mAdapter.getItemCount() > 0) {
+            DisplayDetailContent(0);
+        }
     }
 
     protected abstract T getAdapter();

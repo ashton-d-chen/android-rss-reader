@@ -43,7 +43,7 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
                 null,
                 null);
         if (cursor != null) {
-            Log.d(this.getClass().getName(), "DB Helper, cursor size: " + cursor.getCount());
+            Log.d(this.getClass().getSimpleName(), "DB Helper, cursor size: " + cursor.getCount());
 
             itemExist = cursor.getCount() > 0;
             cursor.close();
@@ -74,11 +74,11 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
         );
 
         if (cursor != null) {
-            Log.d(this.getClass().getName(), "DB Helper, cursor size: " + cursor.getCount());
+            Log.d(this.getClass().getSimpleName(), "DB Helper, cursor size: " + cursor.getCount());
             for (cursor.moveToFirst(); cursor.isAfterLast() == false; cursor.moveToNext()) {
                 Channel item = new Channel();
                 item.setUrl(cursor.getString(1));
-                Log.d(this.getClass().getName(), "Select URl = " + cursor.getString(1));
+                Log.d(this.getClass().getSimpleName(), "Select URl = " + cursor.getString(1));
                 item.setTitle(cursor.getString(2));
                 item.setDescription(cursor.getString(3));
                 item.setThumbnailURL(cursor.getString(4));

@@ -2,8 +2,8 @@ package com.ashtonchen.rssreader.reader.view;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,14 +24,12 @@ import com.ashtonchen.rssreader.favorite.view.FavoriteListFragment;
 import com.ashtonchen.rssreader.reader.ReaderComponent;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
-import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.reader.model.Feeds;
 import com.ashtonchen.rssreader.reader.view.adapter.FeedViewAdapter;
+import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.subscription.view.SubscriptionNewFragment;
 import com.ashtonchen.rssreader.utility.NetworkUtility;
-
-import java.util.List;
 
 /**
  * Created by Ashton Chen on 15-12-12.
@@ -45,9 +43,7 @@ import java.util.List;
  * interface.
  */
 public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapter, ReaderComponent> implements FeedNetworkCallbackInterface {
-
     private int downloadChannelCount = 0;
-
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -73,10 +69,16 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        mListContainer.setEnabled(true);
-        mListContainer.setOnRefreshListener(getSwipeRefreshLayoutListener(this));
+
         addFloatingActionButton(view);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mListContainer.setEnabled(true);
+        mListContainer.setOnRefreshListener(getSwipeRefreshLayoutListener(this));
     }
 
     @Override
@@ -145,7 +147,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(this.getClass().getName(), "Floating action button clicked!");
+                Log.d(this.getClass().getSimpleName(), "Floating action button clicked!");
                 Fragment fragment = FavoriteListFragment.newInstance();
                 mContext.displayFragment(fragment);
             }
@@ -165,7 +167,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             Feeds.addAll(channel.getFeeds());
         }
         downloadChannelCount++;
-        Log.d(this.getClass().getName(), "Downloaded Channel Count: " + downloadChannelCount);
+        Log.d(this.getClass().getSimpleName(), "Downloaded Channel Count: " + downloadChannelCount);
         if (downloadChannelCount >= mComponent.getData().size()) {
             downloadChannelCount = 0;
             mListContainer.setRefreshing(false);
@@ -195,7 +197,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
             @Override
             public boolean onLongClick(View v) {
                 final int position = mRecyclerView.getChildAdapterPosition(v);
-                Log.d(this.getClass().getName(), "Long click on position = " + position);
+                Log.d(this.getClass().getSimpleName(), "Long click on position = " + position);
                 Feed feed = mAdapter.getList().get(position);
 
                 if (!mComponent.findFavorite(feed.getUrl())) {
@@ -226,40 +228,19 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     }
 
     private void getFeedList() {
-        Log.d(this.getClass().getName(), "get feed list");
+        Log.d(this.getClass().getSimpleName(), "get feed list");
         if (NetworkUtility.isOnline(mContext)) {
             mComponent.getFeedList(this);
         } else if (Feeds.size() > 0) {
-            Log.d(this.getClass().getName(), "is offline, get list from Feeds");
+            Log.d(this.getClass().getSimpleName(), "is offline, get list from Feeds");
             setupAdapter();
             //mAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
-    protected void startGetItemListsTask() {
-        new AsyncTask<Void, String, List<Channel>>() {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-
-            @Override
-            protected void onProgressUpdate(String... values) {
-                super.onProgressUpdate(values);
-            }
-
-            @Override
-            protected List<Channel> doInBackground(Void... params) {
-                return mComponent.loadData();
-            }
-
-            @Override
-            protected void onPostExecute(List<Channel> result) {
-                Log.d(this.getClass().getName(), "onPostExecute: adapter list size = " + result.size());
-                getFeedList();
-            }
-        }.execute();
+    protected void startOnPostExecute() {
+        getFeedList();
     }
 }
 

@@ -29,16 +29,13 @@ public abstract class DatabaseComponent<T extends BaseDAO<S>, S> extends BaseCom
         mDAO.close();
     }
 
-    protected abstract T getDAO();
-
-    public List<S> loadData() {
+    public void loadData() {
         mList = mDAO.getAllItems();
-        return mList;
     }
 
     public List<S> getData() {
-        Log.d(this.getClass().getName(), "component get data size = " + mList.size() );
-        return mList;
+        Log.d(this.getClass().getSimpleName(), "component get data size = " + mList.size());
+        return new ArrayList<S>(mList);
     }
 
     public long addData(S data) {
@@ -57,4 +54,5 @@ public abstract class DatabaseComponent<T extends BaseDAO<S>, S> extends BaseCom
         return mDAO.findItem(id);
     }
 
+    protected abstract T getDAO();
 }

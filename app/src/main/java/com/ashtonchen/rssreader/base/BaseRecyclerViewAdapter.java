@@ -26,7 +26,7 @@ public abstract class BaseRecyclerViewAdapter<S, T extends BaseRecyclerViewHolde
 
     @Override
     public int getItemCount() {
-        Log.d(this.getClass().getName(), "adapter list size = " + mList.size());
+        Log.d(this.getClass().getSimpleName(), "adapter list size = " + mList.size());
         return mList.size();
     }
 
