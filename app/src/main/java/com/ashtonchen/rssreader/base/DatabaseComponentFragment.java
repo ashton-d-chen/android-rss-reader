@@ -32,14 +32,20 @@ public abstract class DatabaseComponentFragment<T extends DatabaseComponent, U> 
 
             @Override
             protected List<U> doInBackground(Void... params) {
-                mComponent.loadData();
-                return mComponent.getData();
+                if (mComponent != null) {
+                    mComponent.loadData();
+                    return mComponent.getData();
+                } else {
+                    return new ArrayList<U>();
+                }
             }
 
             @Override
             protected void onPostExecute(List<U> result) {
-                mList = result;
-                startOnPostExecute();
+                if (result.size() > 0) {
+                    mList = result;
+                    startOnPostExecute();
+                }
             }
         }.execute();
     }
