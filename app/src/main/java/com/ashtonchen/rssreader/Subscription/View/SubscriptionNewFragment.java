@@ -12,6 +12,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -24,6 +26,7 @@ import com.ashtonchen.rssreader.base.ComponentFragment;
 import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.subscription.model.Channel;
+import com.ashtonchen.rssreader.utility.NetworkUtility;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +36,7 @@ import com.ashtonchen.rssreader.subscription.model.Channel;
  * create an instance of this fragment.
  */
 public class SubscriptionNewFragment extends ComponentFragment<SubscriptionComponent> implements FeedNetworkCallbackInterface {
-    public  static final int NEW_SUBSCRIPTION = 1;
+    public static final int NEW_SUBSCRIPTION = 1;
     private EditText mEditText;
     private String mRSSlink;
 
@@ -102,7 +105,16 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         linearLayout.addView(mEditText);
         linearLayout.addView(buttonLinearLayout);
 
-        ((FrameLayout)view).addView(linearLayout);
+        ((FrameLayout) view).addView(linearLayout);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mEditText.requestFocus();
+        mContext.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mEditText, InputMethodManager.SHOW_FORCED);
     }
 
     @Override
@@ -120,6 +132,8 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
         mEditText = null;
     }
 
@@ -140,10 +154,18 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
                 //link = "http://rss.cnn.com/rss/cnn_topstories.rss";
                 if (!mRSSlink.isEmpty()) {
                     if (Patterns.WEB_URL.matcher(mRSSlink).matches()) {
-                        if (!mComponent.findData(mRSSlink)) {
-                            Log.d(getClass().getName(), "Add RSS link");
-                            mComponent.loadSubscriptionInfo(mRSSlink, callback);
+                        if (NetworkUtility.isOnline(mContext)) {
+                            if (!mComponent.findData(mRSSlink)) {
+                                Log.d(getClass().getName(), "Add RSS link");
+                                mComponent.loadSubscriptionInfo(mRSSlink, callback);
+                            } else {
+                                Toast.makeText(mContext, R.string.new_subscription_link_invalid, Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(mContext, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
                         }
+                    } else {
+                        Toast.makeText(mContext, R.string.new_subscription_link_incorrect_format, Toast.LENGTH_LONG).show();
                     }
 
                     /*
@@ -162,6 +184,9 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
                         Log.d(this.getClass().getSimpleName(), "Exception when reading RSS link");
                     }
                     */
+
+                } else {
+                    Toast.makeText(mContext, R.string.new_subscription_no_link_entered, Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -173,19 +198,22 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
             @Override
             public void onClick(View v) {
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, null);
-                getActivity().onBackPressed();
+                mContext.onBackPressed();
             }
         };
     }
+
     public void onDownloadFinished(Channel channel) {
         if (channel != null) {
             Log.d(this.getClass().getSimpleName(), "got new channel");
             channel.setUrl(mRSSlink);
-            mComponent.addData(channel);
-            getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
+            if (mComponent != null) {
+                mComponent.addData(channel);
+                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
 
-            Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
-            getActivity().onBackPressed();
+                Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
+                mContext.onBackPressed();
+            }
         }
     }
 
@@ -193,7 +221,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         return getString(R.string.action_bar_subtitle_new_subscription);
     }
 
-    protected  boolean shouldDisplayDrawerIcon() {
+    protected boolean shouldDisplayDrawerIcon() {
         return false;
     }
 }

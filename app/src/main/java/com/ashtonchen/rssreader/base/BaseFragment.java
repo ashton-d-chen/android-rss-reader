@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.main.helper.ActionBarColorHelper;
 import com.ashtonchen.rssreader.main.view.MainActivity;
 
@@ -20,6 +22,7 @@ import com.ashtonchen.rssreader.main.view.MainActivity;
 public abstract class BaseFragment extends Fragment {
     protected MainActivity mContext;
     protected float mScale;
+    protected AppBarLayout mAppBarLayout;
 
     @Override
     public void onAttach(Context context) {
@@ -41,7 +44,6 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
     }
 
     @Override
@@ -50,6 +52,7 @@ public abstract class BaseFragment extends Fragment {
         if (mContext.getSupportActionBar() != null && !getSubtitle().isEmpty()) {
             mContext.getSupportActionBar().setSubtitle(getSubtitle());
         }
+        mAppBarLayout = (AppBarLayout) mContext.findViewById(R.id.app_bar);
         setNavigationMenuIcon(shouldDisplayDrawerIcon());
     }
 
@@ -87,6 +90,24 @@ public abstract class BaseFragment extends Fragment {
             Log.d(this.getClass().getSimpleName(), "Toggle disabled");
             mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
             mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mContext.getActionBarDrawerToggle().setToolbarNavigationClickListener(getToolbarNavigationClickListener());
+
+        }
+    }
+
+    private final View.OnClickListener getToolbarNavigationClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.onBackPressed();
+            }
+        };
+    }
+
+    public final void setAppLayoutExpandable(boolean expandable) {
+        if (mAppBarLayout != null) {
+            Log.d(this.getClass().getSimpleName(), "Set app layout expandable = " + expandable);
+            mAppBarLayout.setExpanded(expandable, true);
         }
     }
 

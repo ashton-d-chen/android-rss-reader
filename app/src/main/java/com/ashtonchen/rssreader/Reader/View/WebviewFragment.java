@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.BaseFragment;
@@ -15,9 +16,7 @@ import com.ashtonchen.rssreader.base.BaseFragment;
  * Created by Ashton Chen on 16-01-22.
  */
 public class WebViewFragment extends BaseFragment {
-
     private static final String ARG_URL = "url";
-
     private String mCurrentURL;
 
     public static WebViewFragment newInstance(String url) {
@@ -42,15 +41,18 @@ public class WebViewFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        WebView webView = (WebView) view.findViewById(R.id.webview);
+        LinearLayout rootView = (LinearLayout) view;
+        WebView webView = new WebView(mContext);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(mCurrentURL);
+        rootView.addView(webView);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setAppLayoutExpandable(true);
     }
 
     protected String getSubtitle() {

@@ -58,8 +58,9 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
                 final int position = mRecyclerView.getChildAdapterPosition(v);
                 int result = mComponent.removeData(position);
                 if (result > 0) {
+                    mList.remove(position);
                     mAdapter.notifyItemRemoved(position);
-                    mAdapter.notifyItemRangeChanged(position, mComponent.getData().size());
+                    mAdapter.notifyItemRangeChanged(position, mList.size());
                     Toast.makeText(mContext, R.string.toast_removed_from_favorite, Toast.LENGTH_SHORT).show();
                 }
                 return true;

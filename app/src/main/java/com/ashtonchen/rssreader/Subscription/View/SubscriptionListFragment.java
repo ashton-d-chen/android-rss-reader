@@ -107,7 +107,9 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
                 final int position = mRecyclerView.getChildAdapterPosition(v);
                 int result = mComponent.removeData(position);
                 if (result > 0) {
+                    mList.remove(position);
                     mAdapter.notifyItemRemoved(position);
+                    mAdapter.notifyItemRangeChanged(position, mList.size());
                     Toast.makeText(mContext, R.string.subscription_removed, Toast.LENGTH_SHORT).show();
                 }
                 return true;

@@ -38,7 +38,7 @@ import com.ashtonchen.rssreader.utility.NetworkUtility;
 
 /**
  * A fragment representing a list of Items.
- * <p>
+ * <p/>
  * Activities containing this fragment MUST implement the {@link RecyclerViewInteractionListener}
  * interface.
  */
@@ -99,7 +99,6 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh_feed:
-                mListContainer.setRefreshing(true);
                 getFeedList();
                 // User chose the "Settings" item, show the app settings UI...
                 return true;
@@ -115,7 +114,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -127,7 +126,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
 */
     private void addFloatingActionButton(View view) {
         //FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        FloatingActionButton fab = new FloatingActionButton(getActivity());
+        FloatingActionButton fab = new FloatingActionButton(mContext);
         fab.setImageResource(R.drawable.ic_menu_favorite);
         fab.setColorFilter(Color.WHITE);
         fab.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
@@ -156,6 +155,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
 
 
     public void onDownloadFinished(Channel channel) {
+        mListContainer.setRefreshing(false);
         if (channel != null) {
             Feeds.addAll(channel.getFeeds());
         }
@@ -163,7 +163,6 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
         Log.d(this.getClass().getSimpleName(), "Downloaded Channel Count: " + downloadChannelCount);
         if (downloadChannelCount >= mComponent.getData().size()) {
             downloadChannelCount = 0;
-            mListContainer.setRefreshing(false);
             mAdapter.setList(Feeds.getFeeds());
             mAdapter.notifyDataSetChanged();
             if (mTwoPane && mAdapter.getItemCount() > 0) {
@@ -222,12 +221,19 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
 
     private void getFeedList() {
         Log.d(this.getClass().getSimpleName(), "get feed list");
-        if (NetworkUtility.isOnline(mContext)) {
-            mComponent.getFeedList(this);
-        } else if (Feeds.size() > 0) {
-            Log.d(this.getClass().getSimpleName(), "is offline, get list from Feeds");
-            setupAdapter();
-            //mAdapter.notifyDataSetChanged();
+        if (mComponent.getData().size() > 0) {
+            if (NetworkUtility.isOnline(mContext)) {
+
+                mComponent.getFeedList(this);
+            } else if (!NetworkUtility.isOnline(mContext)) {
+                mListContainer.setRefreshing(false);
+                Toast.makeText(mContext, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
+                if (Feeds.size() > 0) {
+                    Log.d(this.getClass().getSimpleName(), "is offline, get list from Feeds");
+                    setupAdapter();
+                    //mAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 

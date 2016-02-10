@@ -45,7 +45,7 @@ public class SubscriptionDetailFragment extends DetailFragment<Channel> {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if (mData != null) {
-            int cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
+            int cellPadding = (int) (StyleSheet.PADDING * mScale + 0.5f);
             view.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
 
             TextView title = (TextView) view.findViewById(R.id.subscription_detail_title);
@@ -61,9 +61,5 @@ public class SubscriptionDetailFragment extends DetailFragment<Channel> {
 
     protected String getSubtitle() {
         return getString(R.string.action_bar_subtitle_subscription_detail);
-    }
-
-    protected boolean shouldDisplayDrawerIcon() {
-        return false;
     }
 }

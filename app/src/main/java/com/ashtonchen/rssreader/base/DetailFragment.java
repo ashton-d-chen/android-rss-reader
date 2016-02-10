@@ -3,7 +3,6 @@ package com.ashtonchen.rssreader.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.View;
 
 /**
  * Created by Ashton Chen on 16-01-30.
@@ -35,16 +34,7 @@ public abstract class DetailFragment<T> extends BaseFragment {
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mContext.getActionBarDrawerToggle().setToolbarNavigationClickListener(getToolbarNavigationClickListener());
-    }
-
-    private View.OnClickListener getToolbarNavigationClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.onBackPressed();
-            }
-        };
+        setAppLayoutExpandable(true);
     }
 
     protected boolean shouldDisplayDrawerIcon() {

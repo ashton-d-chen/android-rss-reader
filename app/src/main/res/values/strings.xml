@@ -10,6 +10,7 @@
     <string name="xml_error">Error parsing XML.</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string name="no_network_connection">No network connection</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -40,4 +41,7 @@
     <string name="list_empty_list_message_no_subscription">No RSS link added</string>
     <string name="list_empty_list_message_button_add_RSS">Add a RSS feed</string>
 
+    <string name="new_subscription_no_link_entered">Please enter a RSS URL</string>
+    <string name="new_subscription_link_incorrect_format">RSS URL format is invalid</string>
+    <string name="new_subscription_link_invalid">RSS cannot be located</string>
 </resources>

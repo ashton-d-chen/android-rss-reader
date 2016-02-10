@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ashtonchen.rssreader.R;
+import com.ashtonchen.rssreader.StyleSheet;
 import com.ashtonchen.rssreader.reader.view.widget.DecoratedItemRecyclerView;
 
 /**
@@ -54,13 +55,11 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         mListContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_list);
         mListContainer.setEnabled(false);
         //mListContainer.setBackgroundColor(Color.GREEN);
-        mListContainer.setVisibility(View.GONE);
 
         mEmptyListContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_empty_view);
         mEmptyListContainer.setEnabled(false);
         //mEmptyListContainer.setBackgroundColor(Color.YELLOW);
         mEmptyListContainer.addView(getEmptyView());
-        mEmptyListContainer.setVisibility(View.GONE);
 
         setupAdapter();
 
@@ -70,10 +69,13 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
-        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setContainerView(mListContainer);
         mRecyclerView.setEmptyView(mEmptyListContainer);
+        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setDetailView(detailView);
+
+        int padding = (int) (StyleSheet.PADDING * mScale + 0.5f);
+        mRecyclerView.setPadding(padding, padding, padding, padding);
         mListContainer.addView(mRecyclerView);
     }
 
@@ -147,7 +149,7 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
 
     protected final void DisplayDetailContent(int position) {
         Fragment fragment = getDetailFragment(position);
-        getActivity().getSupportFragmentManager().beginTransaction()
+        mContext.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.detail_container, fragment)
                 .commit();
     }

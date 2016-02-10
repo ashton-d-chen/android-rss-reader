@@ -4,9 +4,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ashtonchen.rssreader.base.BaseRecyclerViewHolder;
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.StyleSheet;
+import com.ashtonchen.rssreader.base.BaseRecyclerViewHolder;
 
 /**
  * Created by Ashton Chen on 15-12-14.
@@ -16,20 +16,21 @@ public class SubscriptionViewHolder extends BaseRecyclerViewHolder {
     public final TextView mDescription;
     public final ImageView mThumbnail;
 
-    private int cellPadding;
-    private int cellThumbnailSize;
-    private int cellThumbnailTextSpacing;
-    private int cellTextViewSpacing;
-
     public SubscriptionViewHolder(View view) {
         super(view);
 
-        cellPadding = (int) (StyleSheet.CELL_PADDING * mScale + 0.5f);
-        cellThumbnailSize = (int) (StyleSheet.CELL_THUMBNAIL_SIZE * mScale + 0.5f);
-        cellThumbnailTextSpacing = (int) (StyleSheet.CELL_Thumbnail_TEXT_SPACING * mScale + 0.5f);
-        cellTextViewSpacing = (int) (StyleSheet.CELL_TEXT_VIEW_SPACING * mScale + 0.5f);
+        int cellTopPadding = (int) (StyleSheet.CELL_TOP_PADDING * mScale + 0.5f);
+        int cellBottomPadding = (int) (StyleSheet.CELL_BOTTOM_PADDING * mScale + 0.5f);
 
-        this.itemView.setPadding(cellPadding, cellPadding, cellPadding, cellPadding);
+        int cellLeftPadding = (int) (StyleSheet.CELL_LEFT_PADDING * mScale + 0.5f);
+        int cellRightPadding = (int) (StyleSheet.CELL_RIGHT_PADDING * mScale + 0.5f);
+
+        //int cellThumbnailSize = StyleSheet.CELL_THUMBNAIL_SIZE;
+        int cellThumbnailSize = (int) (StyleSheet.CELL_THUMBNAIL_SIZE * mScale + 0.5f);
+        int cellThumbnailTextSpacing = (int) (StyleSheet.CELL_Thumbnail_TEXT_SPACING * mScale + 0.5f);
+        int cellTextViewSpacing = (int) (StyleSheet.CELL_TEXT_VIEW_SPACING * mScale + 0.5f);
+
+        this.itemView.setPadding(cellLeftPadding, cellTopPadding, cellRightPadding, cellBottomPadding);
 
         mThumbnail = (ImageView) view.findViewById(R.id.feed_thumbnail);
         mThumbnail.setPadding(0, 0, cellThumbnailTextSpacing, 0);
@@ -39,12 +40,10 @@ public class SubscriptionViewHolder extends BaseRecyclerViewHolder {
         mTitle = (TextView) view.findViewById(R.id.feed_title);
         mTitle.setMaxLines(StyleSheet.CELL_TITLE_MAX_LINE);
         mTitle.setPadding(0, 0, 0, cellTextViewSpacing);
-        mTitle.setLineSpacing(0, StyleSheet.CELL_TITLE_LINE_HEIGHT_MULTIPLIER);
         mTitle.setTextSize(StyleSheet.CELL_TITLE_FONT_SIZE);
 
         mDescription = (TextView) view.findViewById(R.id.feed_description);
         mDescription.setMaxLines(StyleSheet.CELL_DESCRIPTION_MAX_LINE);
-        mDescription.setLineSpacing(1, StyleSheet.CELL_DESCRIPTION_LINE_HEIGHT_MULTIPLIER);
         mDescription.setTextSize(StyleSheet.CELL_DESCRIPTION_FONT_SIZE);
     }
 
