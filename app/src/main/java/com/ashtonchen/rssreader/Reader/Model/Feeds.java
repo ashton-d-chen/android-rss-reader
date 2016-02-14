@@ -36,9 +36,10 @@ public class Feeds {
     public static void addAll(List<Feed> list) {
         if (feeds != null) {
             feeds.addAll(list);
-            Collections.sort(feeds);
+
         } else {
             feeds = list;
+            Collections.sort(feeds);
         }
     }
 }

@@ -156,6 +156,11 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
 
     public void onDownloadFinished(Channel channel) {
         mListContainer.setRefreshing(false);
+
+        if (downloadChannelCount == 0) {
+            Feeds.reset();
+        }
+
         if (channel != null) {
             Feeds.addAll(channel.getFeeds());
         }

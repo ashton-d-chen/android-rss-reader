@@ -45,6 +45,7 @@ public class WebViewFragment extends BaseFragment {
         WebView webView = new WebView(mContext);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
+        WebView.setWebContentsDebuggingEnabled(false);
         webView.loadUrl(mCurrentURL);
         rootView.addView(webView);
     }
