@@ -1,5 +1,6 @@
 package com.ashtonchen.rssreader.base;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -7,11 +8,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ashtonchen.rssreader.R;
@@ -23,12 +28,14 @@ import com.ashtonchen.rssreader.reader.view.widget.DecoratedItemRecyclerView;
  */
 public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter, S extends DatabaseComponent, U> extends DatabaseComponentFragment<S, U> {
     private static final String BUNDLE_RECYCLER_LAYOUT = "KeyForLayoutManagerState";
+    private static final int MINIMUM_WINDOW_WIDTH = 900;
     private static Bundle mBundleRecyclerViewState;
 
     protected boolean mTwoPane;
     protected T mAdapter;
     protected EmptyRecyclerView mRecyclerView;
     protected SwipeRefreshLayout mListContainer;
+    protected View mDetailView;
     SwipeRefreshLayout mEmptyListContainer;
 
     @Override
@@ -44,22 +51,35 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        View detailView = view.findViewById(R.id.detail_container);
-        if (detailView != null) {
+        LinearLayout layout = (LinearLayout) view;
+
+        Display display = mContext.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float density = getResources().getDisplayMetrics().density;
+        float dpHeight = outMetrics.heightPixels / density;
+        float dpWidth = outMetrics.widthPixels / density;
+
+        if (dpWidth >= MINIMUM_WINDOW_WIDTH) {
             mTwoPane = true;
-            detailView.setVisibility(View.GONE);
+
+            layout.setBaselineAligned(false);
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+            mListContainer = getMasterViewContainer();
+            layout.addView(mListContainer);
+            layout.addView(getDivider());
+
+            mDetailView = getDetailView();
+            layout.addView(mDetailView);
         } else {
-            mTwoPane = false;
+            layout.setOrientation(LinearLayout.VERTICAL);
+            mListContainer = getMasterViewContainer();
+            layout.addView(mListContainer);
         }
+        layout.addView(getEmptyViewContainer());
 
-        mListContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_list);
-        mListContainer.setEnabled(false);
-        //mListContainer.setBackgroundColor(Color.GREEN);
-
-        mEmptyListContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_empty_view);
-        mEmptyListContainer.setEnabled(false);
-        //mEmptyListContainer.setBackgroundColor(Color.YELLOW);
-        mEmptyListContainer.addView(getEmptyView());
+        mEmptyListContainer = getEmptyViewContainer();
 
         setupAdapter();
 
@@ -69,10 +89,8 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.addItemDecoration(new DecoratedItemRecyclerView(30));
-        mRecyclerView.setContainerView(mListContainer);
-        mRecyclerView.setEmptyView(mEmptyListContainer);
+        mRecyclerView.setEmptyViewListener(getEmptyViewListener());
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setDetailView(detailView);
 
         int padding = (int) (StyleSheet.PADDING * mScale + 0.5f);
         mRecyclerView.setPadding(padding, padding, padding, padding);
@@ -160,6 +178,68 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         if (mTwoPane && mAdapter.getItemCount() > 0) {
             DisplayDetailContent(0);
         }
+    }
+
+    private SwipeRefreshLayout getMasterViewContainer() {
+        SwipeRefreshLayout layout = new SwipeRefreshLayout(mContext);
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        if (mTwoPane) {
+            width = (int) (400 * mScale + 0.5f);
+        }
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
+        layout.setLayoutParams(params);
+        layout.setId(R.id.swipe_refresh_layout_list);
+        layout.setEnabled(false);
+        layout.setBackgroundColor(Color.GREEN);
+        return layout;
+    }
+
+    private View getDivider() {
+        ImageView divider = new ImageView(mContext);
+        LinearLayout.LayoutParams lp =
+                new LinearLayout.LayoutParams(1, LinearLayout.LayoutParams.MATCH_PARENT);
+        lp.setMargins(0, 0, 0, 0);
+        divider.setLayoutParams(lp);
+        divider.setBackgroundColor(Color.GRAY);
+        return divider;
+    }
+
+    private LinearLayout getDetailView() {
+        LinearLayout layout = new LinearLayout(mContext);
+        layout.setId(R.id.detail_container);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layout.setLayoutParams(params);
+        int padding = (int) (16 * mScale + 0.5f);
+        layout.setPadding(padding, padding, padding, padding);
+        layout.setBackgroundColor(Color.RED);
+        return layout;
+    }
+
+    private SwipeRefreshLayout getEmptyViewContainer() {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        SwipeRefreshLayout layout = new SwipeRefreshLayout(mContext);
+        layout.setLayoutParams(params);
+        layout.setId(R.id.swipe_refresh_layout_list);
+        layout.setEnabled(false);
+        layout.setBackgroundColor(Color.YELLOW);
+        layout.addView(getEmptyView());
+        return layout;
+    }
+
+    protected EmptyRecyclerView.EmptyViewListener getEmptyViewListener() {
+        return new EmptyRecyclerView.EmptyViewListener() {
+            public void setEmptyView(boolean value) {
+
+                if (mListContainer != null && mEmptyListContainer != null) {
+                    mListContainer.setVisibility(value ? View.GONE : View.VISIBLE);
+                    mEmptyListContainer.setVisibility(value ? View.VISIBLE : View.GONE);
+                }
+
+                if (mDetailView != null) {
+                    mDetailView.setVisibility(value ? View.GONE : View.VISIBLE);
+                }
+            }
+        };
     }
 
     protected abstract T getAdapter();

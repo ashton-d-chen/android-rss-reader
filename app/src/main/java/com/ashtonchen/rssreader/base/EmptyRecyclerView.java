@@ -2,15 +2,12 @@ package com.ashtonchen.rssreader.base;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 
 /**
  * Created by Ashton Chen on 16-02-01.
  */
 public class EmptyRecyclerView extends BaseRecyclerView {
-    protected View mContainerView;
-    protected View mEmptyView;
-    protected View mDetailView;
+    protected EmptyViewListener mListener;
 
     final private AdapterDataObserver observer = new AdapterDataObserver() {
         @Override
@@ -49,13 +46,8 @@ public class EmptyRecyclerView extends BaseRecyclerView {
     void setEmptyView() {
         if (getAdapter() != null) {
             final boolean emptyViewVisible = getAdapter().getItemCount() == 0;
-            if (mContainerView != null && mEmptyView != null) {
-                mContainerView.setVisibility(emptyViewVisible ? View.GONE : View.VISIBLE);
-                mEmptyView.setVisibility(emptyViewVisible ? View.VISIBLE : View.GONE);
-            }
-
-            if (mDetailView != null) {
-                mDetailView.setVisibility(emptyViewVisible ? View.GONE : View.VISIBLE);
+            if (mListener != null) {
+                mListener.setEmptyView(emptyViewVisible);
             }
         }
     }
@@ -73,15 +65,11 @@ public class EmptyRecyclerView extends BaseRecyclerView {
         setEmptyView();
     }
 
-    final public void setEmptyView(View emptyView) {
-        mEmptyView = emptyView;
+    final public void setEmptyViewListener(EmptyViewListener listener) {
+        mListener = listener;
     }
 
-    final public void setContainerView(View view) {
-        mContainerView = view;
-    }
-
-    final public void setDetailView(View view) {
-        mDetailView = view;
+    public interface EmptyViewListener {
+        void setEmptyView(boolean value);
     }
 }

@@ -2,5 +2,8 @@
 <resources>
     <item name="subscription_new" type="id" />
     <item name="action_refresh_feed" type="id" />
+    <item name="swipe_refresh_layout_list" type="id" />
+    <item name="detail_container" type="id" />
+    <item name="swipe_refresh_layout_empty_view" type="id" />
 
 </resources>
