@@ -34,7 +34,10 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        Fragment fragment = getParentFragment();
+        if (fragment == null) {
+            setRetainInstance(true);
+        }
     }
 
     @Override

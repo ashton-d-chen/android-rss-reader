@@ -22,7 +22,7 @@ import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.MasterDetailFeedListFragment;
 import com.ashtonchen.rssreader.favorite.view.FavoriteListFragment;
 import com.ashtonchen.rssreader.reader.ReaderComponent;
-import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.reader.listener.RecyclerViewInteractionListener;
 import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.reader.model.Feeds;
@@ -38,12 +38,11 @@ import com.ashtonchen.rssreader.utility.NetworkUtility;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
+ * <p>
  * Activities containing this fragment MUST implement the {@link RecyclerViewInteractionListener}
  * interface.
  */
-public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapter, ReaderComponent> implements FeedNetworkCallbackInterface {
-    private int downloadChannelCount = 0;
+public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapter, ReaderComponent> {
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,8 +59,6 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setHasOptionsMenu(true);
     }
 
@@ -114,7 +111,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -151,31 +148,6 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
         } else {
             mListContainer.addView(fab);
         }*/
-    }
-
-
-    public void onDownloadFinished(Channel channel) {
-        mListContainer.setRefreshing(false);
-
-        if (downloadChannelCount == 0) {
-            Feeds.reset();
-        }
-
-        if (channel != null) {
-            Feeds.addAll(channel.getFeeds());
-        }
-        downloadChannelCount++;
-        Log.d(this.getClass().getSimpleName(), "Downloaded Channel Count: " + downloadChannelCount);
-        if (downloadChannelCount >= mComponent.getData().size()) {
-            downloadChannelCount = 0;
-            mAdapter.setList(Feeds.getFeeds());
-            mAdapter.notifyDataSetChanged();
-            if (mTwoPane && mAdapter.getItemCount() > 0) {
-                DisplayDetailContent(0);
-            }
-        }
-
-        //mFeedViewAdapter.setData(mChannel);
     }
 
     @Override
@@ -229,7 +201,7 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
         if (mComponent.getData().size() > 0) {
             if (NetworkUtility.isOnline(mContext)) {
 
-                mComponent.getFeedList(this);
+                mComponent.getFeedList(getNetworkHelperCallback());
             } else if (!NetworkUtility.isOnline(mContext)) {
                 mListContainer.setRefreshing(false);
                 Toast.makeText(mContext, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
@@ -255,6 +227,21 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
                 fragment.setTargetFragment(listFragment, SubscriptionNewFragment.NEW_SUBSCRIPTION);
                 mContext.displayFragment(fragment);
                 return true;
+            }
+        };
+    }
+
+    protected FeedNetworkHelper.NetworkHelperCallback getNetworkHelperCallback() {
+        return new FeedNetworkHelper.NetworkHelperCallback() {
+            @Override
+            public void onNetworkHelperFinished(Channel channel) {
+                if (mListContainer != null) {
+                    mListContainer.setRefreshing(false);
+                }
+                if(mAdapter !=null) {
+                    mAdapter.setList(Feeds.getFeeds());
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         };
     }

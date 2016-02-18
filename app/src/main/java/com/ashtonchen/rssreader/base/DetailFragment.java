@@ -32,6 +32,7 @@ public abstract class DetailFragment<T> extends BaseFragment {
         mData = null;
     }
 
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setAppLayoutExpandable(true);
