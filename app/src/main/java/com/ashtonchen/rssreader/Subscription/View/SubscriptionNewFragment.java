@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.base.ComponentFragment;
-import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.subscription.SubscriptionComponent;
 import com.ashtonchen.rssreader.subscription.model.Channel;
 import com.ashtonchen.rssreader.utility.NetworkUtility;
@@ -35,7 +35,7 @@ import com.ashtonchen.rssreader.utility.NetworkUtility;
  * Use the {@link SubscriptionNewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SubscriptionNewFragment extends ComponentFragment<SubscriptionComponent> implements FeedNetworkCallbackInterface {
+public class SubscriptionNewFragment extends ComponentFragment<SubscriptionComponent> {
     public static final int NEW_SUBSCRIPTION = 1;
     private EditText mEditText;
     private String mRSSlink;
@@ -90,7 +90,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         Button okButton = new Button(mContext);
         okButton.setText(R.string.button_subscribe);
         okButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        okButton.setOnClickListener(getOnAddNewButtonClicked(this));
+        okButton.setOnClickListener(getOnAddNewButtonClicked(getNetworkHelperCallback()));
 
         LinearLayout buttonLinearLayout = new LinearLayout(mContext);
         buttonLinearLayout.setGravity(Gravity.CENTER);
@@ -122,7 +122,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         super.onAttach(context);
 
         /*if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            mEmptyViewListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -146,7 +146,7 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         return new SubscriptionComponent(mContext);
     }
 
-    private View.OnClickListener getOnAddNewButtonClicked(final FeedNetworkCallbackInterface callback) {
+    private View.OnClickListener getOnAddNewButtonClicked(final FeedNetworkHelper.NetworkHelperCallback callback) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,20 +203,24 @@ public class SubscriptionNewFragment extends ComponentFragment<SubscriptionCompo
         };
     }
 
-    public void onDownloadFinished(Channel channel) {
-        if (channel != null) {
-            Log.d(this.getClass().getSimpleName(), "got new channel");
-            channel.setUrl(mRSSlink);
-            if (mComponent != null) {
-                mComponent.addData(channel);
-                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
+    protected FeedNetworkHelper.NetworkHelperCallback getNetworkHelperCallback() {
+        return new FeedNetworkHelper.NetworkHelperCallback() {
+            @Override
+            public void onNetworkHelperFinished(Channel channel) {
+                if (channel != null) {
+                    Log.d(this.getClass().getSimpleName(), "got new channel");
+                    channel.setUrl(mRSSlink);
+                    if (mComponent != null) {
+                        mComponent.addData(channel);
+                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
 
-                Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
-                mContext.onBackPressed();
+                        Toast.makeText(mContext, R.string.toast_rss_added, Toast.LENGTH_SHORT).show();
+                        mContext.onBackPressed();
+                    }
+                }
             }
-        }
+        };
     }
-
     protected String getSubtitle() {
         return getString(R.string.action_bar_subtitle_new_subscription);
     }

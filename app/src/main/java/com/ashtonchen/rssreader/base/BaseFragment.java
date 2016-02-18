@@ -34,7 +34,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setRetainInstance(true);
+        setRetainInstance(true);
     }
 
     @Override
@@ -44,6 +44,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
     }
 
     @Override
@@ -59,6 +60,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mAppBarLayout = null;
     }
 
     @Override
@@ -91,7 +93,6 @@ public abstract class BaseFragment extends Fragment {
             mContext.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
             mContext.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             mContext.getActionBarDrawerToggle().setToolbarNavigationClickListener(getToolbarNavigationClickListener());
-
         }
     }
 

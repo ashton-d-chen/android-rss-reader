@@ -5,7 +5,6 @@ import android.content.Context;
 import com.ashtonchen.rssreader.base.DatabaseComponent;
 import com.ashtonchen.rssreader.favorite.dao.FavoriteDAO;
 import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
-import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
 import com.ashtonchen.rssreader.reader.model.Feed;
 import com.ashtonchen.rssreader.subscription.dao.SubscriptionDAO;
 import com.ashtonchen.rssreader.subscription.model.Channel;
@@ -30,7 +29,7 @@ public class ReaderComponent extends DatabaseComponent<SubscriptionDAO, Channel>
         return new SubscriptionDAO(context);
     }
 
-    public void getFeedList(FeedNetworkCallbackInterface callback) {
+    public void getFeedList(FeedNetworkHelper.NetworkHelperCallback callback) {
         List<Channel> list = getData();
         mFeedNetworkHelper.getFeedList(list, callback);
     }

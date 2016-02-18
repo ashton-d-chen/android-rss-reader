@@ -18,6 +18,12 @@ public abstract class DatabaseComponentFragment<T extends DatabaseComponent, U> 
         mList = new ArrayList<>();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mList = null;
+    }
+
     protected void startGetItemListsTask() {
         new AsyncTask<Void, String, List<U>>() {
             @Override
@@ -38,6 +44,11 @@ public abstract class DatabaseComponentFragment<T extends DatabaseComponent, U> 
                 } else {
                     return new ArrayList<U>();
                 }
+            }
+
+            @Override
+            protected void onCancelled() {
+
             }
 
             @Override

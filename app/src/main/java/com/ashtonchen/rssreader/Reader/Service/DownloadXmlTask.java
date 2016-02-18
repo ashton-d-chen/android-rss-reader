@@ -3,7 +3,7 @@ package com.ashtonchen.rssreader.reader.service;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ashtonchen.rssreader.reader.listener.FeedNetworkCallbackInterface;
+import com.ashtonchen.rssreader.reader.helper.FeedNetworkHelper;
 import com.ashtonchen.rssreader.subscription.model.Channel;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -17,10 +17,25 @@ import java.net.URL;
  * Created by Ashton Chen on 15-12-09.
  */
 public class DownloadXmlTask extends AsyncTask<String, Void, Channel> {
-    FeedNetworkCallbackInterface callback;
+    private FeedNetworkHelper.DownloadXmlTaskCallback mCallback;
 
-    public DownloadXmlTask(FeedNetworkCallbackInterface callback) {
-        this.callback = callback;
+    public DownloadXmlTask(FeedNetworkHelper.DownloadXmlTaskCallback callback) {
+        mCallback = callback;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onCancelled() {
+
     }
 
     @Override
@@ -37,7 +52,9 @@ public class DownloadXmlTask extends AsyncTask<String, Void, Channel> {
 
     @Override
     protected void onPostExecute(Channel result) {
-        this.callback.onDownloadFinished(result);
+        if (mCallback != null) {
+            mCallback.onDownloadFinished(result);
+        }
     }
 
     private Channel loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
