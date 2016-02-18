@@ -34,19 +34,16 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
 
     protected boolean mTwoPane;
     protected T mAdapter;
-
     protected EmptyRecyclerView mRecyclerView;
     protected SwipeRefreshLayout mListContainer;
+    private int mLastClickedPosition;
     private View mDetailView;
-    private DetailFragment mDetailFragment;
     private SwipeRefreshLayout mEmptyListContainer;
-
-    private TextView mDetailTitleView;
-    private TextView mDetailDescriptionView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mLastClickedPosition = -1;
     }
 
     @Override
@@ -113,7 +110,6 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
     @Override
     public void onResume() {
         super.onResume();
-
         if (mBundleRecyclerViewState != null) {
             Parcelable listState = mBundleRecyclerViewState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
             mRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
@@ -163,14 +159,14 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int position = mRecyclerView.getChildAdapterPosition(v);
-                Log.d(this.getClass().getSimpleName(), "item clicked position =  " + position);
+                mLastClickedPosition = mRecyclerView.getChildAdapterPosition(v);
+                Log.d(this.getClass().getSimpleName(), "item clicked position =  " + mLastClickedPosition);
                 if (mTwoPane) {
                     Log.d(this.getClass().getSimpleName(), "It's two panel");
-                    DisplayDetailContent(position);
+                    DisplayDetailContent(mLastClickedPosition);
                 } else {
                     Log.d(this.getClass().getSimpleName(), "It's single panel");
-                    Fragment fragment = getDetailFragment(position);
+                    Fragment fragment = getDetailFragment(mLastClickedPosition);
                     mContext.displayFragment(fragment);
                 }
             }
@@ -224,33 +220,6 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
         layout.setPadding(padding, padding, padding, padding);
         //layout.setBackgroundColor(Color.RED);
 
-        /*mDetailFragment = getDetailFragment(-1);
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.detail_container, mDetailFragment)
-                .commit();*/
-
-       /* SwipeRefreshLayout swipeRefreshLayout = new SwipeRefreshLayout(mContext);
-        swipeRefreshLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        layout.addView(swipeRefreshLayout);
-
-        ScrollView scrollView = new ScrollView(mContext);
-        scrollView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        swipeRefreshLayout.addView(scrollView);
-
-        LinearLayout linearLayout = new LinearLayout(mContext);
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        swipeRefreshLayout.addView(linearLayout);
-
-        mDetailTitleView = new TextView(mContext);
-        mDetailTitleView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        linearLayout.addView(mDetailTitleView);
-
-        mDetailDescriptionView = new TextView(mContext);
-        mDetailDescriptionView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        linearLayout.addView(mDetailDescriptionView);*/
-
-
         return layout;
     }
 
@@ -284,7 +253,11 @@ public abstract class MasterDetailListFragment<T extends BaseRecyclerViewAdapter
             @Override
             public void clickFirstItem() {
                 if (mTwoPane && mAdapter.getItemCount() > 0) {
-                    DisplayDetailContent(0);
+                    if (mLastClickedPosition >= 0) {
+                        DisplayDetailContent(mLastClickedPosition);
+                    } else {
+                        DisplayDetailContent(0);
+                    }
                 }
             }
         };
