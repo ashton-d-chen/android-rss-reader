@@ -38,6 +38,22 @@ public final class RSSReaderContract {
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + SubscriptionEntry.TABLE_NAME;
+
+        public static final String SQL_ADD_DEFAULT_ENTRY = "INSERT INTO " +
+                SubscriptionEntry.TABLE_NAME +
+                "(" +
+                SubscriptionEntry.COLUMN_NAME_URL + COMMA_SEP +
+                SubscriptionEntry.COLUMN_NAME_TITLE + COMMA_SEP +
+                SubscriptionEntry.COLUMN_NAME_DESCRIPTION + COMMA_SEP +
+                SubscriptionEntry.COLUMN_NAME_THUMBNAIL_URL +
+                ")" +
+                " VALUES " +
+                "('" +
+                "http://www.cnet.com/rss/news/" + "'" + COMMA_SEP + "'" +
+                "CNET News" + "'" + COMMA_SEP + "'" +
+                "CNET news editors and reporters provide top technology news, with investigative reporting and in-depth coverage of tech issues and events." + "'" + COMMA_SEP + "'" +
+                "http://i.i.cbsi.com/cnwk.1d/i/ne/gr/prtnr/CNET_Logo_150.gif" +
+                "')";
     }
 
     public static abstract class FavoriteEntry implements BaseColumns {

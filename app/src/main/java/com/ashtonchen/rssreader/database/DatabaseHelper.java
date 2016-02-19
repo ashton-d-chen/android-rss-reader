@@ -30,6 +30,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(RSSReaderContract.SubscriptionEntry.SQL_CREATE_ENTRIES);
         db.execSQL(RSSReaderContract.FavoriteEntry.SQL_CREATE_ENTRIES);
+
+        db.execSQL(RSSReaderContract.SubscriptionEntry.SQL_ADD_DEFAULT_ENTRY);
     }
 
     @Override
