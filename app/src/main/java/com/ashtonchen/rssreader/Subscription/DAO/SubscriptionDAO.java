@@ -107,4 +107,9 @@ public class SubscriptionDAO extends BaseDAO<Channel> {
         String[] selectionArgs = {String.valueOf(subscription.getUrl())};
         return database.delete(RSSReaderContract.SubscriptionEntry.TABLE_NAME, selection, selectionArgs);
     }
+
+    @Override
+    public void removeAllItem() {
+
+    }
 }

@@ -154,5 +154,9 @@ public class SubscriptionListFragment extends MasterDetailListFragment<Subscript
     protected String getSubtitle() {
         return getString(R.string.action_bar_subtitle_subscriptions);
     }
+
+    protected void retrieveDataForDatabase() {
+        // This fragment can only get data from database, do nothing.
+    }
 }
 

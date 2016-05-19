@@ -38,5 +38,7 @@ public abstract class BaseDAO<T> {
 
     public abstract int removeItem(T item);
 
+    public abstract void removeAllItem();
+
     public abstract boolean findItem(String id);
 }

@@ -56,10 +56,14 @@ public abstract class DatabaseComponentFragment<T extends DatabaseComponent, U> 
                 if (result.size() > 0) {
                     mList = result;
                     startOnPostExecute();
+                } else {  // If nothing in database, retrieve from network
+                    retrieveDataForDatabase();
                 }
             }
         }.execute();
     }
+
+    protected abstract void retrieveDataForDatabase();
 
     protected abstract void startOnPostExecute();
 }

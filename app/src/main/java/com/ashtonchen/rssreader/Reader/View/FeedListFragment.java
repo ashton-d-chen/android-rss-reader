@@ -249,5 +249,11 @@ public class FeedListFragment extends MasterDetailFeedListFragment<FeedViewAdapt
     protected String getSubtitle() {
         return getString(R.string.action_bar_subtitle_feeds);
     }
+
+    protected void retrieveDataForDatabase() {
+        if (NetworkUtility.isOnline(mContext)) {
+            mComponent.getFeedList(getNetworkHelperCallback());
+        }
+    }
 }
 

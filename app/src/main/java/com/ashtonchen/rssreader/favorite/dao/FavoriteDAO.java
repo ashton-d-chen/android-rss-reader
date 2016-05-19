@@ -108,4 +108,9 @@ public class FavoriteDAO extends BaseDAO<Feed> {
         String[] selectionArgs = {String.valueOf(favorite.getUrl())};
         return database.delete(RSSReaderContract.FavoriteEntry.TABLE_NAME, selection, selectionArgs);
     }
+
+    @Override
+    public void removeAllItem() {
+
+    }
 }

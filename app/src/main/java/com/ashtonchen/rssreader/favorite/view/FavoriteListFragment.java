@@ -76,4 +76,8 @@ public class FavoriteListFragment extends MasterDetailFeedListFragment<FavoriteV
     protected String getSubtitle() {
         return getString(R.string.action_bar_subtitle_favorites);
     }
+
+    protected void retrieveDataForDatabase() {
+        // This fragment can only retrieve data from database, do nothing
+    }
 }
