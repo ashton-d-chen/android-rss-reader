@@ -14,7 +14,7 @@ import com.ashtonchen.rssreader.R;
 import com.ashtonchen.rssreader.StyleSheet;
 import com.ashtonchen.rssreader.base.DetailFragment;
 import com.ashtonchen.rssreader.reader.model.Feed;
-import com.ashtonchen.rssreader.reader.view.WebViewFragment;
+import com.ashtonchen.rssreader.reader.view.WebviewFragment;
 
 /**
  * A fragment representing a single Feed detail screen.
@@ -70,7 +70,7 @@ public class FeedDetailFragment extends DetailFragment<Feed> {
             @Override
             public void onClick(View v) {
                 Log.d(this.getClass().getSimpleName(), "detail view clicked");
-                WebViewFragment fragment = WebViewFragment.newInstance(mData.getUrl());
+                WebviewFragment fragment = WebviewFragment.newInstance(mData.getUrl());
                 mContext.displayFragment(fragment);
             }
         };

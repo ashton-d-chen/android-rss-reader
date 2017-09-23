@@ -15,12 +15,12 @@ import com.ashtonchen.rssreader.base.BaseFragment;
 /**
  * Created by Ashton Chen on 16-01-22.
  */
-public class WebViewFragment extends BaseFragment {
+public class WebviewFragment extends BaseFragment {
     private static final String ARG_URL = "url";
     private String mCurrentURL;
 
-    public static WebViewFragment newInstance(String url) {
-        WebViewFragment fragment = new WebViewFragment();
+    public static WebviewFragment newInstance(String url) {
+        WebviewFragment fragment = new WebviewFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_URL, url);
         fragment.setArguments(bundle);
