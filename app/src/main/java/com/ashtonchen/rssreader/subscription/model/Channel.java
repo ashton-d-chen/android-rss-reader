@@ -24,7 +24,7 @@ public class Channel implements Parcelable {
         feeds = new ArrayList();
     }
 
-    public static final Parcelable.Creator<Channel> CREATOR = new Parcelable.Creator<Channel>() {
+    public static final Creator<Channel> CREATOR = new Creator<Channel>() {
         public Channel createFromParcel(Parcel in) {
             return new Channel(in);
         }

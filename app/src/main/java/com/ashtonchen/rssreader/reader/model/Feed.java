@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class Feed implements Comparable<Feed>, Parcelable {
     public static final String ARG_FEED = "argumentFeed";
-    public static final Parcelable.Creator<Feed> CREATOR = new Parcelable.Creator<Feed>() {
+    public static final Creator<Feed> CREATOR = new Creator<Feed>() {
         public Feed createFromParcel(Parcel in) {
             return new Feed(in);
         }
